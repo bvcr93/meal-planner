@@ -3,10 +3,15 @@ import React from "react";
 import { UserButton } from "@clerk/nextjs";
 export default function Navbar() {
   return (
-    <div className="w-full py-5 border-b">
-      <div className="maincol flex justify-between items-center">
-        <Link href={`/`}>logo</Link>
-        <div className="flex gap-10">
+    <div className="w-full  h-0 ">
+      <div className="maincol flex justify-between items-center pt-3 ">
+        <div className="hidden md:flex">
+          <Link href={`/`} className="font-semibold italic text-xl">
+            Foody
+          </Link>
+        </div>
+        <div className="md:hidden flex">menu</div>
+        <div className="md:flex gap-10 hidden">
           <Link href={`/meals`}>My meals</Link>
           <Link href={`/explore`}>Explore</Link>
         </div>
