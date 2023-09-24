@@ -1,17 +1,15 @@
-"use client";
 import Image from "next/image";
 import { User } from "@clerk/nextjs/server";
 import { useAuth } from "@clerk/nextjs";
-export default function Home() {
-  const { isLoaded, userId, sessionId, getToken,  } = useAuth();
-
+import { db } from "@/lib/db";
+import { Categories } from "@/components/ui/categories";
+export default async function Home() {
   // In case the user signs out while on the page.
-  if (!isLoaded || !userId) {
-    return null;
-  }
+  const categories = await db.category.findMany();
+
   return (
     <div className="maincol">
-      Hello, {userId} your current active session is {sessionId}
+      <Categories data={categories}/>
     </div>
   );
 }
