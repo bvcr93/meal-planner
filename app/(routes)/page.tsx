@@ -1,5 +1,5 @@
 import Image from "next/image";
 
 export default function Home() {
-  return <main>sadsdf</main>;
+  return <main className="maincol">sadsdf</main>;
 }
