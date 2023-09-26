@@ -8,7 +8,7 @@ export default async function Home() {
   console.log(user);
   return (
     <div className="maincol flex items-center justify-center h-screen">
-      {user && <p className="text-5xl">Hello {user.firstName}</p>}
+      {user && <p className="text-5xl ">Hello {user.firstName}</p>}
     </div>
   );
 }
