@@ -1,16 +1,50 @@
-import { currentUser } from "@clerk/nextjs";
-import { db } from "@/lib/db";
-import { useAuth } from "@clerk/nextjs";
-import type { User } from "@clerk/nextjs/api";
-import { auth } from "@clerk/nextjs";
+import NewMealForm from "@/components/ui/NewMealForm";
+import { getMeals } from "@/lib/meals";
+interface Product {
+  id?: string;
+  product: string;
+  price: string;
+}
 export default async function Home() {
-  const user: User | null = await currentUser();
-  const { userId } = auth();
-  console.log("userid: ", userId);
-  console.log("user: ", user);
+  const { meals } = await getMeals();
+  console.log(meals);
+  // const res = await fetch(
+  //   "https://651319488e505cebc2e993a0.mockapi.io/product",
+  //   {
+  //     cache: "no-cache",
+  //     next: {
+  //       tags: ["product"],
+  //     },
+  //   }
+  // );
+  // const products: Product[] = await res.json();
+
+  // const addProduct = async (e: FormData) => {
+  //   "use server";
+  //   const product = e.get("product")?.toString();
+  //   const price = e.get("price")?.toString();
+  //   if (!product || !price) return;
+  //   const newProduct: Product = {
+  //     product,
+  //     price,
+  //   };
+  //   await fetch("https://651319488e505cebc2e993a0.mockapi.io/product", {
+  //     method: "POST",
+  //     body: JSON.stringify(newProduct),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   revalidateTag("product");
+  // };
   return (
-    <div className="maincol flex items-center justify-center h-screen">
-      {user && <p className="text-5xl ">Hello {user.firstName}</p>}
+    <div className="maincol  h-screen">
+      <NewMealForm />
+      {meals?.map((meal) => (
+        <div>
+          {meal.name} {meal.description}
+        </div>
+      ))}
     </div>
   );
 }
