@@ -25,7 +25,7 @@ export const Categories = ({ data }: CategoryProps) => {
   return (
     <div>
       {data.map((cat) => (
-        <Button onClick={() => onClick(cat.id)}>{cat.name}</Button>
+        <Button key={cat.id} onClick={() => onClick(cat.id)}>{cat.name}</Button>
       ))}
     </div>
   );
