@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import React, { useState, useEffect } from "react";
 
 import ReactQuill from "react-quill";
@@ -47,6 +48,9 @@ export default function MealsPage() {
   return (
     <div className="maincol mt-20">
       <div className="w-full flex flex-col items-center justify-start">
+        <div className="my-5 w-1/2 mx-auto">
+          <Input className=" " placeholder="Meal title..."/>
+        </div>
         <div className="w-1/2 mx-auto">
           <ReactQuill
             theme="snow"

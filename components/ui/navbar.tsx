@@ -3,8 +3,8 @@ import React from "react";
 import { UserButton } from "@clerk/nextjs";
 export default function Navbar() {
   return (
-    <div className="w-full  h-0 ">
-      <div className="maincol flex justify-between items-center pt-3 ">
+    <div className="w-full ">
+      <div className="maincol flex justify-between items-center ">
         <div className="hidden md:flex">
           <Link href={`/`} className="font-semibold italic text-xl">
             Foody

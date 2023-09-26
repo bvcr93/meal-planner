@@ -21,3 +21,6 @@ async function main() {
 }
 
 main()
+
+
+type Category = 'asd' | 'asd' 
