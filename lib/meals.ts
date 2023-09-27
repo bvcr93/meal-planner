@@ -22,3 +22,29 @@ export async function createMeal(name: string, description: string) {
     return  error ;
   }
 }
+
+export async function updateMeal(id: string, name: string, description: string) {
+  try {
+    const meal = await db.meal.update({
+      where: { id },
+      data: {
+        name,
+        description,
+      },
+    });
+    return { meal };
+  } catch (error) {
+    return { error };
+  }
+}
+    
+export async function deleteMeal(id: string) {
+  try {
+    const meal = await db.meal.delete({
+      where: { id },
+    });
+    return { meal };
+  } catch (error) {
+    return { error };
+  }
+}
