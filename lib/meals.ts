@@ -17,13 +17,17 @@ export async function createMeal(name: string, description: string) {
         description,
       },
     });
-    return  {meal} ;
+    return { meal };
   } catch (error) {
-    return  error ;
+    return error;
   }
 }
 
-export async function updateMeal(id: string, name: string, description: string) {
+export async function updateMeal(
+  id: string,
+  name: string,
+  description: string
+) {
   try {
     const meal = await db.meal.update({
       where: { id },
@@ -37,7 +41,7 @@ export async function updateMeal(id: string, name: string, description: string) 
     return { error };
   }
 }
-    
+
 export async function deleteMeal(id: string) {
   try {
     const meal = await db.meal.delete({

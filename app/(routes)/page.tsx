@@ -26,7 +26,7 @@ export default async function Home() {
   return (
     <div className="maincol  h-screen">
       <div className="mt-10 h-[500px] md:flex ">
-        <div className="basis-1/2 flex flex-col items-start justify-center pr-[150px] leading-normal space-y-5">
+        <div className="basis-1/2 flex flex-col items-start justify-center pr-[150px] leading-normal space-y-7">
           <h2 className="text-4xl">
             The easiest way to make your favourite meal
           </h2>
@@ -35,7 +35,7 @@ export default async function Home() {
             cook them at home
           </p>
           <Link href={`/explore/recipes`}>
-            <Button>Get Started</Button>
+            <Button size='lg' className="text-md">Get Started</Button>
           </Link>
         </div>
         <div className="basis-1/2 flex items-center justify-center ">
