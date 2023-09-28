@@ -4,6 +4,26 @@ import { useTransition } from "react";
 import { useState } from "react";
 import { Button } from "./button";
 import { Textarea } from "./textarea";
+import {
+  Trash,
+  Edit,
+  Star,
+  Trash2Icon,
+  Plus,
+  PlusCircle,
+  PlusCircleIcon,
+} from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "./alert-dialog";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -13,6 +33,7 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
   let [isPending, startTransition] = useTransition();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   async function updateMeal(data: FormData) {
     const name = data.get("name");
@@ -52,8 +73,8 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
   };
 
   const handleAddToFavourites = async () => {
-   console.log('added to favourites')
-  }
+    console.log("added to favourites");
+  };
 
   return (
     <div className="w-96 h-96 border rounded-xl shadow-md hover:shadow-xl duration-200 cursor-pointer">
@@ -81,13 +102,46 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
               <Button onClick={handleCancelClick}>Cancel</Button>
             </>
           ) : (
-            <div className="flex gap-5">
-              <Button className="font-light text-sm" onClick={handleEditClick}>
-                Edit
-              </Button>
-              <Button className="font-light text-sm" onClick={handleAddToFavourites}>
-                Add to favourites
-              </Button>
+            <div className="flex gap-5 justify-between w-full items-center">
+              <div className="flex gap-5">
+                <Edit className="font-light text-sm" onClick={handleEditClick}>
+                  Edit
+                </Edit>
+                <Star
+                  className="font-light text-sm"
+                  onClick={handleAddToFavourites}
+                >
+                  Add to favourites
+                </Star>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Trash2Icon className="font-light text-red-500 text-sm">
+                      Delete
+                    </Trash2Icon>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your account and remove your data from our
+                        servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+              <div className="">
+                <Button className="rounded-full h-10 w-10">
+                  <p className="text-xl">+</p>
+                </Button>
+              </div>
             </div>
           )}
         </div>

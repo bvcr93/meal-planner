@@ -20,20 +20,41 @@ export default function NewMealForm() {
   }
 
   return (
-    <form ref={formRef} action={createMeal} className="flex flex-col md:w-1/2">
-      <div className="space-y-5">
-        <h2 className="text-xl font-semibold">Create new meal</h2>
-        <Input type="text" placeholder="Name" className="border" name="name" />
-        <Textarea
-          placeholder="Ingredients, cooking time, etc..."
-          className="border"
-          name="description"
-        />
+    <>
+      <form
+        ref={formRef}
+        action={createMeal}
+        className="flex flex-col md:w-1/2"
+      >
+        <div className="space-y-5">
+          <h2 className="text-xl font-semibold">Create new meal</h2>
+          <Input
+            type="text"
+            placeholder="Name"
+            className="border"
+            name="name"
+          />
+          <Textarea
+            placeholder="Ingredients, cooking time, etc..."
+            className="border"
+            name="description"
+          />
+          <div className="flex gap-5 w-full">
+            <Button type="submit" className="border" aria-disabled={pending}>
+              Add meal
+            </Button>
 
-        <Button type="submit" className="border" aria-disabled={pending}>
-          Add meal
-        </Button>
-      </div>
-    </form>
+            <Button
+              type="submit"
+              variant="outline"
+              className="border"
+              aria-disabled={pending}
+            >
+              New category
+            </Button>
+          </div>
+        </div>
+      </form>
+    </>
   );
 }

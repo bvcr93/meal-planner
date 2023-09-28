@@ -23,8 +23,7 @@ export default async function MealsPage() {
           </div>
         ))}
       </div>
-      <NewCategoryForm />
-      
+      {/* <NewCategoryForm /> */}
     </div>
   );
 }
