@@ -1,21 +1,18 @@
 import NewMealForm from "@/components/ui/NewMealForm";
 import { getMeals } from "@/lib/meals";
+import { Plus } from "lucide-react";
 
 import FoodCard from "@/components/ui/food-card";
 import { initialProfile } from "@/lib/profile";
 import { db } from "@/lib/db";
+import { Button } from "@/components/ui/button";
+import NewCategoryForm from "@/components/ui/new-category-form";
 export default async function MealsPage() {
   const { meals } = await getMeals();
-  const profile = await initialProfile();
+  console.log(meals);
 
-  const meal = await db.meal.findFirst({
-    where: {
-      id: profile?.id,
-    },
-  });
-  console.log("meal: ", meal);
   return (
-    <div className="maincol ">
+    <div className="maincol relative min-h-screen">
       <NewMealForm />
       <div className="mt-20 font-semibold text-lg">Your meals</div>
 
@@ -26,6 +23,8 @@ export default async function MealsPage() {
           </div>
         ))}
       </div>
+      <NewCategoryForm />
+      
     </div>
   );
 }

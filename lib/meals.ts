@@ -26,7 +26,8 @@ export async function createMeal(name: string, description: string) {
 export async function updateMeal(
   id: string,
   name: string,
-  description: string
+  description: string,
+  isEdited: boolean
 ) {
   try {
     const meal = await db.meal.update({
@@ -34,6 +35,7 @@ export async function updateMeal(
       data: {
         name,
         description,
+        isEdited,
       },
     });
     return { meal };

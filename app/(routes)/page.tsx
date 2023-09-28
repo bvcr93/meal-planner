@@ -5,6 +5,7 @@ import easy from "../../public/easy.jpg";
 import fruits from "../../public/fruits.jpg";
 import meallanding from "../../public/meal-landing.jpg";
 import soup from "../../public/soup.jpg";
+import { items } from "@/landing";
 
 export default async function Home() {
   //   const product = e.get("product")?.toString();
@@ -35,7 +36,9 @@ export default async function Home() {
             cook them at home
           </p>
           <Link href={`/explore/recipes`}>
-            <Button size='lg' className="text-md">Get Started</Button>
+            <Button size="lg" className="text-md">
+              Get Started
+            </Button>
           </Link>
         </div>
         <div className="basis-1/2 flex items-center justify-center ">
@@ -48,47 +51,29 @@ export default async function Home() {
         </div>
       </div>
       <div className="md:mt-20">
-      
-          <h2 className="text-4xl">Discover</h2>
+        <h2 className="text-4xl">Discover</h2>
 
         <div className="md:col-span-2 mt-10">
           <div className="lg:flex sm:grid sm:grid-cols-2 grid-cols-1 gap-5 mt-20 space-y-10 md:space-y-0">
-          <div className="flex flex-col items-center justify-center">
-              <Image
-                alt=""
-                className="rounded-full w-[300px] h-[300px] object-cover shadow-2xl"
-                src={soup}
-                width={1000}
-              />
-              <p className="mt-10 w-2/3 mx-auto">
-                lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod
-              </p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <Image
-                alt=""
-                className="rounded-full w-[300px] h-[300px] object-cover shadow-2xl"
-                src={easy}
-                width={1000}
-              />
-              <p className="mt-10 w-2/3 mx-auto">
-                lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod
-              </p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <Image
-                alt=""
-                className="rounded-full w-[300px] h-[300px] object-cover shadow-2xl"
-                src={fruits}
-                width={1000}
-              />
-              <p className="mt-10 w-2/3 mx-auto">
-                lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod
-              </p>
-            </div>
+            {items.map((item, index) => (
+              <div key={index} className="relative group cursor-pointer">
+                <div className="flex flex-col items-center justify-center relative">
+                  <Image
+                    alt={item.alt}
+                    className="rounded-full w-[300px] h-[300px] object-cover shadow-2xl"
+                    src={item.src}
+                    width={1000}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out">
+                    <div className="rounded-full bg-black opacity-0 group-hover:opacity-70 w-[300px] h-[300px] transition-opacity duration-300 ease-in-out"></div>
+                    <Button className="absolute opacity-0 hover:bg-white hover:text-black group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+                      View recipes
+                    </Button>
+                  </div>
+                </div>
+                <p className="mt-10 w-2/3 mx-auto">{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -32,5 +32,6 @@ model Meal {
   name String 
   description String
   @@index([id])
+  isEdited Boolean? @default(false)
 
 }

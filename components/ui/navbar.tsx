@@ -21,6 +21,12 @@ export default function Navbar() {
           <Link href={`/meals`}>My meals</Link>
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/explore`}>Blogs</Link>
+          <Link
+            href={`/upgrade-to-pro`}
+            className="text-orange-500 font-semibold"
+          >
+            Upgrade to Pro
+          </Link>
         </div>
         <div>
           {userId ? (

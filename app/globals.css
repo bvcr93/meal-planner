@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .maincol {
-  @apply max-w-screen-xl px-10 mx-auto;
+  @apply max-w-screen-2xl px-10 mx-auto;
 }
 @layer base {
   :root {
