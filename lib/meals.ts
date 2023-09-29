@@ -3,6 +3,7 @@ import { db } from "./db";
 export async function getMeals() {
   try {
     const meals = await db.meal.findMany();
+    console.log("meals found: ", meals);
     return { meals };
   } catch (error) {
     return { error };
@@ -37,7 +38,10 @@ export async function updateMeal(
         description,
         isEdited,
       },
+      
     });
+    console.log("Received data for updateMeal:", id, name, description, isEdited);
+
     return { meal };
   } catch (error) {
     return { error };

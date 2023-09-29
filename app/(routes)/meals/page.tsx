@@ -13,9 +13,12 @@ export default async function MealsPage() {
 
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-10 gap-5 place-items-center w-full h-ful">
         {meals?.map((meal) => (
-          <div className="">
-            <FoodCard {...meal} />
-          </div>
+          <FoodCard
+            key={meal.id}
+            id={meal.id}
+            name={meal.name}
+            description={meal.description}
+          />
         ))}
       </div>
       {/* <NewCategoryForm /> */}

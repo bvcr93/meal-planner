@@ -1,11 +1,7 @@
 "use client";
 import { updateMealAction } from "@/app/actions";
-import {
-  Edit,
-  Star,
-  Trash2Icon
-} from "lucide-react";
-import { useState, useTransition } from "react";
+import { Edit, Star, Trash2Icon } from "lucide-react";
+import { useState, useTransition, useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,8 +23,7 @@ interface FoodCardProps {
 export default function FoodCard({ id, name, description }: FoodCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
-  let [isPending, startTransition] = useTransition();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log("FoodCard Description Prop:", description);
 
   async function updateMeal(data: FormData) {
     const name = data.get("name");
@@ -36,8 +31,13 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
     if (!name || typeof name !== "string") return;
     if (!description || typeof description !== "string") return;
 
-    await updateMealAction(name, description, id, isEditing);
+    await updateMealAction(id, name, editedDescription, isEditing);
+    console.log("description:", description);
+    console.log("editedDescription:", editedDescription);
   }
+  useEffect(() => {
+    setEditedDescription(description);
+  }, [description]);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -53,12 +53,11 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
     formData.append("description", editedDescription);
 
     try {
-      const response = await updateMealAction(
-        name,
-        editedDescription,
-        id,
-        isEditing
-      );
+      const response = await updateMealAction(id, name, description, isEditing);
+      console.log("Updating meal with id:", id, "name:", name, "description:", editedDescription);
+      const result = await updateMealAction(id, name, editedDescription, isEditing);
+      console.log("Update result:", result);
+      
       console.log("API response:", response);
     } catch (error) {
       console.error("Error updating meal:", error);

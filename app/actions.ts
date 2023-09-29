@@ -4,8 +4,9 @@ import { createMeal,updateMeal, deleteMeal } from "@/lib/meals"
 import { revalidatePath } from "next/cache"
 
 export async function createMealAction(name: string, description:string){
+    console.log("Creating meal with name:", name, "and description:", description);
     await createMeal(name, description)
-    revalidatePath('/meals') // when we create a new meal, we want to revalidate the home page
+    revalidatePath('/meals') 
 }
 
 export async function updateMealAction(id: string, name: string, description: string, isEdited: boolean){

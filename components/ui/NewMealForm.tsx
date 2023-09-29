@@ -14,7 +14,12 @@ export default function NewMealForm() {
     const description = data.get("description");
     if (!name || typeof name !== "string") return;
     if (!description || typeof description !== "string") return;
-
+    console.log(
+      "Received data for meal creation - Name: ",
+      name,
+      "Description: ",
+      description
+    );
     await createMealAction(name, description);
     formRef.current?.reset();
   }
