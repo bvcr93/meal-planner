@@ -1,29 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { items } from "@/landing";
 import Image from "next/image";
 import Link from "next/link";
-import easy from "../../public/easy.jpg";
-import fruits from "../../public/fruits.jpg";
 import meallanding from "../../public/meal-landing.jpg";
-import soup from "../../public/soup.jpg";
-import { items } from "@/landing";
 
 export default async function Home() {
-  //   const product = e.get("product")?.toString();
-  //   const price = e.get("price")?.toString();
-  //   if (!product || !price) return;
-  //   const newProduct: Product = {
-  //     product,
-  //     price,
-  //   };
-  //   await fetch("https://651319488e505cebc2e993a0.mockapi.io/product", {
-  //     method: "POST",
-  //     body: JSON.stringify(newProduct),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   revalidateTag("product");
-  // };
+
   return (
     <div className="maincol  h-screen">
       <div className="mt-10 h-[500px] md:flex ">
@@ -63,6 +45,8 @@ export default async function Home() {
                     className="rounded-full w-[300px] h-[300px] object-cover shadow-2xl"
                     src={item.src}
                     width={1000}
+                    quality={100}
+                    priority
                   />
                   <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out">
                     <div className="rounded-full bg-black opacity-0 group-hover:opacity-70 w-[300px] h-[300px] transition-opacity duration-300 ease-in-out"></div>

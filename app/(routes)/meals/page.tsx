@@ -1,12 +1,7 @@
 import NewMealForm from "@/components/ui/NewMealForm";
 import { getMeals } from "@/lib/meals";
-import { Plus } from "lucide-react";
 
 import FoodCard from "@/components/ui/food-card";
-import { initialProfile } from "@/lib/profile";
-import { db } from "@/lib/db";
-import { Button } from "@/components/ui/button";
-import NewCategoryForm from "@/components/ui/new-category-form";
 export default async function MealsPage() {
   const { meals } = await getMeals();
   console.log(meals);
@@ -16,7 +11,7 @@ export default async function MealsPage() {
       <NewMealForm />
       <div className="mt-20 font-semibold text-lg">Your meals</div>
 
-      <div className="grid md:grid-cols-3 mt-10 gap-5 place-items-center w-full h-ful">
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-10 gap-5 place-items-center w-full h-ful">
         {meals?.map((meal) => (
           <div className="">
             <FoodCard {...meal} />

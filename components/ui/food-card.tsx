@@ -1,21 +1,13 @@
 "use client";
 import { updateMealAction } from "@/app/actions";
-import { useTransition } from "react";
-import { useState } from "react";
-import { Button } from "./button";
-import { Textarea } from "./textarea";
 import {
-  Trash,
   Edit,
   Star,
-  Trash2Icon,
-  Plus,
-  PlusCircle,
-  PlusCircleIcon,
+  Trash2Icon
 } from "lucide-react";
+import { useState, useTransition } from "react";
 import {
   AlertDialog,
-  AlertDialogTrigger,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -23,7 +15,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "./alert-dialog";
+import { Button } from "./button";
+import { Textarea } from "./textarea";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -55,7 +50,7 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
   const handleSaveClick = async () => {
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("description", description);
+    formData.append("description", editedDescription);
 
     try {
       const response = await updateMealAction(
@@ -77,7 +72,7 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
   };
 
   return (
-    <div className="w-96 h-96 border rounded-xl shadow-md hover:shadow-xl duration-200 cursor-pointer">
+    <div className="w-80 h-96 border rounded-xl shadow-md hover:shadow-xl duration-200 cursor-pointer">
       <div className="w-full mt-10 text-center py-2 font-semibold">{name}</div>
       <div className="min-h-[200px] p-5 font-light text-sm">
         {isEditing ? (
@@ -97,10 +92,10 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
       <div className="flex justify-center py-2">
         <div className="flex items-start w-full px-5">
           {isEditing ? (
-            <>
+            <div className="flex gap-2">
               <Button onClick={handleSaveClick}>Save</Button>
               <Button onClick={handleCancelClick}>Cancel</Button>
-            </>
+            </div>
           ) : (
             <div className="flex gap-5 justify-between w-full items-center">
               <div className="flex gap-5">
@@ -113,13 +108,14 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
                 >
                   Add to favourites
                 </Star>
+
                 <AlertDialog>
                   <AlertDialogTrigger>
                     <Trash2Icon className="font-light text-red-500 text-sm">
                       Delete
                     </Trash2Icon>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent className="">
                     <AlertDialogHeader>
                       <AlertDialogTitle>
                         Are you absolutely sure?
@@ -132,7 +128,11 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction>Continue</AlertDialogAction>
+                      <AlertDialogAction
+                        onClick={() => console.log("meal deleted")}
+                      >
+                        Continue
+                      </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
