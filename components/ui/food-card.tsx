@@ -1,7 +1,7 @@
 "use client";
-import { updateMealAction } from "@/app/actions";
+import { deleteMealAction, updateMealAction } from "@/app/actions";
 import { Edit, Star, Trash2Icon } from "lucide-react";
-import { useState, useTransition, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +23,9 @@ interface FoodCardProps {
 export default function FoodCard({ id, name, description }: FoodCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
-  console.log("FoodCard Description Prop:", description);
+  const [editedName, setEditedName] = useState(name);
+  console.log("name: ", name);
+  console.log("description: ", description);
 
   async function updateMeal(data: FormData) {
     const name = data.get("name");
@@ -37,28 +39,32 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
   }
   useEffect(() => {
     setEditedDescription(description);
-  }, [description]);
+    setEditedName(name);
+  }, [description, name]);
 
   const handleEditClick = () => {
     setIsEditing(true);
+    setEditedName(name);
   };
 
   const handleCancelClick = () => {
     setIsEditing(false);
+    setEditedName(name);
     setEditedDescription(description);
   };
+
   const handleSaveClick = async () => {
     const formData = new FormData();
-    formData.append("name", name);
+    formData.append("name", editedName);
     formData.append("description", editedDescription);
 
     try {
-      const response = await updateMealAction(id, name, description, isEditing);
-      console.log("Updating meal with id:", id, "name:", name, "description:", editedDescription);
-      const result = await updateMealAction(id, name, editedDescription, isEditing);
-      console.log("Update result:", result);
-      
-      console.log("API response:", response);
+      const response = await updateMealAction(
+        id,
+        editedName,
+        editedDescription,
+        isEditing
+      );
     } catch (error) {
       console.error("Error updating meal:", error);
     }
@@ -69,14 +75,27 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
   const handleAddToFavourites = async () => {
     console.log("added to favourites");
   };
-
+  const handleDeleteClick = async () => {
+    try {
+      await deleteMealAction(id);
+    } catch (error) {
+      console.error("Error deleting meal:", error);
+    }
+  };
   return (
     <div className="w-80 h-96 border rounded-xl shadow-md hover:shadow-xl duration-200 cursor-pointer">
-      <div className="w-full mt-10 text-center py-2 font-semibold">{name}</div>
+      <div className="w-full mt-10 text-center py-2 font-semibold">
+        {isEditing ? editedName : name}
+      </div>
       <div className="min-h-[200px] p-5 font-light text-sm">
         {isEditing ? (
           <form action={updateMeal}>
-            {" "}
+            <input
+              type="text"
+              value={editedName}
+              onChange={(e) => setEditedName(e.target.value)}
+              className="some-class-name"
+            />
             <Textarea
               value={editedDescription}
               onChange={(e) => setEditedDescription(e.target.value)}
@@ -84,7 +103,10 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
             />
           </form>
         ) : (
-          <div>{editedDescription}</div>
+          <>
+            <div>{editedName}</div>
+            <div>{editedDescription}</div>
+          </>
         )}
       </div>
 
@@ -107,7 +129,6 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
                 >
                   Add to favourites
                 </Star>
-
                 <AlertDialog>
                   <AlertDialogTrigger>
                     <Trash2Icon className="font-light text-red-500 text-sm">
@@ -127,9 +148,7 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => console.log("meal deleted")}
-                      >
+                      <AlertDialogAction onClick={handleDeleteClick}>
                         Continue
                       </AlertDialogAction>
                     </AlertDialogFooter>

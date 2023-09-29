@@ -16,6 +16,5 @@ export async function updateMealAction(id: string, name: string, description: st
 export async function deleteMealAction(id: string){
     await deleteMeal(id)
     revalidatePath('/meals')
-} {
+} 
     
-}
