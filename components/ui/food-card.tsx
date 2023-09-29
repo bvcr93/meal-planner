@@ -1,7 +1,7 @@
 "use client";
 import { deleteMealAction, updateMealAction } from "@/app/actions";
 import { Edit, Star, Trash2Icon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState, useTransition, useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +24,7 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
+  const [tempName, setTempName] = useState(name); // temporary state
   console.log("name: ", name);
   console.log("description: ", description);
 
@@ -41,10 +42,9 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
     setEditedDescription(description);
     setEditedName(name);
   }, [description, name]);
-
   const handleEditClick = () => {
     setIsEditing(true);
-    setEditedName(name);
+    setTempName(editedName); // set temporary name when entering edit mode
   };
 
   const handleCancelClick = () => {
@@ -59,16 +59,11 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
     formData.append("description", editedDescription);
 
     try {
-      const response = await updateMealAction(
-        id,
-        editedName,
-        editedDescription,
-        isEditing
-      );
+      await updateMealAction(id, editedName, editedDescription, isEditing);
     } catch (error) {
       console.error("Error updating meal:", error);
     }
-
+    setEditedName(tempName);
     setIsEditing(false);
   };
 
@@ -83,28 +78,36 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
     }
   };
   return (
-    <div className="w-80 h-96 border rounded-xl shadow-md hover:shadow-xl duration-200 cursor-pointer">
+    <div className="w-80 h-96 border rounded-xl shadow-md hover:shadow-xl duration-200">
       <div className="w-full mt-10 text-center py-2 font-semibold">
-        {isEditing ? editedName : name}
-      </div>
-      <div className="min-h-[200px] p-5 font-light text-sm">
         {isEditing ? (
-          <form action={updateMeal}>
+          <div
+            className="flex items-center justify-center
+          "
+          >
             <input
               type="text"
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
-              className="some-class-name"
+              className="text-center"
             />
+          </div>
+        ) : (
+          <div>{name}</div>
+        )}
+      </div>
+
+      <div className="min-h-[200px] p-5 font-light text-sm">
+        {isEditing ? (
+          <form action={updateMeal}>
             <Textarea
               value={editedDescription}
               onChange={(e) => setEditedDescription(e.target.value)}
-              className="w-full h-32 border rounded p-2"
+              className="w-full h-32 border rounded"
             />
           </form>
         ) : (
           <>
-            <div>{editedName}</div>
             <div>{editedDescription}</div>
           </>
         )}
@@ -120,11 +123,14 @@ export default function FoodCard({ id, name, description }: FoodCardProps) {
           ) : (
             <div className="flex gap-5 justify-between w-full items-center">
               <div className="flex gap-5">
-                <Edit className="font-light text-sm" onClick={handleEditClick}>
+                <Edit
+                  className="font-light text-sm cursor-pointer"
+                  onClick={handleEditClick}
+                >
                   Edit
                 </Edit>
                 <Star
-                  className="font-light text-sm"
+                  className="font-light text-sm cursor-pointer"
                   onClick={handleAddToFavourites}
                 >
                   Add to favourites
