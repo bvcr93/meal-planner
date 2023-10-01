@@ -9,13 +9,6 @@ datasource db {
 }
 
 
-model Category {
-  id String @id @default(uuid())
-  name String
-
-  @@index([id])
-}
-
 model Profile {
   id String @id @default(uuid())
   userId String @unique
@@ -28,10 +21,11 @@ model Profile {
 }
 
 model Meal {
-  id String @id @default(uuid())
-  name String 
+  id          String   @id @default(uuid())
+  name        String
   description String
+  isEdited    Boolean? @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime?
   @@index([id])
-  isEdited Boolean? @default(false)
-
 }

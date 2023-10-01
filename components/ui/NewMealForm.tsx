@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
 import { createMealAction } from "@/app/actions";
+import { useRef } from "react";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { Button } from "./button";
 import { Input } from "./input";
-import { useRef } from "react";
 import { Textarea } from "./textarea";
+
 export default function NewMealForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const { pending } = useFormStatus();
@@ -49,14 +49,6 @@ export default function NewMealForm() {
               Add meal
             </Button>
 
-            <Button
-              type="submit"
-              variant="outline"
-              className="border"
-              aria-disabled={pending}
-            >
-              New category
-            </Button>
           </div>
         </div>
       </form>

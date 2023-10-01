@@ -5,7 +5,6 @@ import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
 
 export default async function Home() {
-
   return (
     <div className="maincol  h-screen">
       <div className="mt-10 h-[500px] md:flex ">
@@ -17,7 +16,7 @@ export default async function Home() {
             Discover the best recipes from around the world and learn how to
             cook them at home
           </p>
-          <Link href={`/explore/recipes`}>
+          <Link href={`/meals`}>
             <Button size="lg" className="text-md">
               Get Started
             </Button>
