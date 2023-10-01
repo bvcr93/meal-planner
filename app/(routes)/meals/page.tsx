@@ -5,7 +5,7 @@ import { getMeals } from "@/lib/meals";
 import { Suspense } from "react";
 export default async function MealsPage() {
   const { meals } = await getMeals();
-  console.log(meals);
+  console.log('meals',meals);
   meals?.sort(
     (a, b) =>
       (b.createdAt ? new Date(b.createdAt).getTime() : 0) -

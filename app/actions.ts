@@ -3,14 +3,18 @@
 import { createMeal, updateMeal, deleteMeal } from "@/lib/meals";
 import { revalidatePath } from "next/cache";
 
-export async function createMealAction(name: string, description: string) {
+export async function createMealAction(
+  name: string,
+  description: string,
+  creatorId: string
+) {
   console.log(
     "Creating meal with name:",
     name,
     "and description:",
     description
   );
-  await createMeal(name, description);
+  await createMeal(name, description); // Passing creatorId
   revalidatePath("/meals");
 }
 
@@ -24,6 +28,7 @@ export async function updateMealAction(
   revalidatePath("/meals");
 }
 export async function deleteMealAction(id: string) {
+    
   await deleteMeal(id);
   revalidatePath("/meals");
 }

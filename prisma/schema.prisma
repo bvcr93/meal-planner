@@ -10,22 +10,40 @@ datasource db {
 
 
 model Profile {
-  id String @id @default(uuid())
-  userId String @unique
-  name String
-  imageUrl String @db.Text
-  email String @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String        @id @default(uuid())
+  userId    String        @unique
+  name      String
+  imageUrl  String        @db.Text
+  email     String        @db.Text
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  createdMeals Meal[]     // Meals created by this user
+  favorites FavoriteMeals[] // Favorites of this user
 
 }
 
 model Meal {
-  id          String   @id @default(uuid())
+  id          String        @id @default(uuid())
   name        String
   description String
-  isEdited    Boolean? @default(false)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime?
+  isEdited    Boolean?      @default(false)
+  createdAt   DateTime?     @default(now())
+  updatedAt   DateTime?
+  creatorId   String       
+  creator     Profile?      @relation(fields: [creatorId], references: [id])
+  favoritedBy FavoriteMeals[] 
   @@index([id])
+  @@index([creatorId])
 }
+
+// Pivot table to capture favorites. A many-to-many relationship between profiles and meals.
+model FavoriteMeals {
+  profileId String
+  mealId    String
+  profile   Profile @relation(fields: [profileId], references: [id])
+  meal      Meal    @relation(fields: [mealId], references: [id])
+  @@id([profileId, mealId])
+  @@index([profileId])
+  @@index([mealId])
+}
+

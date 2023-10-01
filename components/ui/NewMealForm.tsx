@@ -5,8 +5,11 @@ import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
-
+import { useUser } from "@clerk/clerk-react";
 export default function NewMealForm() {
+  const { user } = useUser();
+  console.log('user', user?.id)
+  console.log(user)
   const formRef = useRef<HTMLFormElement>(null);
   const { pending } = useFormStatus();
   async function createMeal(data: FormData) {
@@ -20,7 +23,10 @@ export default function NewMealForm() {
       "Description: ",
       description
     );
-    await createMealAction(name, description);
+    if (user && user.id) {
+      await createMealAction(name, description, user.id);
+  }
+  
     formRef.current?.reset();
   }
 

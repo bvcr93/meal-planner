@@ -2,6 +2,7 @@
 import { deleteMealAction, updateMealAction } from "@/app/actions";
 import { Edit, Star, Trash2Icon } from "lucide-react";
 import { useState, useTransition, useEffect } from "react";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +18,7 @@ import { Button } from "./button";
 import { Textarea } from "./textarea";
 import { Input } from "./input";
 import Spinner from "./spinner";
-
+import { useUser } from "@clerk/nextjs";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -36,13 +37,17 @@ export default function FoodCard({
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
   const [tempName, setTempName] = useState(name);
-  const [bgColor, setBgColor] = useState(getRandomColor());
+  const [bgColor, setBgColor] = useState(() => getColorBasedOnId(id));
+
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
+
+  const { user } = useUser();
+
   console.log("name: ", name);
   console.log("description: ", description);
   console.log(createdAt, "createdAt");
-  function getRandomColor() {
+  function getColorBasedOnId(id: string) {
     const colors = [
       "bg-red-200",
       "bg-green-200",
@@ -54,7 +59,9 @@ export default function FoodCard({
       "bg-sky-200",
       "bg-rose-200",
     ];
-    return colors[Math.floor(Math.random() * colors.length)];
+    const sum = id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const colorIndex = sum % colors.length;
+    return colors[colorIndex];
   }
 
   useEffect(() => {
@@ -156,7 +163,11 @@ export default function FoodCard({
               </>
             )}
           </div>
-
+          {/* <img
+            src={user?.imageUrl}
+            alt=""
+            className="w-12 h-12 rounded-full object-cover"
+          /> */}
           <div className="flex justify-center py-2">
             <div className="flex items-start w-full px-5">
               {isEditing ? (
