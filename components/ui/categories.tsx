@@ -1,13 +1,9 @@
 "use client";
 import qs from "query-string";
-import { Category } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./button";
-interface CategoryProps {
-  data: Category[];
-}
 
-export const Categories = ({ data }: CategoryProps) => {
+export const Categories = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("categoryId");
@@ -22,11 +18,5 @@ export const Categories = ({ data }: CategoryProps) => {
     );
     router.push(url);
   };
-  return (
-    <div>
-      {data.map((cat) => (
-        <Button key={cat.id} onClick={() => onClick(cat.id)}>{cat.name}</Button>
-      ))}
-    </div>
-  );
+  return <div></div>;
 };
