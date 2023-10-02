@@ -1,12 +1,14 @@
+import { getMeals } from "@/lib/meals";
+import { UserButton, auth } from "@clerk/nextjs";
 import Link from "next/link";
-import React from "react";
-import { SignIn, SignUp, UserButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs";
 import { Button } from "./button";
 import { Input } from "./input";
-
-export default function Navbar() {
+import UserCount from "./user-count";
+export default async function Navbar() {
   const { userId }: { userId: string | null } = auth();
+  const { meals } = await getMeals();
+  const currentUser = meals?.find((meal) => meal?.creator?.userId === userId);
+  const currentUserCreatorId = currentUser?.creator?.id || null;
 
   return (
     <div className="w-full py-5">
@@ -15,12 +17,9 @@ export default function Navbar() {
           <Link href={`/`} className="font-semibold italic text-xl mr-10">
             Foody
           </Link>
-          <button
-            type="button"
-            className="text-white bg-gradient-to-br from-pink-500 to-orange-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-          >
-            5 more left
-          </button>
+          {userId && (
+            <UserCount creatorId={currentUserCreatorId} meals={meals} />
+          )}
         </div>
         <div className="md:hidden flex">menu</div>
         <div className="md:flex gap-10 hidden">

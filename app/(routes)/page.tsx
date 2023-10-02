@@ -10,7 +10,6 @@ import { Suspense } from "react";
 import Spinner from "@/components/ui/spinner";
 
 export default async function Home() {
-
   return (
     <div className="maincol  min-h-screen">
       <div className="mt-10 h-[500px] md:flex ">
@@ -37,7 +36,6 @@ export default async function Home() {
             width={1000}
           />
         </div>
-
       </div>
       <div className="md:mt-20">
         {/* <h2 className="text-4xl">Discover</h2> */}
@@ -72,7 +70,6 @@ export default async function Home() {
         <h2 className="text-4xl">Create new meal</h2>
         <MealsPage />
       </div>
-      
     </div>
   );
 }
@@ -92,7 +89,7 @@ async function MealsPage() {
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-10 gap-5 place-items-center w-full h-ful">
         {meals?.map((meal) => (
           <FoodCard
-          userId={meal.creator?.userId}
+            userId={meal.creator?.userId}
             creatorImageUrl={meal.creator?.imageUrl}
             creatorId={meal.creatorId}
             key={meal.id}

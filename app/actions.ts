@@ -1,5 +1,5 @@
 "use server";
-
+import { getUserMealCount } from "@/lib/meals";
 import { createMeal, updateMeal, deleteMeal } from "@/lib/meals";
 import { revalidatePath } from "next/cache";
 
@@ -28,7 +28,12 @@ export async function updateMealAction(
   revalidatePath("/meals");
 }
 export async function deleteMealAction(id: string) {
-    
   await deleteMeal(id);
   revalidatePath("/meals");
+}
+
+export async function getUserMealCountAction(userId: string): Promise<number> {
+  const count = await getUserMealCount(userId);
+  revalidatePath("/meals");
+  return count;
 }

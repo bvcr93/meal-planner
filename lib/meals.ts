@@ -5,7 +5,7 @@ export async function getMeals() {
   try {
     const meals = await db.meal.findMany({
       include: {
-        creator: true, // include the creator's profile data
+        creator: true,
       },
     });
     console.log("meals found: ", meals);
@@ -57,7 +57,6 @@ export async function updateMeal(
     throw new Error("Profile ID is missing or null");
   }
 
-  // Fetch the meal first to check if the current user is the creator
   const existingMeal = await db.meal.findUnique({
     where: { id },
   });
@@ -118,5 +117,20 @@ export async function deleteMeal(id: string) {
     return { meal };
   } catch (error) {
     return { error };
+  }
+}
+
+export async function getUserMealCount(userId: string): Promise<number> {
+  try {
+    const count = await db.meal.count({
+      where: {
+        creatorId: userId,
+      },
+    });
+    console.log("Retrieved count:", count);
+    return count;
+  } catch (error) {
+    console.error("Error fetching meal count:", error);
+    throw error;
   }
 }
