@@ -53,7 +53,6 @@ export default function FoodCard({
 
   const { user } = useUser();
 
-
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -105,9 +104,7 @@ export default function FoodCard({
     }
   };
 
-  const handleAddToFavourites = async () => {
-
-  };
+  const handleAddToFavourites = async () => {};
   const handleDeleteClick = async () => {
     try {
       await deleteMealAction(id);
