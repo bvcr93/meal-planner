@@ -20,7 +20,7 @@ import { Input } from "./input";
 import Spinner from "./spinner";
 import { Textarea } from "./textarea";
 import Image from "next/image";
-
+import { useToast } from "@/components/ui/use-toast";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -29,6 +29,7 @@ interface FoodCardProps {
   updatedAt?: string;
   creatorId: string;
   creatorImageUrl?: string;
+  userId?: string;
 }
 export default function FoodCard({
   id,
@@ -38,7 +39,9 @@ export default function FoodCard({
   updatedAt,
   creatorId,
   creatorImageUrl,
+  userId,
 }: FoodCardProps) {
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
@@ -50,9 +53,9 @@ export default function FoodCard({
 
   const { user } = useUser();
   console.log("user: ", user);
-  console.log("name: ", name);
-  console.log("description: ", description);
-  console.log(createdAt, "createdAt");
+  console.log("user.id:", user?.id);
+  console.log("creatorId:", creatorId);
+
   function getColorBasedOnId(id: string) {
     const colors = [
       "bg-red-200",
@@ -80,14 +83,16 @@ export default function FoodCard({
     if (!description || typeof description !== "string") return;
 
     await updateMealAction(id, name, editedDescription, isEditing);
-    console.log("description:", description);
-    console.log("editedDescription:", editedDescription);
-    console.log("creatorId", creatorId);
+    toast({
+      description: editedDescription,
+    });
   }
+
   useEffect(() => {
     setEditedDescription(description);
     setEditedName(name);
   }, [description, name]);
+
   const handleEditClick = () => {
     setIsEditing(true);
     setTempName(editedName);
@@ -109,6 +114,9 @@ export default function FoodCard({
       await updateMealAction(id, editedName, editedDescription, isEditing);
       setIsEditing(false);
       setEditedName(tempName);
+      toast({
+        description: "Meal sucessfully updated!",
+      });
     } catch (error) {
       console.error("Error updating meal:", error);
     } finally {
@@ -122,6 +130,9 @@ export default function FoodCard({
   const handleDeleteClick = async () => {
     try {
       await deleteMealAction(id);
+      toast({
+        description: "Meal sucessfully deleted!",
+      });
     } catch (error) {
       console.error("Error deleting meal:", error);
     }
@@ -133,7 +144,7 @@ export default function FoodCard({
           className={`w-80 h-96 border rounded-xl shadow-md hover:shadow-xl duration-200 relative ${bgColor}`}
         >
           {loading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-opacity-80 bg-black">
+            <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-opacity-80 bg-black">
               <Spinner />
             </div>
           )}
@@ -186,43 +197,49 @@ export default function FoodCard({
                 <div className="flex gap-5 justify-between w-full items-center">
                   <div className="flex flex-col">
                     <div className="flex gap-5">
-                      <Edit
-                        className="font-light text-sm cursor-pointer"
-                        onClick={handleEditClick}
-                      >
-                        Edit
-                      </Edit>
+                      {user?.id === userId && (
+                        <Edit
+                          className="font-light text-sm cursor-pointer"
+                          onClick={handleEditClick}
+                        >
+                          Edit
+                        </Edit>
+                      )}
+
                       <Star
                         className="font-light text-sm cursor-pointer"
                         onClick={handleAddToFavourites}
                       >
                         Add to favourites
                       </Star>
-                      <AlertDialog>
-                        <AlertDialogTrigger>
-                          <Trash2Icon className="font-light text-red-500 text-sm">
-                            Delete
-                          </Trash2Icon>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="">
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you absolutely sure?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your account and remove your
-                              data from our servers.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleDeleteClick}>
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      {user?.id === userId && (
+                        <AlertDialog>
+                          <AlertDialogTrigger>
+                            <Trash2Icon className="font-light text-red-500 text-sm">
+                              Delete
+                            </Trash2Icon>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Are you absolutely sure?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will permanently delete this meal.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-red-500"
+                                onClick={handleDeleteClick}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
                     </div>
                     <div className="font-light mt-5">
                       {/* {new Date(createdAt).toLocaleDateString()} */}

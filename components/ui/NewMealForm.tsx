@@ -6,7 +6,9 @@ import { Button } from "./button";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
 import { useUser } from "@clerk/clerk-react";
+import { useToast } from "./use-toast";
 export default function NewMealForm() {
+  const { toast } = useToast();
   const { user } = useUser();
   console.log("user", user?.id);
   console.log(user);
@@ -27,6 +29,9 @@ export default function NewMealForm() {
       );
       if (user && user.id) {
         await createMealAction(name, description, user.id);
+        toast({
+          title: `Meal created : ${name}`,
+        });
       }
 
       formRef.current?.reset();

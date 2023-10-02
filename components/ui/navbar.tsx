@@ -37,7 +37,7 @@ export default function Navbar() {
         <div>
           {userId ? (
             <div className="flex gap-5">
-              {/* <Input className="border-b rounded-none" placeholder="Search" /> */}
+              <Input className="border-b rounded-none" placeholder="Search" />
               <UserButton afterSignOutUrl="/" />
             </div>
           ) : (
