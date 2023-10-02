@@ -82,7 +82,7 @@ async function MealsPage() {
   );
 
   return (
-    <div className="maincol relative min-h-screen">
+    <div className="relative min-h-screen">
       <NewMealForm />
       <div className="mt-20 font-semibold text-lg">Your meals</div>
 

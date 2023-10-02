@@ -17,7 +17,7 @@ export default function Navbar() {
           </Link>
           <button
             type="button"
-            className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+            className="text-white bg-gradient-to-br from-pink-500 to-orange-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
           >
             5 more left
           </button>
@@ -26,7 +26,7 @@ export default function Navbar() {
         <div className="md:flex gap-10 hidden">
           <Link href={`/meals`}>My meals</Link>
           <Link href={`/explore`}>Explore</Link>
-          <Link href={`/explore`}>Blogs</Link>
+
           <Link
             href={`/upgrade-to-pro`}
             className="text-orange-500 font-semibold"
@@ -37,7 +37,7 @@ export default function Navbar() {
         <div>
           {userId ? (
             <div className="flex gap-5">
-              <Input className="border-b rounded-none" placeholder="Search" />
+              {/* <Input className="border-b rounded-none" placeholder="Search" /> */}
               <UserButton afterSignOutUrl="/" />
             </div>
           ) : (
