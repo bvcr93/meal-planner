@@ -17,8 +17,8 @@ model Profile {
   email     String        @db.Text
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
-  createdMeals Meal[]     // Meals created by this user
-  favorites FavoriteMeals[] // Favorites of this user
+  createdMeals Meal[]     
+  favorites FavoriteMeals[] 
 
 }
 
@@ -36,7 +36,6 @@ model Meal {
   @@index([creatorId])
 }
 
-// Pivot table to capture favorites. A many-to-many relationship between profiles and meals.
 model FavoriteMeals {
   profileId String
   mealId    String

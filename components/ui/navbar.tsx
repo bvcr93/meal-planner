@@ -11,10 +11,16 @@ export default function Navbar() {
   return (
     <div className="w-full py-5">
       <div className="maincol flex justify-between items-center h-14 ">
-        <div className="hidden md:flex">
+        <div className="hidden md:flex items-center just">
           <Link href={`/`} className="font-semibold italic text-xl mr-10">
             Foody
           </Link>
+          <button
+            type="button"
+            className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+          >
+            5 more left
+          </button>
         </div>
         <div className="md:hidden flex">menu</div>
         <div className="md:flex gap-10 hidden">

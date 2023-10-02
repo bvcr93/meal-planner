@@ -1,7 +1,8 @@
 "use client";
 import { deleteMealAction, updateMealAction } from "@/app/actions";
+import { useUser } from "@clerk/nextjs";
 import { Edit, Star, Trash2Icon } from "lucide-react";
-import { useState, useTransition, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   AlertDialog,
@@ -15,16 +16,19 @@ import {
   AlertDialogTrigger,
 } from "./alert-dialog";
 import { Button } from "./button";
-import { Textarea } from "./textarea";
 import { Input } from "./input";
 import Spinner from "./spinner";
-import { useUser } from "@clerk/nextjs";
+import { Textarea } from "./textarea";
+import Image from "next/image";
+
 interface FoodCardProps {
   id: string;
   name: string;
   description: string;
   createdAt: string;
   updatedAt?: string;
+  creatorId: string;
+  creatorImageUrl?: string;
 }
 export default function FoodCard({
   id,
@@ -32,6 +36,8 @@ export default function FoodCard({
   description,
   createdAt,
   updatedAt,
+  creatorId,
+  creatorImageUrl,
 }: FoodCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
@@ -43,7 +49,7 @@ export default function FoodCard({
   const [isClient, setIsClient] = useState(false);
 
   const { user } = useUser();
-
+  console.log("user: ", user);
   console.log("name: ", name);
   console.log("description: ", description);
   console.log(createdAt, "createdAt");
@@ -76,6 +82,7 @@ export default function FoodCard({
     await updateMealAction(id, name, editedDescription, isEditing);
     console.log("description:", description);
     console.log("editedDescription:", editedDescription);
+    console.log("creatorId", creatorId);
   }
   useEffect(() => {
     setEditedDescription(description);
@@ -218,11 +225,20 @@ export default function FoodCard({
                       </AlertDialog>
                     </div>
                     <div className="font-light mt-5">
-                      {new Date(createdAt).toLocaleDateString()}
+                      {/* {new Date(createdAt).toLocaleDateString()} */}
+                      {creatorImageUrl && (
+                        <Image
+                          alt=""
+                          src={creatorImageUrl}
+                          width={100}
+                          height={100}
+                          className="rounded-full h-10 w-10"
+                        />
+                      )}
                     </div>
                   </div>
 
-                  <div className="">
+                  <div className="relative">
                     <Button className="rounded-full h-10 w-10">
                       <p className="text-xl">+</p>
                     </Button>

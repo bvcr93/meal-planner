@@ -32,13 +32,14 @@ export default function NewMealForm() {
 
   return (
     <>
+    
       <form
         ref={formRef}
         action={createMeal}
-        className="flex flex-col md:w-1/2"
+        className="flex flex-col md:w-1/2 mt-10"
       >
         <div className="space-y-5">
-          <h2 className="text-xl font-semibold">Create new meal</h2>
+          
           <Input
             type="text"
             placeholder="Name"

@@ -1,12 +1,14 @@
+import NewMealForm from "@/components/ui/NewMealForm";
 import { Button } from "@/components/ui/button";
-import { items } from "@/landing";
+import FoodCard from "@/components/ui/food-card";
+import { getMeals } from "@/lib/meals";
 import Image from "next/image";
 import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
-
+import { Input } from "@/components/ui/input";
 export default async function Home() {
   return (
-    <div className="maincol  h-screen">
+    <div className="maincol  min-h-screen">
       <div className="mt-10 h-[500px] md:flex ">
         <div className="basis-1/2 flex flex-col items-start justify-center pr-[150px] leading-normal space-y-7">
           <h2 className="text-4xl">
@@ -18,10 +20,11 @@ export default async function Home() {
           </p>
           <Link href={`/meals`}>
             <Button size="lg" className="text-md">
-              Get Started
+              Start trial
             </Button>
           </Link>
         </div>
+
         <div className="basis-1/2 flex items-center justify-center ">
           <Image
             alt=""
@@ -32,9 +35,9 @@ export default async function Home() {
         </div>
       </div>
       <div className="md:mt-20">
-        <h2 className="text-4xl">Discover</h2>
+        {/* <h2 className="text-4xl">Discover</h2> */}
 
-        <div className="md:col-span-2 mt-10">
+        {/* <div className="md:col-span-2 mt-10">
           <div className="lg:flex sm:grid sm:grid-cols-2 grid-cols-1 gap-5 mt-20 space-y-10 md:space-y-0">
             {items.map((item, index) => (
               <div key={index} className="relative group cursor-pointer">
@@ -58,7 +61,43 @@ export default async function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
+      </div>
+      <div>
+        <h2 className="text-4xl">Create new meal</h2>
+        <MealsPage />
+   
+      </div>
+    </div>
+  );
+}
+
+async function MealsPage() {
+  const { meals } = await getMeals();
+  console.log("meals", meals);
+  meals?.sort(
+    (a, b) =>
+      (b.createdAt ? new Date(b.createdAt).getTime() : 0) -
+      (a.createdAt ? new Date(a.createdAt).getTime() : 0)
+  );
+
+  return (
+    <div className="maincol relative min-h-screen">
+      <NewMealForm />
+      <div className="mt-20 font-semibold text-lg">Your meals</div>
+
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-10 gap-5 place-items-center w-full h-ful">
+        {meals?.map((meal) => (
+          <FoodCard
+            creatorImageUrl={meal.creator?.imageUrl}
+            creatorId={meal.creatorId}
+            key={meal.id}
+            id={meal.id}
+            name={meal.name}
+            description={meal.description}
+            createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
+          />
+        ))}
       </div>
     </div>
   );

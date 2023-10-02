@@ -3,8 +3,22 @@ import { auth } from "@clerk/nextjs";
 import { initialProfile } from "./profile";
 export async function getMeals() {
   try {
-    const meals = await db.meal.findMany();
+    const meals = await db.meal.findMany({
+      include: {
+        creator: true, // include the creator's profile data
+      },
+    });
     console.log("meals found: ", meals);
+    return { meals };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function getMealsByUser(creatorId: string) {
+  try {
+    const meals = await db.meal.findMany({ where: { creatorId } });
+    console.log("meals found for user:", creatorId, meals);
     return { meals };
   } catch (error) {
     return { error };
@@ -13,7 +27,7 @@ export async function getMeals() {
 
 export async function createMeal(name: string, description: string) {
   const profile = await initialProfile();
-  console.log("profile: ", profile?.email);
+  console.log("profile: ", profile);
   if (!profile || !profile.id) {
     throw new Error("Profile ID is missing or null");
   }
