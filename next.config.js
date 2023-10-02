@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+
   images: {
     domains: ["img.clerk.com"],
   },
