@@ -176,11 +176,7 @@ export default function FoodCard({
               </>
             )}
           </div>
-          {/* <img
-            src={user?.imageUrl}
-            alt=""
-            className="w-12 h-12 rounded-full object-cover"
-          /> */}
+        
           <div className="flex justify-center py-2">
             <div className="flex items-start w-full px-5">
               {isEditing ? (

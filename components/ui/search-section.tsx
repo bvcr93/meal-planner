@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Meal } from "@prisma/client";
+import { Meal, Profile } from "@prisma/client";
 import FoodCard from "./food-card";
 import React, {
   ChangeEvent,
@@ -12,13 +12,24 @@ import React, {
 } from "react";
 import qs from "query-string";
 
-interface SearchInputProps {
-  allMeals: any;
-}
+type TMeal = {
+  id: string;
+  name: string;
+  description: string;
+  isEdited: boolean | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  creatorId: string;
+  creator?: Profile;
+};
 
-export default function SearchSection({ allMeals }: SearchInputProps) {
+type SearchInputProps = {
+  meals: any;
+};
+
+export default function SearchSection({ meals }: SearchInputProps) {
   const searchParams = useSearchParams();
-  const [filteredMeals, setFilteredMeals] = useState<Meal[]>(allMeals);
+  const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
   const categoryId = searchParams.get("categoryId");
   const name = searchParams.get("name");
   const [value, setValue] = useState(name || "");
@@ -45,13 +56,12 @@ export default function SearchSection({ allMeals }: SearchInputProps) {
       }
     );
     router.push(url);
-
-    // Here's the filtering logic
-    const filtered = allMeals.filter((meal: Meal) =>
+    router.refresh();
+    const filtered = meals.filter((meal: Meal) =>
       meal.name.toLowerCase().includes(debouncedValue.toLowerCase())
     );
     setFilteredMeals(filtered);
-  }, [debouncedValue, router, categoryId, allMeals]);
+  }, [debouncedValue, router, categoryId, meals]);
 
   return (
     <div>
@@ -61,8 +71,8 @@ export default function SearchSection({ allMeals }: SearchInputProps) {
         className="border"
         placeholder="search"
       />
-      <div className="grid grid-cols-3 place-items-center mt-10">
-        {filteredMeals.map((meal) => (
+      <div className="grid grid-cols-3 place-items-center mt-10 gap-10">
+        {filteredMeals.map((meal: TMeal) => (
           <FoodCard
             key={meal.id}
             id={meal.id}
@@ -71,6 +81,7 @@ export default function SearchSection({ allMeals }: SearchInputProps) {
             createdAt={meal.createdAt ? meal.createdAt.toISOString() : ""}
             updatedAt={meal.updatedAt ? meal.updatedAt.toISOString() : ""}
             creatorId={meal.creatorId}
+            creatorImageUrl={meal.creator?.imageUrl}
           />
         ))}
       </div>

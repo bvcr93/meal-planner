@@ -16,6 +16,7 @@ export async function createMealAction(
   );
   await createMeal(name, description); // Passing creatorId
   revalidatePath("/meals");
+  revalidatePath("/explore");
 }
 
 export async function updateMealAction(

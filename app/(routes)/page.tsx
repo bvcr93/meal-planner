@@ -5,9 +5,6 @@ import { getMeals } from "@/lib/meals";
 import Image from "next/image";
 import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
-import { Input } from "@/components/ui/input";
-import { Suspense } from "react";
-import Spinner from "@/components/ui/spinner";
 
 export default async function Home() {
   return (
@@ -37,35 +34,7 @@ export default async function Home() {
           />
         </div>
       </div>
-      <div className="md:mt-20">
-        {/* <h2 className="text-4xl">Discover</h2> */}
-
-        {/* <div className="md:col-span-2 mt-10">
-          <div className="lg:flex sm:grid sm:grid-cols-2 grid-cols-1 gap-5 mt-20 space-y-10 md:space-y-0">
-            {items.map((item, index) => (
-              <div key={index} className="relative group cursor-pointer">
-                <div className="flex flex-col items-center justify-center relative">
-                  <Image
-                    alt={item.alt}
-                    className="rounded-full w-[300px] h-[300px] object-cover shadow-2xl"
-                    src={item.src}
-                    width={1000}
-                    quality={100}
-                    priority
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out">
-                    <div className="rounded-full bg-black opacity-0 group-hover:opacity-70 w-[300px] h-[300px] transition-opacity duration-300 ease-in-out"></div>
-                    <Button className="absolute opacity-0 hover:bg-white hover:text-black group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                      View recipes
-                    </Button>
-                  </div>
-                </div>
-                <p className="mt-10 w-2/3 mx-auto">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div> */}
-      </div>
+      <div className="md:mt-20"></div>
       <div>
         <h2 className="text-4xl">Create new meal</h2>
         <MealsPage />
