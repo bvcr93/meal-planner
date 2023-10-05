@@ -45,7 +45,7 @@ export default async function Home() {
 
 async function MealsPage() {
   const { meals } = await getMeals();
-  console.log("meals", meals);
+  // console.log("meals", meals);
   meals?.sort(
     (a, b) =>
       (b.createdAt ? new Date(b.createdAt).getTime() : 0) -

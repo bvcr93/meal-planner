@@ -1,8 +1,8 @@
 "use server";
-import { getUserMealCount } from "@/lib/meals";
+import { getFavoriteMeals, getUserMealCount } from "@/lib/meals";
 import { createMeal, updateMeal, deleteMeal } from "@/lib/meals";
 import { revalidatePath } from "next/cache";
-
+import { revalidateTag } from "next/cache";
 export async function createMealAction(
   name: string,
   description: string,
@@ -14,9 +14,8 @@ export async function createMealAction(
     "and description:",
     description
   );
-  await createMeal(name, description); // Passing creatorId
-  revalidatePath("/meals");
-  revalidatePath("/explore");
+  await createMeal(name, description); 
+  revalidateTag('meals');
 }
 
 export async function updateMealAction(
@@ -37,4 +36,9 @@ export async function getUserMealCountAction(userId: string): Promise<number> {
   const count = await getUserMealCount(userId);
   revalidatePath("/meals");
   return count;
+}
+
+export async function getFavoriteMealsAction(userId: string) {
+    const favoriteMeal = await getFavoriteMeals(userId);
+    return favoriteMeal;
 }

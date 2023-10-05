@@ -1,7 +1,7 @@
 "use client";
 import { deleteMealAction, updateMealAction } from "@/app/actions";
 import { useUser } from "@clerk/nextjs";
-import { Edit, Star, Trash2Icon } from "lucide-react";
+import { Edit, Star, Trash2Icon, TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import {
@@ -64,7 +64,7 @@ export default function FoodCard({
   const [editedName, setEditedName] = useState(name);
   const [tempName, setTempName] = useState(name);
   const [bgColor, setBgColor] = useState(() => getColorBasedOnId(id));
-
+  const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
@@ -121,7 +121,43 @@ export default function FoodCard({
     }
   };
 
-  const handleAddToFavourites = async () => {};
+  const handleAddToFavourites = async () => {
+    const mealId = id;
+    const userId = user?.id;
+    const mealName = name;
+    const mealDescription = description;
+    try {
+      const response = await fetch("/api/favorites", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          mealId,
+          userId,
+          name: mealName,
+          description: mealDescription,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsFavorite(true);
+        console.log(data.favorite);
+        toast({
+          description: "Meal successfully added to favorites!",
+        });
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      console.error("Error adding to favorites:", error);
+      toast({
+        description: "Failed to add to favorites. Please try again.",
+      });
+    }
+  };
   const handleDeleteClick = async () => {
     try {
       await deleteMealAction(id);
@@ -132,6 +168,39 @@ export default function FoodCard({
       console.error("Error deleting meal:", error);
     }
   };
+  const handleRemoveFromFavourites = async () => {
+    const mealId = id;
+    const userId = user?.id;
+  
+    try {
+      const response = await fetch(`/api/favorites/${mealId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (data.success) {
+        setIsFavorite(false);
+        toast({
+          description: "Meal successfully removed from favorites!",
+        });
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+      toast({
+        description: "Failed to remove from favorites. Please try again.",
+      });
+    }
+  };
+  
   return (
     <>
       {isClient && (
@@ -176,7 +245,7 @@ export default function FoodCard({
               </>
             )}
           </div>
-        
+
           <div className="flex justify-center py-2">
             <div className="flex items-start w-full px-5">
               {isEditing ? (
@@ -198,11 +267,22 @@ export default function FoodCard({
                       )}
 
                       <Star
-                        className="font-light text-sm cursor-pointer"
+                        className={`font-light text-sm cursor-pointer ${
+                          isFavorite ? "text-yellow-300" : ""
+                        }`}
                         onClick={handleAddToFavourites}
                       >
                         Add to favourites
                       </Star>
+                      <TrashIcon
+                        className={`font-light text-sm cursor-pointer ${
+                          !isFavorite ? "hidden" : ""
+                        }`}
+                        onClick={handleRemoveFromFavourites}
+                      >
+                        Remove from favourites
+                      </TrashIcon>
+
                       {user?.id === userId && (
                         <AlertDialog>
                           <AlertDialogTrigger>

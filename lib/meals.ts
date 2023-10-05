@@ -8,7 +8,7 @@ export async function getMeals() {
         creator: true,
       },
     });
-    console.log("meals found: ", meals);
+    // console.log("meals found: ", meals);
     return { meals };
   } catch (error) {
     return { error };
@@ -18,7 +18,7 @@ export async function getMeals() {
 export async function getMealsByUser(creatorId: string) {
   try {
     const meals = await db.meal.findMany({ where: { creatorId } });
-    console.log("meals found for user:", creatorId, meals);
+    // console.log("meals found for user:", creatorId, meals);
     return { meals };
   } catch (error) {
     return { error };
@@ -27,7 +27,7 @@ export async function getMealsByUser(creatorId: string) {
 
 export async function createMeal(name: string, description: string) {
   const profile = await initialProfile();
-  console.log("profile: ", profile);
+  // console.log("profile: ", profile);
   if (!profile || !profile.id) {
     throw new Error("Profile ID is missing or null");
   }
@@ -78,13 +78,13 @@ export async function updateMeal(
         isEdited,
       },
     });
-    console.log(
-      "Received data for updateMeal:",
-      id,
-      name,
-      description,
-      isEdited
-    );
+    // console.log(
+    //   "Received data for updateMeal:",
+    //   id,
+    //   name,
+    //   description,
+    //   isEdited
+    // );
 
     return { meal };
   } catch (error) {
@@ -127,10 +127,31 @@ export async function getUserMealCount(userId: string): Promise<number> {
         creatorId: userId,
       },
     });
-    console.log("Retrieved count:", count);
+    // console.log("Retrieved count:", count);
     return count;
   } catch (error) {
     console.error("Error fetching meal count:", error);
     throw error;
+  }
+}
+
+export async function getFavoriteMeals(userId: string) {
+  try {
+    const meals = await db.meal.findMany({
+      where: {
+        favoritedBy: {
+          some: {
+            profileId: userId,
+          },
+        },
+      },
+      include: {
+        creator: true,
+      },
+    });
+    console.log("meals found: ", meals);
+    return { meals };
+  } catch (error) {
+    return { error };
   }
 }

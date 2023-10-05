@@ -10,8 +10,8 @@ import { useToast } from "./use-toast";
 export default function NewMealForm() {
   const { toast } = useToast();
   const { user } = useUser();
-  console.log("user", user?.id);
-  console.log(user);
+  // console.log("user", user?.id);
+  // console.log(user);
   const formRef = useRef<HTMLFormElement>(null);
 
   async function createMeal(data: FormData) {
@@ -21,12 +21,12 @@ export default function NewMealForm() {
 
       if (!name || typeof name !== "string") return;
       if (!description || typeof description !== "string") return;
-      console.log(
-        "Received data for meal creation - Name: ",
-        name,
-        "Description: ",
-        description
-      );
+      // console.log(
+      //   "Received data for meal creation - Name: ",
+      //   name,
+      //   "Description: ",
+      //   description
+      // );
       if (user && user.id) {
         await createMealAction(name, description, user.id);
         toast({
@@ -62,7 +62,7 @@ export default function NewMealForm() {
 function SubmitButton() {
   const data = UseFormStatus();
   const isLoading = data.pending;
-  console.log(data);
+  // console.log(data);
   return (
     <Button type="submit" disabled={isLoading}>
       {isLoading ? "Creating..." : "Add meal"}

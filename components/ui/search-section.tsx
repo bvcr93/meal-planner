@@ -28,6 +28,7 @@ type SearchInputProps = {
 };
 
 export default function SearchSection({ meals }: SearchInputProps) {
+  // console.log(meals);
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
   const categoryId = searchParams.get("categoryId");
@@ -55,14 +56,29 @@ export default function SearchSection({ meals }: SearchInputProps) {
         skipNull: true,
       }
     );
-    router.push(url);
-    router.refresh();
+    
+    if (window.location.href !== url) {
+      router.push(url);
+    }
+  
     const filtered = meals.filter((meal: Meal) =>
       meal.name.toLowerCase().includes(debouncedValue.toLowerCase())
     );
     setFilteredMeals(filtered);
-  }, [debouncedValue, router, categoryId, meals]);
+  }, [debouncedValue, categoryId, meals]);
+  
+const makeApiCall = async () => {
+  await fetch('/api/favorites', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({name: 'John'}),
+  })
+      
+  
 
+}
   return (
     <div>
       <Input
@@ -85,6 +101,7 @@ export default function SearchSection({ meals }: SearchInputProps) {
           />
         ))}
       </div>
+      <button onClick={makeApiCall}>MAKE API CAL</button>
     </div>
   );
 }
