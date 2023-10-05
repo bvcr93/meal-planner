@@ -13,7 +13,6 @@ export async function DELETE(
       throw new Error("Required fields are missing or null");
     }
 
-    // Check if the favorite exists
     const existingFavorite = await db.favoriteMeals.findFirst({
       where: {
         profileId: userId,
@@ -25,7 +24,6 @@ export async function DELETE(
       throw new Error("This meal is not in favorites");
     }
 
-    // Delete the favorite meal record
     await db.favoriteMeals.delete({
       where: {
         profileId_mealId: {

@@ -29,6 +29,7 @@ interface FoodCardProps {
   updatedAt?: string;
   creatorId: string;
   creatorImageUrl?: string;
+  favoriteMeals?: any[];
   userId?: string;
 }
 export function getColorBasedOnId(id: string) {
@@ -56,6 +57,7 @@ export default function FoodCard({
   updatedAt,
   creatorId,
   creatorImageUrl,
+  favoriteMeals = [],
   userId,
 }: FoodCardProps) {
   const { toast } = useToast();
@@ -64,11 +66,19 @@ export default function FoodCard({
   const [editedName, setEditedName] = useState(name);
   const [tempName, setTempName] = useState(name);
   const [bgColor, setBgColor] = useState(() => getColorBasedOnId(id));
-  const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
 
   const { user } = useUser();
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      handleRemoveFromFavourites();
+    } else {
+      handleAddToFavourites();
+    }
+  };
 
   useEffect(() => {
     setIsClient(true);
@@ -171,7 +181,7 @@ export default function FoodCard({
   const handleRemoveFromFavourites = async () => {
     const mealId = id;
     const userId = user?.id;
-  
+
     try {
       const response = await fetch(`/api/favorites/${mealId}`, {
         method: "DELETE",
@@ -179,12 +189,12 @@ export default function FoodCard({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId
+          userId,
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (data.success) {
         setIsFavorite(false);
         toast({
@@ -200,7 +210,7 @@ export default function FoodCard({
       });
     }
   };
-  
+
   return (
     <>
       {isClient && (
@@ -270,10 +280,13 @@ export default function FoodCard({
                         className={`font-light text-sm cursor-pointer ${
                           isFavorite ? "text-yellow-300" : ""
                         }`}
-                        onClick={handleAddToFavourites}
+                        onClick={toggleFavorite}
                       >
-                        Add to favourites
+                        {isFavorite
+                          ? "Remove from favourites"
+                          : "Add to favourites"}
                       </Star>
+
                       <TrashIcon
                         className={`font-light text-sm cursor-pointer ${
                           !isFavorite ? "hidden" : ""

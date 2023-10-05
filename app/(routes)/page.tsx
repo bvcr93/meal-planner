@@ -5,6 +5,7 @@ import { getMeals } from "@/lib/meals";
 import Image from "next/image";
 import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
+import { db } from "@/lib/db";
 
 export default async function Home() {
   return (
@@ -45,7 +46,8 @@ export default async function Home() {
 
 async function MealsPage() {
   const { meals } = await getMeals();
-  // console.log("meals", meals);
+  const favoriteMeals = await db.favoriteMeals.findMany();
+  const favoriteMealIds = favoriteMeals.map((meal) => meal.mealId);
   meals?.sort(
     (a, b) =>
       (b.createdAt ? new Date(b.createdAt).getTime() : 0) -
@@ -63,6 +65,7 @@ async function MealsPage() {
             creatorId={meal.creatorId}
             key={meal.id}
             id={meal.id}
+            favoriteMeals={favoriteMealIds}
             name={meal.name}
             description={meal.description}
             createdAt={meal.createdAt ? meal.createdAt.toString() : ""}

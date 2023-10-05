@@ -23,7 +23,7 @@ export default async function Navbar() {
         </div>
         <div className="md:hidden flex">menu</div>
         <div className="md:flex gap-10 hidden">
-          <Link href={`/meals`}>My meals</Link>
+          <Link href={`/meals`}>Favorites</Link>
           <Link href={`/explore`}>Explore</Link>
 
           <Link
