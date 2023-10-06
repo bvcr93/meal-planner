@@ -15,7 +15,7 @@ export async function createMealAction(
     description
   );
   await createMeal(name, description); 
-  revalidateTag('meals');
+  revalidatePath('/recipes');
 }
 
 export async function updateMealAction(

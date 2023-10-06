@@ -1,9 +1,10 @@
 "use client";
 import { deleteMealAction, updateMealAction } from "@/app/actions";
+import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
-import { Edit, Star, Trash2Icon, TrashIcon } from "lucide-react";
+import { Edit, Star, Trash2Icon } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,8 +20,6 @@ import { Button } from "./button";
 import { Input } from "./input";
 import Spinner from "./spinner";
 import { Textarea } from "./textarea";
-import Image from "next/image";
-import { useToast } from "@/components/ui/use-toast";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -64,7 +63,7 @@ export default function FoodCard({
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
-  const [tempName, setTempName] = useState(name);
+  const [termporaryName, setTemporaryName] = useState(name);
   const [bgColor, setBgColor] = useState(() => getColorBasedOnId(id));
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -102,7 +101,7 @@ export default function FoodCard({
 
   const handleEditClick = () => {
     setIsEditing(true);
-    setTempName(editedName);
+    setTemporaryName(editedName);
   };
 
   const handleCancelClick = () => {
@@ -120,7 +119,7 @@ export default function FoodCard({
       setLoading(true);
       await updateMealAction(id, editedName, editedDescription, isEditing);
       setIsEditing(false);
-      setEditedName(tempName);
+      setEditedName(termporaryName);
       toast({
         description: "Meal sucessfully updated!",
       });
@@ -265,7 +264,7 @@ export default function FoodCard({
                 </div>
               ) : (
                 <div className="flex gap-5 justify-between w-full items-center">
-                  <div className="flex flex-col">
+                  <div className="flex flex-col w-full">
                     <div className="flex gap-5">
                       {user?.id === userId && (
                         <Edit
@@ -286,15 +285,6 @@ export default function FoodCard({
                           ? "Remove from favourites"
                           : "Add to favourites"}
                       </Star>
-
-                      <TrashIcon
-                        className={`font-light text-sm cursor-pointer ${
-                          !isFavorite ? "hidden" : ""
-                        }`}
-                        onClick={handleRemoveFromFavourites}
-                      >
-                        Remove from favourites
-                      </TrashIcon>
 
                       {user?.id === userId && (
                         <AlertDialog>
@@ -326,23 +316,22 @@ export default function FoodCard({
                       )}
                     </div>
                     <div className="font-light mt-5">
-                      {/* {new Date(createdAt).toLocaleDateString()} */}
-                      {creatorImageUrl && (
-                        <Image
-                          alt=""
-                          src={creatorImageUrl}
-                          width={100}
-                          height={100}
-                          className="rounded-full h-10 w-10"
-                        />
-                      )}
+                      <div className="w-full flex justify-between items-center">
+                        {creatorImageUrl && (
+                          <Image
+                            alt=""
+                            src={creatorImageUrl}
+                            width={100}
+                            height={100}
+                            className="rounded-full h-10 w-10"
+                          />
+                        )}
+                        <p className="text-sm">
+                          {" "}
+                          {new Date(createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="relative">
-                    <Button className="rounded-full h-10 w-10">
-                      <p className="text-xl">+</p>
-                    </Button>
                   </div>
                 </div>
               )}

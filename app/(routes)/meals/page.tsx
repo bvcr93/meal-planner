@@ -1,4 +1,5 @@
 "use client";
+import { db } from "@/lib/db";
 import React, { useEffect, useState } from "react";
 type Meal = {
   id: number;
@@ -27,9 +28,9 @@ export default function FavoriteMeals() {
 
     fetchFavoriteMeals();
   }, []);
-
+  if (!meals) return <div>You have no favorite meals yet.</div>;
   return (
-    <div>
+    <div className="maincol">
       <h1>Favorite Meals</h1>
       <ul>
         {meals.map((meal) => (

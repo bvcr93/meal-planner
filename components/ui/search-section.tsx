@@ -1,16 +1,15 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useRouter, useSearchParams } from "next/navigation";
 import { Meal, Profile } from "@prisma/client";
-import FoodCard from "./food-card";
-import React, {
-  ChangeEvent,
+import { useRouter, useSearchParams } from "next/navigation";
+import qs from "query-string";
+import {
   ChangeEventHandler,
   useEffect,
-  useState,
+  useState
 } from "react";
-import qs from "query-string";
+import FoodCard from "./food-card";
 
 type TMeal = {
   id: string;
@@ -56,29 +55,17 @@ export default function SearchSection({ meals }: SearchInputProps) {
         skipNull: true,
       }
     );
-    
+
     if (window.location.href !== url) {
       router.push(url);
     }
-  
+
     const filtered = meals.filter((meal: Meal) =>
       meal.name.toLowerCase().includes(debouncedValue.toLowerCase())
     );
     setFilteredMeals(filtered);
   }, [debouncedValue, categoryId, meals]);
-  
-const makeApiCall = async () => {
-  await fetch('/api/favorites', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({name: 'John'}),
-  })
-      
-  
 
-}
   return (
     <div>
       <Input
@@ -87,7 +74,7 @@ const makeApiCall = async () => {
         className="border"
         placeholder="search"
       />
-      <div className="grid grid-cols-3 place-items-center mt-10 gap-10">
+      <div className="grid md:grid-cols-4 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
           <FoodCard
             key={meal.id}
@@ -101,7 +88,6 @@ const makeApiCall = async () => {
           />
         ))}
       </div>
-      <button onClick={makeApiCall}>MAKE API CAL</button>
     </div>
   );
 }

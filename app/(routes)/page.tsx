@@ -10,7 +10,7 @@ import { db } from "@/lib/db";
 export default async function Home() {
   return (
     <div className="maincol  min-h-screen">
-      <div className="mt-10 h-[500px] md:flex ">
+      <div className="mt-20 h-[500px] md:flex ">
         <div className="basis-1/2 flex flex-col items-start justify-center pr-[150px] leading-normal space-y-7">
           <h2 className="text-4xl">
             The easiest way to make your favourite meal
@@ -36,42 +36,42 @@ export default async function Home() {
         </div>
       </div>
       <div className="md:mt-20"></div>
-      <div>
+      {/* <div>
         <h2 className="text-4xl">Create new meal</h2>
         <MealsPage />
-      </div>
+      </div> */}
     </div>
   );
 }
 
-async function MealsPage() {
-  const { meals } = await getMeals();
-  const favoriteMeals = await db.favoriteMeals.findMany();
-  const favoriteMealIds = favoriteMeals.map((meal) => meal.mealId);
-  meals?.sort(
-    (a, b) =>
-      (b.createdAt ? new Date(b.createdAt).getTime() : 0) -
-      (a.createdAt ? new Date(a.createdAt).getTime() : 0)
-  );
+// export async function MealsPage() {
+//   const { meals } = await getMeals();
+//   const favoriteMeals = await db.favoriteMeals.findMany();
+//   const favoriteMealIds = favoriteMeals.map((meal) => meal.mealId);
+//   meals?.sort(
+//     (a, b) =>
+//       (b.createdAt ? new Date(b.createdAt).getTime() : 0) -
+//       (a.createdAt ? new Date(a.createdAt).getTime() : 0)
+//   );
 
-  return (
-    <div className="relative min-h-screen">
-      <NewMealForm />
-      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-10 gap-5 place-items-center w-full h-ful">
-        {meals?.map((meal) => (
-          <FoodCard
-            userId={meal.creator?.userId}
-            creatorImageUrl={meal.creator?.imageUrl}
-            creatorId={meal.creatorId}
-            key={meal.id}
-            id={meal.id}
-            favoriteMeals={favoriteMealIds}
-            name={meal.name}
-            description={meal.description}
-            createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
-          />
-        ))}
-      </div>{" "}
-    </div>
-  );
-}
+//   return (
+//     <div className="relative min-h-screen">
+//       <NewMealForm />
+//       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-10 gap-5 place-items-center w-full h-ful">
+//         {meals?.map((meal) => (
+//           <FoodCard
+//             userId={meal.creator?.userId}
+//             creatorImageUrl={meal.creator?.imageUrl}
+//             creatorId={meal.creatorId}
+//             key={meal.id}
+//             id={meal.id}
+//             favoriteMeals={favoriteMealIds}
+//             name={meal.name}
+//             description={meal.description}
+//             createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
+//           />
+//         ))}
+//       </div>{" "}
+//     </div>
+//   );
+// }
