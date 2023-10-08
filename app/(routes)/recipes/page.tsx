@@ -17,9 +17,9 @@ export default async function RecipesPage() {
       <Link href={`/recipes/new`}>
         <Button className="mt-20">Create new recipe</Button>
       </Link>
-      <div className="grid grid-cols-4 gap-5 place-items-center mt-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-5 place-items-center mt-10">
         {meals?.map((meal) => (
-          <div>
+          <div className="cursor-pointer">
             <FoodCard
               userId={meal.creator?.userId}
               creatorImageUrl={meal.creator?.imageUrl}

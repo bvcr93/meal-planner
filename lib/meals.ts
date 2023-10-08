@@ -78,16 +78,17 @@ export async function updateMeal(
         isEdited,
       },
     });
-    // console.log(
-    //   "Received data for updateMeal:",
-    //   id,
-    //   name,
-    //   description,
-    //   isEdited
-    // );
+    console.log(
+      "Received data for updateMeal:",
+      id,
+      name,
+      description,
+      isEdited
+    );
 
     return { meal };
   } catch (error) {
+    console.error("Error updating meal:", error);
     return { error };
   }
 }

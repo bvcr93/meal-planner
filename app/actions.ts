@@ -26,6 +26,7 @@ export async function updateMealAction(
 ) {
   await updateMeal(id, name, description, isEdited);
   revalidatePath("/meals");
+  revalidatePath("/recipes");
 }
 export async function deleteMealAction(id: string) {
   await deleteMeal(id);

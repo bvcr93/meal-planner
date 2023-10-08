@@ -20,6 +20,7 @@ import { Button } from "./button";
 import { Input } from "./input";
 import Spinner from "./spinner";
 import { Textarea } from "./textarea";
+import Link from "next/link";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -71,7 +72,8 @@ export default function FoodCard({
 
   const { user } = useUser();
 
-  const toggleFavorite = () => {
+  const toggleFavorite = (e: any) => {
+    e.stopPropagation();
     if (isFavorite) {
       handleRemoveFromFavourites();
     } else {
@@ -250,7 +252,9 @@ export default function FoodCard({
               </form>
             ) : (
               <>
-                <div>{editedDescription}</div>
+                <div
+                  dangerouslySetInnerHTML={{ __html: editedDescription }}
+                ></div>
               </>
             )}
           </div>
@@ -279,7 +283,7 @@ export default function FoodCard({
                         className={`font-light text-sm cursor-pointer ${
                           isFavorite ? "text-yellow-300" : ""
                         }`}
-                        onClick={toggleFavorite}
+                        onClick={(e) => toggleFavorite(e)}
                       >
                         {isFavorite
                           ? "Remove from favourites"
@@ -330,6 +334,15 @@ export default function FoodCard({
                           {" "}
                           {new Date(createdAt).toLocaleDateString()}
                         </p>
+                        <Link href={`/recipes/${name}`}>
+                          <Button
+                            variant="link"
+                            size="sm"
+                            className="font-thin text-sm"
+                          >
+                            Details
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </div>

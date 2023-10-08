@@ -1,4 +1,5 @@
 "use client";
+import FoodCard from "@/components/ui/food-card";
 import { db } from "@/lib/db";
 import React, { useEffect, useState } from "react";
 type Meal = {
@@ -32,13 +33,11 @@ export default function FavoriteMeals() {
   return (
     <div className="maincol">
       <h1>Favorite Meals</h1>
-      <ul>
+      <div className="w-full">
         {meals.map((meal) => (
-          <li key={meal.id}>
-            {meal.name} {meal.description}
-          </li>
+          <div className="w-full border">{meal.name}</div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
