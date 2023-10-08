@@ -31,6 +31,7 @@ interface FoodCardProps {
   creatorImageUrl?: string;
   favoriteMeals?: any[];
   userId?: string;
+  hasFavoriteSign?: boolean;
 }
 export function getColorBasedOnId(id: string) {
   const colors = [
@@ -57,6 +58,7 @@ export default function FoodCard({
   updatedAt,
   creatorId,
   creatorImageUrl,
+  hasFavoriteSign,
   favoriteMeals = [],
   userId,
 }: FoodCardProps) {
@@ -100,37 +102,6 @@ export default function FoodCard({
     setEditedDescription(description);
     setEditedName(name);
   }, [description, name]);
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-    setTemporaryName(editedName);
-  };
-
-  const handleCancelClick = () => {
-    setIsEditing(false);
-    setEditedName(name);
-    setEditedDescription(description);
-  };
-
-  const handleSaveClick = async () => {
-    const formData = new FormData();
-    formData.append("name", editedName);
-    formData.append("description", editedDescription);
-
-    try {
-      setLoading(true);
-      await updateMealAction(id, editedName, editedDescription, isEditing);
-      setIsEditing(false);
-      setEditedName(termporaryName);
-      toast({
-        description: "Meal sucessfully updated!",
-      });
-    } catch (error) {
-      console.error("Error updating meal:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleAddToFavourites = async () => {
     const mealId = id;
@@ -224,61 +195,23 @@ export default function FoodCard({
             </div>
           )}
           <div className="w-full mt-10 text-center py-2 font-semibold">
-            {isEditing ? (
-              <div
-                className="flex items-center justify-center
-          "
-              >
-                <Input
-                  type="text"
-                  value={editedName}
-                  onChange={(e) => setEditedName(e.target.value)}
-                  className="text-center outline-none w-1/2 mx-auto"
-                />
-              </div>
-            ) : (
-              <div>{name}</div>
-            )}
+            <div>{name}</div>
           </div>
 
           <div className="min-h-[200px] p-5 font-light text-sm">
-            {isEditing ? (
-              <form action={updateMeal}>
-                <Textarea
-                  value={editedDescription}
-                  onChange={(e) => setEditedDescription(e.target.value)}
-                  className="w-full h-32 border rounded"
-                />
-              </form>
-            ) : (
-              <>
-                <div
-                  dangerouslySetInnerHTML={{ __html: editedDescription }}
-                ></div>
-              </>
-            )}
+            <>
+              <div
+                dangerouslySetInnerHTML={{ __html: editedDescription }}
+              ></div>
+            </>
           </div>
 
           <div className="flex justify-center py-2">
             <div className="flex items-start w-full px-5">
-              {isEditing ? (
-                <div className="flex gap-2">
-                  <Button onClick={handleSaveClick}>Save</Button>
-                  <Button onClick={handleCancelClick}>Cancel</Button>
-                </div>
-              ) : (
-                <div className="flex gap-5 justify-between w-full items-center">
-                  <div className="flex flex-col w-full">
-                    <div className="flex gap-5">
-                      {user?.id === userId && (
-                        <Edit
-                          className="font-light text-sm cursor-pointer"
-                          onClick={handleEditClick}
-                        >
-                          Edit
-                        </Edit>
-                      )}
-
+              <div className="flex gap-5 justify-between w-full items-center">
+                <div className="flex flex-col w-full">
+                  <div className="flex gap-5">
+                    {hasFavoriteSign && (
                       <Star
                         className={`font-light text-sm cursor-pointer ${
                           isFavorite ? "text-yellow-300" : ""
@@ -289,51 +222,53 @@ export default function FoodCard({
                           ? "Remove from favourites"
                           : "Add to favourites"}
                       </Star>
+                    )}
 
-                      {user?.id === userId && (
-                        <AlertDialog>
-                          <AlertDialogTrigger>
-                            <Trash2Icon className="font-light text-red-500 text-sm">
+                    {user?.id === userId && (
+                      <AlertDialog>
+                        <AlertDialogTrigger>
+                          <Trash2Icon className="font-light text-red-500 text-sm">
+                            Delete
+                          </Trash2Icon>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent className="">
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This will permanently delete this meal.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              className="bg-red-500"
+                              onClick={handleDeleteClick}
+                            >
                               Delete
-                            </Trash2Icon>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent className="">
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Are you absolutely sure?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This will permanently delete this meal.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-red-500"
-                                onClick={handleDeleteClick}
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
+                  </div>
+                  <div className="font-light mt-5">
+                    <div className="w-full flex justify-between items-center">
+                      {creatorImageUrl && (
+                        <Image
+                          alt=""
+                          src={creatorImageUrl}
+                          width={100}
+                          height={100}
+                          className="rounded-full h-10 w-10"
+                        />
                       )}
-                    </div>
-                    <div className="font-light mt-5">
-                      <div className="w-full flex justify-between items-center">
-                        {creatorImageUrl && (
-                          <Image
-                            alt=""
-                            src={creatorImageUrl}
-                            width={100}
-                            height={100}
-                            className="rounded-full h-10 w-10"
-                          />
-                        )}
-                        <p className="text-sm">
-                          {" "}
-                          {new Date(createdAt).toLocaleDateString()}
-                        </p>
+                      <p className="text-sm">
+                        {" "}
+                        {new Date(createdAt).toLocaleDateString()}
+                      </p>
+                      {user?.id &&(
                         <Link href={`/recipes/${name}`}>
                           <Button
                             variant="link"
@@ -343,11 +278,11 @@ export default function FoodCard({
                             Details
                           </Button>
                         </Link>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>

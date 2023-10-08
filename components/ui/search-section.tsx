@@ -4,11 +4,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { Meal, Profile } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
-import {
-  ChangeEventHandler,
-  useEffect,
-  useState
-} from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
 
 type TMeal = {
@@ -74,9 +70,10 @@ export default function SearchSection({ meals }: SearchInputProps) {
         className="border"
         placeholder="search"
       />
-      <div className="grid md:grid-cols-4 grid-cols-1 place-items-center mt-10 gap-10">
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
           <FoodCard
+          hasFavoriteSign={false}
             key={meal.id}
             id={meal.id}
             name={meal.name}

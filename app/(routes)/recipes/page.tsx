@@ -12,6 +12,7 @@ export default async function RecipesPage() {
       (b.createdAt ? new Date(b.createdAt).getTime() : 0) -
       (a.createdAt ? new Date(a.createdAt).getTime() : 0)
   );
+
   return (
     <div className="maincol ">
       <Link href={`/recipes/new`}>
@@ -21,6 +22,7 @@ export default async function RecipesPage() {
         {meals?.map((meal) => (
           <div className="cursor-pointer">
             <FoodCard
+              hasFavoriteSign={true}
               userId={meal.creator?.userId}
               creatorImageUrl={meal.creator?.imageUrl}
               creatorId={meal.creatorId}

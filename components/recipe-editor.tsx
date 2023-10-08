@@ -9,6 +9,9 @@ import { revalidatePath } from "next/cache";
 import { useRef, useState } from "react";
 import FroalaEditor from "react-froala-wysiwyg";
 import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
+import { useRouter } from "next/navigation";
+
 interface RecipeEditorProps {
   meal: Meal | null;
   name: string | undefined;
@@ -19,11 +22,12 @@ export default function RecipeEditor({
   name,
   description,
 }: RecipeEditorProps) {
-  const [inZenMode, setInZenMode] = useState(false);
+  const { toast } = useToast();
   const [editorContent, setEditorContent] = useState("");
   const [model, setModel] = useState<string>(() => {
     return meal?.description || localStorage.getItem("meal") || "";
   });
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
@@ -37,8 +41,11 @@ export default function RecipeEditor({
     if (!name || !description || !meal?.id) {
       return;
     }
-    if (meal?.id && editedName && editedDescription) {
+    if (editedName && editedDescription) {
       await updateMealAction(meal.id, editedName, editedDescription, isEditing);
+      toast({
+        description: editedDescription,
+      });
     } else {
       console.error("Required data is missing or undefined.");
     }
@@ -69,12 +76,14 @@ export default function RecipeEditor({
     } catch (error) {
       console.error("Error updating meal:", error);
     } finally {
+      router.refresh();
     }
   };
 
   return (
-    <form action={action}>
+    <form action={action} className="mt-20">
       <input
+        className="w-full border rounded-full shadow-xl p-3 outline-none"
         type="text"
         value={editedName || ""}
         onChange={(e) => setEditedName(e.target.value)}
@@ -86,31 +95,32 @@ export default function RecipeEditor({
         value={editorContent}
         readOnly
       ></textarea>
-      <FroalaEditor
-        model={model}
-        onModelChange={(content: string) => {
-          setModel(content);
-          setEditorContent(content);
-          console.log("Froala Content:", content);
-        }}
-        config={{
-          placeholderText: "Edit Your Content Here!",
-          charCounterCount: true,
-          charCounterMax: 1000,
-          saveInterval: 2000,
+      <div className="mt-10">
+        <FroalaEditor
+          model={model}
+          onModelChange={(content: string) => {
+            setModel(content);
+            setEditorContent(content);
+          }}
+          config={{
+            placeholderText: "Edit Your Content Here!",
+            charCounterCount: true,
+            charCounterMax: 1000,
+            saveInterval: 2000,
 
-          events: {
-            "charCounter.exceeded": function () {
-              alert("maximum limit reached, buy premium version");
+            events: {
+              "charCounter.exceeded": function () {
+                alert("maximum limit reached, buy premium version");
+              },
+              "save.before": function (html: string) {
+                localStorage.setItem("meal", html);
+              },
             },
-            "save.before": function (html: string) {
-              localStorage.setItem("meal", html);
-            },
-          },
-        }}
-        tag="textarea"
-      />
-      <Button onClick={handleSaveClick} type="submit">
+          }}
+          tag="textarea"
+        />
+      </div>
+      <Button className="mt-5" onClick={handleSaveClick} type="submit">
         Save
       </Button>
     </form>

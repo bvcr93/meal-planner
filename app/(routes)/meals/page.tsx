@@ -1,6 +1,6 @@
 "use client";
-import FoodCard from "@/components/ui/food-card";
-import { db } from "@/lib/db";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 type Meal = {
   id: number;
@@ -32,10 +32,18 @@ export default function FavoriteMeals() {
   if (!meals) return <div>You have no favorite meals yet.</div>;
   return (
     <div className="maincol">
-      <h1>Favorite Meals</h1>
-      <div className="w-full">
+      <div className="w-full grid grid-cols-5">
         {meals.map((meal) => (
-          <div className="w-full border">{meal.name}</div>
+          <Link href={`/recipes/${meal.id}`}>
+            <div className="w-48 h-64 rounded-xl shadow-xl border flex flex-col items-center justify-center mt-20">
+              <div>{meal.name}</div>
+              <div dangerouslySetInnerHTML={{ __html: meal.description }}></div>
+
+              <Button size={"sm"} className="mt-5">
+                Remove
+              </Button>
+            </div>
+          </Link>
         ))}
       </div>
     </div>

@@ -19,11 +19,14 @@ export default async function RecipeDetailsPage({
   });
   console.log("ID:", params.id);
   console.log("Meal:", meal);
- 
 
   return (
     <div className="grid grid-cols-1 w-1/2 mx-auto">
-      <RecipeEditor name= {meal?.name} description={meal?.description} meal={meal} />
+      <RecipeEditor
+        name={meal?.name}
+        description={meal?.description}
+        meal={meal}
+      />
     </div>
   );
 }
