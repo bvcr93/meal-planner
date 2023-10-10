@@ -1,23 +1,24 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import { Button } from "./button";
+
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
+import { Button } from "./button";
 import { useToast } from "./use-toast";
-import { useRouter } from "next/navigation";
+
 interface FavoriteCardProps {
   id: string;
   name: string;
   description: string;
+  onRemove: (id: string) => void;
 }
 
 export default function FavoriteCard({
   id,
   name,
   description,
+  onRemove,
 }: FavoriteCardProps) {
-  const router = useRouter();
+
   const { toast } = useToast();
   const { user } = useUser();
   const [isFavorite, setIsFavorite] = useState(false);
@@ -39,6 +40,7 @@ export default function FavoriteCard({
       const data = await response.json();
 
       if (data.success) {
+        onRemove(id);
         setIsFavorite(false);
         toast({
           description: "Meal successfully removed from favorites!",

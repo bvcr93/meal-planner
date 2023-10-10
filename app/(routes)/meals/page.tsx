@@ -3,11 +3,11 @@ import FavoriteCard from "@/components/ui/favorite-card";
 import Spinner from "@/components/ui/spinner";
 import { useEffect, useState } from "react";
 
-interface Meal{
+interface Meal {
   id: string;
   name: string;
   description: string;
-};
+}
 
 export default function FavoriteMeals() {
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -46,6 +46,11 @@ export default function FavoriteMeals() {
         <span>You have no favorite meals yet.</span>
       </div>
     );
+
+  function removeMealFromList(id: string) {
+    setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== id));
+  } // function here because of re-render of the child component otherwise the card stays
+  // even after the button delete was clicked
   return (
     <div className="maincol">
       <div className="w-full grid grid-cols-5">
@@ -54,6 +59,7 @@ export default function FavoriteMeals() {
             id={meal.id}
             name={meal.name}
             description={meal.description}
+            onRemove={removeMealFromList}
           />
         ))}
       </div>
