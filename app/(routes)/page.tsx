@@ -40,6 +40,8 @@ export default async function Home() {
         <h2 className="text-4xl">Create new meal</h2>
         <MealsPage />
       </div> */}
+
+      {/* throw some styles here */}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { db } from "./db";
 import { auth } from "@clerk/nextjs";
 import { initialProfile } from "./profile";
+import { redirect } from "next/navigation";
 export async function getMeals() {
   try {
     const meals = await db.meal.findMany({
@@ -40,6 +41,7 @@ export async function createMeal(name: string, description: string) {
         creatorId: profile.id,
       },
     });
+
     return { meal };
   } catch (error) {
     return error;

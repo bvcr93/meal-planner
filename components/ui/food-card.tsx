@@ -2,8 +2,9 @@
 import { deleteMealAction, updateMealAction } from "@/app/actions";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
-import { Edit, Star, Trash2Icon } from "lucide-react";
+import { Star, Trash2Icon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   AlertDialog,
@@ -17,10 +18,7 @@ import {
   AlertDialogTrigger,
 } from "./alert-dialog";
 import { Button } from "./button";
-import { Input } from "./input";
 import Spinner from "./spinner";
-import { Textarea } from "./textarea";
-import Link from "next/link";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -66,7 +64,6 @@ export default function FoodCard({
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
-  const [termporaryName, setTemporaryName] = useState(name);
   const [bgColor, setBgColor] = useState(() => getColorBasedOnId(id));
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -86,17 +83,6 @@ export default function FoodCard({
   useEffect(() => {
     setIsClient(true);
   }, []);
-  async function updateMeal(data: FormData) {
-    const name = data.get("name");
-    const description = data.get("description");
-    if (!name || typeof name !== "string") return;
-    if (!description || typeof description !== "string") return;
-
-    await updateMealAction(id, name, editedDescription, isEditing);
-    toast({
-      description: editedDescription,
-    });
-  }
 
   useEffect(() => {
     setEditedDescription(description);
@@ -182,7 +168,7 @@ export default function FoodCard({
       });
     }
   };
-
+  // Favorite star is not yellow when navgating back to the recipes route when favorite is active
   return (
     <>
       {isClient && (
@@ -268,7 +254,7 @@ export default function FoodCard({
                         {" "}
                         {new Date(createdAt).toLocaleDateString()}
                       </p>
-                      {user?.id &&(
+                      {user?.id && (
                         <Link href={`/recipes/${name}`}>
                           <Button
                             variant="link"

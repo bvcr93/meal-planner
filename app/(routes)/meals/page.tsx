@@ -1,15 +1,17 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-type Meal = {
-  id: number;
+import FavoriteCard from "@/components/ui/favorite-card";
+import Spinner from "@/components/ui/spinner";
+import { useEffect, useState } from "react";
+
+interface Meal{
+  id: string;
   name: string;
   description: string;
 };
 
 export default function FavoriteMeals() {
   const [meals, setMeals] = useState<Meal[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchFavoriteMeals() {
@@ -24,26 +26,35 @@ export default function FavoriteMeals() {
         }
       } catch (error) {
         console.error("An error occurred:", error);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     fetchFavoriteMeals();
   }, []);
-  if (!meals) return <div>You have no favorite meals yet.</div>;
+
+  if (isLoading)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  if (meals.length === 0)
+    return (
+      <div className="text-center maincol mt-20 text-xl font-semibold">
+        <span>You have no favorite meals yet.</span>
+      </div>
+    );
   return (
     <div className="maincol">
       <div className="w-full grid grid-cols-5">
         {meals.map((meal) => (
-          <Link href={`/recipes/${meal.id}`}>
-            <div className="w-48 h-64 rounded-xl shadow-xl border flex flex-col items-center justify-center mt-20">
-              <div>{meal.name}</div>
-              <div dangerouslySetInnerHTML={{ __html: meal.description }}></div>
-
-              <Button size={"sm"} className="mt-5">
-                Remove
-              </Button>
-            </div>
-          </Link>
+          <FavoriteCard
+            id={meal.id}
+            name={meal.name}
+            description={meal.description}
+          />
         ))}
       </div>
     </div>
