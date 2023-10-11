@@ -1,13 +1,10 @@
 "use client";
 import { deleteMealAction } from "@/app/actions";
 import { useToast } from "@/components/ui/use-toast";
-import { getColorBasedOnId } from "@/utils/getColor";
 import { useUser } from "@clerk/nextjs";
 import { Star, Trash2Icon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,9 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog";
-import { Button } from "./button";
 import Spinner from "./spinner";
-import { useRouter } from "next/navigation";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -52,7 +47,6 @@ export default function FoodCard({
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
-  const [bgColor, setBgColor] = useState(() => getColorBasedOnId(id));
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
@@ -161,7 +155,7 @@ export default function FoodCard({
     <>
       {isClient && (
         <div
-          className={`w-80 md:w-full min-h-96 border rounded-xl bg-white shadow-md hover:shadow-xl duration-200 relative ${bgColor}`}
+          className={`w-80 md:w-full min-h-96 border rounded-xl bg-white shadow-md hover:shadow-xl duration-200 relative`}
         >
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-opacity-70 bg-black">
@@ -242,17 +236,6 @@ export default function FoodCard({
                         {" "}
                         {new Date(createdAt).toLocaleDateString()}
                       </p>
-                      {user?.id && (
-                        <Link href={`/recipes/${name}`}>
-                          <Button
-                            variant="link"
-                            size="sm"
-                            className="font-thin text-sm"
-                          >
-                            Details
-                          </Button>
-                        </Link>
-                      )}
                     </div>
                   </div>
                 </div>

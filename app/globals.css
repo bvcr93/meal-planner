@@ -90,3 +90,7 @@
 .effect {
   animation: slideUp 0.5s forwards;
 }
+.narrow-corners {
+  @apply relative inline-block;
+  clip-path: polygon(0% 5%, 100% 0, 100% 95%, 0 100%);
+}

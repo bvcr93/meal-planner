@@ -1,11 +1,3 @@
-import { getMeals } from "@/lib/meals";
-import { UserButton, auth } from "@clerk/nextjs";
-import Link from "next/link";
-import { Button } from "./button";
-import { Input } from "./input";
-import { Menu } from "lucide-react";
-import UserCount from "./user-count";
-import { getFavoriteMeals } from "@/lib/meals";
 import {
   Sheet,
   SheetContent,
@@ -14,21 +6,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useRouter } from "next/navigation";
+import { getFavoriteMeals } from "@/lib/meals";
+import { UserButton, auth } from "@clerk/nextjs";
+import { Menu } from "lucide-react";
+import Link from "next/link";
+import { Button } from "./button";
+import { Input } from "./input";
 
 export default async function Navbar() {
   const { userId }: { userId: string | null } = auth();
-  const { meals } = await getMeals();
-  const currentUser = meals?.find((meal) => meal?.creator?.userId === userId);
-  const currentUserCreatorId = currentUser?.creator?.id || null;
-  let favoriteCount = null;
 
-  if (userId) {
-    const result = await getFavoriteMeals(userId);
-    if (result && result.meals) {
-      favoriteCount = result.meals.length;
-    }
-  }
   return (
     <div className="w-full py-5">
       <div className="maincol flex justify-between items-center h-14 ">
@@ -36,9 +23,6 @@ export default async function Navbar() {
           <Link href={`/`} className="font-semibold italic text-xl mr-10">
             Foody
           </Link>
-          {userId && (
-            <UserCount creatorId={currentUserCreatorId} meals={meals} />
-          )}
         </div>
         <div className="md:hidden flex">
           <Sheet>
@@ -57,7 +41,7 @@ export default async function Navbar() {
           </Sheet>
         </div>
         <div className="md:flex gap-10 hidden">
-          <Link href={`/meals`}>Favorites ({favoriteCount})</Link>
+          <Link href={`/meals`}>Favorites</Link>
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/recipes`}>Recipes</Link>
 
