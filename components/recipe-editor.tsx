@@ -33,7 +33,6 @@ export default function RecipeEditor({
   const [editedName, setEditedName] = useState(name);
   const [termporaryName, setTemporaryName] = useState(name);
   const formRef = useRef<HTMLFormElement>(null);
-
   async function action(data: FormData) {
     const name = data.get("name") as string;
     const description = data.get("description") as string;
@@ -96,29 +95,32 @@ export default function RecipeEditor({
         readOnly
       ></textarea>
       <div className="mt-10">
-        <FroalaEditor
-          model={model}
-          onModelChange={(content: string) => {
-            setModel(content);
-            setEditorContent(content);
-          }}
-          config={{
-            placeholderText: "Edit Your Content Here!",
-            charCounterCount: true,
-            charCounterMax: 1000,
-            saveInterval: 2000,
+   
+        
+          <FroalaEditor
+            model={model}
+            onModelChange={(content: string) => {
+              setModel(content);
+              setEditorContent(content);
+            }}
+            config={{
+              placeholderText: "Edit Your Content Here!",
+              charCounterCount: true,
+              charCounterMax: 1000,
+              saveInterval: 2000,
 
-            events: {
-              "charCounter.exceeded": function () {
-                alert("maximum limit reached, buy premium version");
+              events: {
+                "charCounter.exceeded": function () {
+                  alert("maximum limit reached, buy premium version");
+                },
+                "save.before": function (html: string) {
+                  localStorage.setItem("meal", html);
+                },
               },
-              "save.before": function (html: string) {
-                localStorage.setItem("meal", html);
-              },
-            },
-          }}
-          tag="textarea"
-        />
+            }}
+            tag="textarea"
+          />
+  
       </div>
       <Button className="mt-5" onClick={handleSaveClick} type="submit">
         Save

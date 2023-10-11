@@ -49,7 +49,7 @@ export default function Reviews() {
       {reviews.map((review) => (
         <Card
           key={review.id}
-          className="w-[450px] h-96 flex flex-col items-center justify-between shadow-lg p-4 space-y-4"
+          className="w-[450px] md:w-full h-96 flex flex-col items-center justify-between shadow-lg p-4 space-y-4"
         >
           <Image
             width={1000}

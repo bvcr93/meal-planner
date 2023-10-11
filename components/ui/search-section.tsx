@@ -63,7 +63,7 @@ export default function SearchSection({ meals }: SearchInputProps) {
   }, [debouncedValue, categoryId, meals]);
 
   return (
-    <div>
+    <div className="">
       <Input
         onChange={onChange}
         value={value}

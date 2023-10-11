@@ -10,7 +10,7 @@ import Reviews from "@/components/reviews";
 
 export default async function Home() {
   return (
-    <div className="maincol  min-h-screen">
+    <div className="maincol min-h-screen">
       <div className="mt-20 h-[500px] md:flex ">
         <div className="basis-1/2 flex flex-col items-start justify-center pr-[150px] leading-normal space-y-7">
           <h2 className="text-4xl">
@@ -36,14 +36,15 @@ export default async function Home() {
           />
         </div>
       </div>
-      <div className="md:mt-20"></div>
+
       {/* <div>
         <h2 className="text-4xl">Create new meal</h2>
         <MealsPage />
       </div> */}
-
-      {/* throw some styles here */}
-      <Reviews />
+      <div className="md:py-32 effect">
+        {/* throw some styles here */}
+        <Reviews />
+      </div>
     </div>
   );
 }

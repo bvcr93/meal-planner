@@ -28,13 +28,13 @@ export default async function RecipesPage() {
   // });
 
   return (
-    <div className="maincol ">
+    <div className="maincol w-full ">
       <Link href={`/recipes/new`}>
         <Button className="mt-20">Create new recipe</Button>
       </Link>
-      <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-5 place-items-center mt-10">
+      <div className="grid md:grid-cols-3 place-items-center mt-10 gap-5">
         {meals?.map((meal) => (
-          <div className="cursor-pointer">
+          <div className="cursor-pointer w-full grid place-items-center">
             <FoodCard
               hasFavoriteSign={true}
               userId={meal.creator?.userId}

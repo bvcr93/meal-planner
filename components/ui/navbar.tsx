@@ -3,14 +3,32 @@ import { UserButton, auth } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "./button";
 import { Input } from "./input";
+import { Menu } from "lucide-react";
 import UserCount from "./user-count";
+import { getFavoriteMeals } from "@/lib/meals";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { useRouter } from "next/navigation";
 
 export default async function Navbar() {
   const { userId }: { userId: string | null } = auth();
   const { meals } = await getMeals();
   const currentUser = meals?.find((meal) => meal?.creator?.userId === userId);
   const currentUserCreatorId = currentUser?.creator?.id || null;
+  let favoriteCount = null;
 
+  if (userId) {
+    const result = await getFavoriteMeals(userId);
+    if (result && result.meals) {
+      favoriteCount = result.meals.length;
+    }
+  }
   return (
     <div className="w-full py-5">
       <div className="maincol flex justify-between items-center h-14 ">
@@ -22,9 +40,24 @@ export default async function Navbar() {
             <UserCount creatorId={currentUserCreatorId} meals={meals} />
           )}
         </div>
-        <div className="md:hidden flex">menu</div>
+        <div className="md:hidden flex">
+          <Sheet>
+            <SheetTrigger>
+              <Menu />
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Are you sure absolutely sure?</SheetTitle>
+                <SheetDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
         <div className="md:flex gap-10 hidden">
-          <Link href={`/meals`}>Favorites</Link>
+          <Link href={`/meals`}>Favorites ({favoriteCount})</Link>
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/recipes`}>Recipes</Link>
 
@@ -38,7 +71,10 @@ export default async function Navbar() {
         <div>
           {userId ? (
             <div className="flex gap-5">
-              <Input className="border-b rounded-none" placeholder="Search" />
+              <Input
+                className="border-b rounded-none bg-transparent"
+                placeholder="Search"
+              />
               <UserButton afterSignOutUrl="/" />
             </div>
           ) : (

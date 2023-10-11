@@ -21,6 +21,7 @@ import {
 } from "./alert-dialog";
 import { Button } from "./button";
 import Spinner from "./spinner";
+import { useRouter } from "next/navigation";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -57,7 +58,6 @@ export default function FoodCard({
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
 
   const { user } = useUser();
-
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
     if (isFavorite) {
@@ -120,7 +120,6 @@ export default function FoodCard({
       toast({
         description: "Meal sucessfully deleted!",
       });
-  
     } catch (error) {
       console.error("Error deleting meal:", error);
     }
@@ -162,7 +161,7 @@ export default function FoodCard({
     <>
       {isClient && (
         <div
-          className={`w-80 min-h-96 border rounded-xl shadow-md hover:shadow-xl duration-200 relative ${bgColor}`}
+          className={`w-80 md:w-full min-h-96 border rounded-xl bg-white shadow-md hover:shadow-xl duration-200 relative ${bgColor}`}
         >
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-opacity-70 bg-black">
