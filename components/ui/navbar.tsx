@@ -55,10 +55,10 @@ export default async function Navbar() {
         <div>
           {userId ? (
             <div className="flex gap-5">
-              <Input
+              {/* <Input
                 className="border-b rounded-none bg-transparent"
                 placeholder="Search"
-              />
+              /> */}
               <UserButton afterSignOutUrl="/" />
             </div>
           ) : (

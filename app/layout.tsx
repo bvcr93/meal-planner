@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { ClerkProvider, ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/ui/footer";
 const inter = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Toaster />
+          <Footer />
         </body>
       </html>
     </ClerkProvider>

@@ -90,7 +90,20 @@
 .effect {
   animation: slideUp 0.5s forwards;
 }
-.narrow-corners {
-  @apply relative inline-block;
-  clip-path: polygon(0% 5%, 100% 0, 100% 95%, 0 100%);
+
+/* Slider.css */
+.slider-content {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  transition: transform 1s ease-in-out;
+}
+
+.slider-slide {
+  min-width: 100%;
+  transition: transform 1s ease-in-out;
+}
+
+.slide .slider-slide.current {
+  transform: translateX(-100%);
 }

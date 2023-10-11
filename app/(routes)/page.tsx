@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
 import AboutSection from "@/components/about";
+import Slider from "@/components/ui/slider";
 
 export default async function Home() {
   return (
@@ -48,7 +49,7 @@ export default async function Home() {
                 ></div>
               </div>
               <div className="w-full">
-                <p >
+                <p>
                   <span className="font-semibold">+2,000</span> more people are
                   cooking with Foody
                 </p>
@@ -71,8 +72,11 @@ export default async function Home() {
           <Reviews />
         </div>
       </div>
-      <div className="maincol">
+      {/* <div className="maincol">
         <AboutSection />
+      </div> */}
+      <div className="maincol ">
+        <Slider />
       </div>
     </main>
   );
