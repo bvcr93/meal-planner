@@ -3,6 +3,7 @@ import FoodCard from "@/components/ui/food-card";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { getMeals } from "@/lib/meals";
+import UserCount from "@/components/ui/user-count";
 export default async function RecipesPage() {
   const { meals } = await getMeals();
   const favoriteMeals = await db.favoriteMeals.findMany();
@@ -12,6 +13,19 @@ export default async function RecipesPage() {
       (b.createdAt ? new Date(b.createdAt).getTime() : 0) -
       (a.createdAt ? new Date(a.createdAt).getTime() : 0)
   );
+  // const mealsWithFavorites = await db.meal.findMany({
+  //   include: {
+  //     favoritedBy: {
+  //       select: {
+  //         profile: {
+  //           select: {
+  //             name: true,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
 
   return (
     <div className="maincol ">
@@ -32,10 +46,12 @@ export default async function RecipesPage() {
               name={meal.name}
               description={meal.description}
               createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
+              // favoritedBy={mealsWithFavorites}
             />
           </div>
         ))}
       </div>
+   
     </div>
   );
 }

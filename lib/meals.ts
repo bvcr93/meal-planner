@@ -9,7 +9,7 @@ export async function getMeals() {
         creator: true,
       },
     });
-    // console.log("meals found: ", meals);
+    console.log("meals found: ", meals);
     return { meals };
   } catch (error) {
     return { error };

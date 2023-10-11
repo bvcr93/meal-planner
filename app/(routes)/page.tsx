@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
 import { db } from "@/lib/db";
+import Reviews from "@/components/reviews";
 
 export default async function Home() {
   return (
@@ -42,6 +43,7 @@ export default async function Home() {
       </div> */}
 
       {/* throw some styles here */}
+      <Reviews />
     </div>
   );
 }

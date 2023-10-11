@@ -12,10 +12,10 @@ export async function createMealAction(name: string, description: string) {
     description
   );
   await createMeal(name, description);
-  revalidatePath("/recipes");
-  revalidatePath("/explore");
-  revalidateTag("meals");
-
+  setTimeout(() => {
+    revalidatePath("/(routes)/recipes");
+  }, 3000);
+  revalidatePath("/recipes/new");
 }
 
 export async function updateMealAction(

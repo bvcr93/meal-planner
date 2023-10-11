@@ -1,9 +1,10 @@
 import NewMealForm from "@/components/ui/NewMealForm";
 import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
 import Link from "next/link";
 import React from "react";
 
-export default function RepcipeCreationPage() {
+export default async function RepcipeCreationPage() {
   return (
     <div className="maincol">
       <NewMealForm />

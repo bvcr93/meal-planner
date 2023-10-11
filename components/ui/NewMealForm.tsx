@@ -8,10 +8,13 @@ import { Textarea } from "./textarea";
 import { useUser } from "@clerk/clerk-react";
 import { useToast } from "./use-toast";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 export default function NewMealForm() {
   const { toast } = useToast();
   const { user } = useUser();
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   async function createMeal(data: FormData) {
     try {
@@ -21,14 +24,15 @@ export default function NewMealForm() {
       if (!name || typeof name !== "string") return;
       if (!description || typeof description !== "string") return;
       if (user && user.id) {
-        await createMealAction(name, description,);
+        await createMealAction(name, description);
+
         toast({
           title: `Meal created : ${name}`,
         });
+        router.push("/recipes");
       }
 
       formRef.current?.reset();
-
     } catch (error) {
     } finally {
     }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "./button";
 import { Input } from "./input";
 import UserCount from "./user-count";
+
 export default async function Navbar() {
   const { userId }: { userId: string | null } = auth();
   const { meals } = await getMeals();
