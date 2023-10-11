@@ -28,7 +28,7 @@ export default async function RecipesPage() {
   // });
 
   return (
-    <div className="maincol w-full ">
+    <div className="maincol w-full min-h-screen">
       <Link href={`/recipes/new`}>
         <Button className="mt-20">Create new recipe</Button>
       </Link>

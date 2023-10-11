@@ -42,7 +42,7 @@ export default function FavoriteMeals() {
     );
   if (meals.length === 0)
     return (
-      <div className="text-center maincol mt-20 text-xl font-semibold">
+      <div className="text-center maincol mt-20 text-xl font-semibold h-screen">
         <span>You have no favorite meals yet.</span>
       </div>
     );
@@ -52,7 +52,7 @@ export default function FavoriteMeals() {
   } // function here because of re-render of the child component otherwise the card stays
   // even after the button delete was clicked
   return (
-    <div className="maincol">
+    <div className="maincol h-screen">
       <div className="w-full grid grid-cols-5">
         {meals.map((meal) => (
           <FavoriteCard
