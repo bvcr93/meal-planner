@@ -6,13 +6,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { getFavoriteMeals } from "@/lib/meals";
 import { UserButton, auth } from "@clerk/nextjs";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./button";
-import { Input } from "./input";
-
+import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
+import { NavbarSpinner } from "./navbar-spinner";
 export default async function Navbar() {
   const { userId }: { userId: string | null } = auth();
 
@@ -59,6 +58,9 @@ export default async function Navbar() {
                 className="border-b rounded-none bg-transparent"
                 placeholder="Search"
               /> */}
+              <ClerkLoading>
+                <NavbarSpinner />
+              </ClerkLoading>
               <UserButton afterSignOutUrl="/" />
             </div>
           ) : (
