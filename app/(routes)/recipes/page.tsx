@@ -57,6 +57,7 @@ export default async function RecipesPage() {
   const favoriteMealIdsForUser = favoriteMealsForUser.map(
     (meal) => meal.mealId
   );
+  
   return (
     <div className="w-full min-h-screen">
       <Link href={`/recipes/new`}>
@@ -65,7 +66,6 @@ export default async function RecipesPage() {
       <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 place-items-center mt-10 gap-y-10">
         {meals?.map((meal) => (
           <FoodCard
-            hasFavoriteSign={true}
             userId={meal.creator?.userId}
             creatorImageUrl={meal.creator?.imageUrl}
             creatorId={meal.creatorId}

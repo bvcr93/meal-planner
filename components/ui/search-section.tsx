@@ -20,9 +20,13 @@ type TMeal = {
 
 type SearchInputProps = {
   meals: any;
+  favoriteMeals: any;
 };
 
-export default function SearchSection({ meals }: SearchInputProps) {
+export default function SearchSection({
+  meals,
+  favoriteMeals,
+}: SearchInputProps) {
   // console.log(meals);
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
@@ -73,7 +77,6 @@ export default function SearchSection({ meals }: SearchInputProps) {
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
           <FoodCard
-            hasFavoriteSign={true}
             key={meal.id}
             id={meal.id}
             name={meal.name}
@@ -82,6 +85,7 @@ export default function SearchSection({ meals }: SearchInputProps) {
             updatedAt={meal.updatedAt ? meal.updatedAt.toISOString() : ""}
             creatorId={meal.creatorId}
             creatorImageUrl={meal.creator?.imageUrl}
+            favoriteMeals={favoriteMeals}
           />
         ))}
       </div>

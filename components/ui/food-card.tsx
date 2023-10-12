@@ -40,7 +40,6 @@ interface FoodCardProps {
   creatorImageUrl?: string;
   favoriteMeals?: any[];
   userId?: string;
-  hasFavoriteSign?: boolean;
   favoritedBy?: { name: string }[];
 }
 
@@ -48,12 +47,7 @@ export default function FoodCard({
   id,
   name,
   description,
-  createdAt,
-  updatedAt,
-  creatorId,
   creatorImageUrl,
-  hasFavoriteSign,
-  // favoritedBy = [],
   favoriteMeals = [],
   userId,
 }: FoodCardProps) {
@@ -165,179 +159,191 @@ export default function FoodCard({
   };
   // Favorite star is not yellow when navgating back to the recipes route when favorite is active
   return (
-    // <>
-    //   {isClient && (
-    //     <div
-    //       className={`w-80 h-[400px] md:w-full min-h-96 border rounded-xl bg-white shadow-md hover:shadow-xl duration-200 relative`}
-    //     >
-    //       {loading && (
-    //         <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-opacity-70 bg-black">
-    //           <Spinner />
-    //         </div>
-    //       )}
-    //       <div className="w-full mt-10 text-center py-2 font-semibold flex justify-between items-center px-5">
-    //         <p className="text-lg">{name}</p>
-    //         {creatorImageUrl && (
-    //           <Image
-    //             alt=""
-    //             src={creatorImageUrl}
-    //             width={100}
-    //             height={100}
-    //             className="rounded-full h-10 w-10"
-    //           />
-    //         )}
-    //       </div>
-
-    //       <div className="min-h-[200px] md:w-[280px] mx-auto font-light text-sm overflow-y-auto overflow-x-hidden">
-    //         <div
-    //           className="foodcard-list px-10"
-    //           dangerouslySetInnerHTML={{ __html: editedDescription }}
-    //         ></div>
-    //       </div>
-
-    //       <div className="flex justify-center py-2">
-    //         <div className="flex items-start w-full px-5">
-    //           <div className="flex gap-5 justify-between w-full items-center">
-    //             <div className="flex flex-col w-full">
-    //               <div className="flex gap-5">
-    //                 {hasFavoriteSign && (
-    //                   <Star
-    //                     className={`font-light text-sm cursor-pointer ${
-    //                       isFavorite ? "text-yellow-300" : ""
-    //                     }`}
-    //                     onClick={(e) => toggleFavorite(e)}
-    //                   >
-    //                     {isFavorite
-    //                       ? "Remove from favourites"
-    //                       : "Add to favourites"}
-    //                   </Star>
-    //                 )}
-
-    //                 {user?.id === userId && (
-    //                   <AlertDialog>
-    //                     <AlertDialogTrigger>
-    //                       <Trash2Icon className="font-light text-red-500 text-sm">
-    //                         Delete
-    //                       </Trash2Icon>
-    //                     </AlertDialogTrigger>
-    //                     <AlertDialogContent className="">
-    //                       <AlertDialogHeader>
-    //                         <AlertDialogTitle>
-    //                           Are you absolutely sure?
-    //                         </AlertDialogTitle>
-    //                         <AlertDialogDescription>
-    //                           This will permanently delete this meal.
-    //                         </AlertDialogDescription>
-    //                       </AlertDialogHeader>
-    //                       <AlertDialogFooter>
-    //                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-    //                         <AlertDialogAction
-    //                           className="bg-red-500"
-    //                           onClick={handleDeleteClick}
-    //                         >
-    //                           Delete
-    //                         </AlertDialogAction>
-    //                       </AlertDialogFooter>
-    //                     </AlertDialogContent>
-    //                   </AlertDialog>
-    //                 )}
-    //               </div>
-    //               <div className="font-light mt-5">
-    //                 <div className="w-full flex justify-between items-center gap-5">
-    //                   {user?.id === userId && (
-    //                     <Button size="sm" asChild className="w-full">
-    //                       <Link href={`/recipes/${name}`}>View</Link>
-    //                     </Button>
-    //                   )}
-    //                 </div>
-    //               </div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   )}
-    // </>
-    <Card className={cn("lg:w-[500px] xl:w-[450px] w-full min-h-[500px] flex flex-col hover:shadow-xl duration-300")}>
-      <CardHeader className="flex-grow">
-        <div className="flex justify-between">
-          {" "}
-          <CardTitle className="w-2/3 leading-7 mb-5">{name}</CardTitle>
-          {creatorImageUrl && (
-            <Image
-              alt=""
-              src={creatorImageUrl}
-              width={100}
-              height={100}
-              className="rounded-full h-10 w-10"
-            />
+    <>
+      {isClient && (
+        <Card
+          className={cn(
+            "lg:w-[500px] xl:w-[450px] w-full min-h-[500px] flex flex-col hover:shadow-xl duration-300"
           )}
-        </div>
-        <CardDescription>
-          <div
-            className="foodcard-list overflow-x-hidden overflow-y-auto break-words"
-            dangerouslySetInnerHTML={{ __html: editedDescription }}
-          ></div>
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-4">
-        <div className=" flex items-center space-x-4 rounded-md border p-4">
-          {hasFavoriteSign && (
-            <Star
-              className={`font-light text-sm cursor-pointer ${
-                isFavorite ? "text-yellow-300" : ""
-              }`}
-              onClick={(e) => toggleFavorite(e)}
-            >
-              {isFavorite ? "Remove from favourites" : "Add to favourites"}
-            </Star>
+        >
+          {loading && (
+            <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-opacity-70 bg-black">
+              <Spinner />
+            </div>
           )}
-
-          <div className="flex justify-between w-full items-center">
-            <p className="text-sm font-medium leading-none">
-              {!isFavorite ? "Add to favorites" : "Remove from favorites"}
-            </p>
-            <p>
-              {user?.id === userId && (
-                <AlertDialog>
-                  <AlertDialogTrigger>
-                    <Trash2Icon className="font-light text-red-500 text-sm">
-                      Delete
-                    </Trash2Icon>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This will permanently delete this meal.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        className="bg-red-500"
-                        onClick={handleDeleteClick}
-                      >
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+          <CardHeader className="flex-grow">
+            <div className="flex justify-between">
+              {" "}
+              <CardTitle className="w-2/3 leading-7 mb-5">{name}</CardTitle>
+              {creatorImageUrl && (
+                <Image
+                  alt=""
+                  src={creatorImageUrl}
+                  width={100}
+                  height={100}
+                  className="rounded-full h-10 w-10"
+                />
               )}
-            </p>
-          </div>
-        </div>
-        <div></div>
-      </CardContent>
-      <CardFooter>
-        {user?.id === userId && (
-          <Button size="sm" asChild className="w-full bg-emerald-500">
-            <Link href={`/recipes/${name}`}>Edit</Link>
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
+            </div>
+            <CardDescription>
+              <div
+                className="foodcard-list overflow-x-hidden overflow-y-auto break-words"
+                dangerouslySetInnerHTML={{ __html: editedDescription }}
+              ></div>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <div className=" flex items-center space-x-4 rounded-md border p-4">
+              <Star
+                className={`font-light text-sm cursor-pointer ${
+                  isFavorite ? "text-yellow-300" : ""
+                }`}
+                onClick={(e) => toggleFavorite(e)}
+              >
+                {isFavorite ? "Remove from favourites" : "Add to favourites"}
+              </Star>
+
+              <div className="flex justify-between w-full items-center">
+                <p className="text-sm font-medium leading-none">
+                  {!isFavorite ? "Add to favorites" : "Remove from favorites"}
+                </p>
+                <p>
+                  {user?.id === userId && (
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Trash2Icon className="font-light text-red-500 text-sm">
+                          Delete
+                        </Trash2Icon>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will permanently delete this meal.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            className="bg-red-500"
+                            onClick={handleDeleteClick}
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                </p>
+              </div>
+            </div>
+            <div></div>
+          </CardContent>
+          <CardFooter>
+            {user?.id === userId && (
+              <Button size="sm" asChild className="w-full bg-emerald-500">
+                <Link href={`/recipes/${name}`}>Edit</Link>
+              </Button>
+            )}
+          </CardFooter>
+        </Card>
+      )}
+    </>
   );
 }
+
+// <>
+//   {isClient && (
+//     <div
+//       className={`w-80 h-[400px] md:w-full min-h-96 border rounded-xl bg-white shadow-md hover:shadow-xl duration-200 relative`}
+//     >
+//       {loading && (
+//         <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-opacity-70 bg-black">
+//           <Spinner />
+//         </div>
+//       )}
+//       <div className="w-full mt-10 text-center py-2 font-semibold flex justify-between items-center px-5">
+//         <p className="text-lg">{name}</p>
+//         {creatorImageUrl && (
+//           <Image
+//             alt=""
+//             src={creatorImageUrl}
+//             width={100}
+//             height={100}
+//             className="rounded-full h-10 w-10"
+//           />
+//         )}
+//       </div>
+
+//       <div className="min-h-[200px] md:w-[280px] mx-auto font-light text-sm overflow-y-auto overflow-x-hidden">
+//         <div
+//           className="foodcard-list px-10"
+//           dangerouslySetInnerHTML={{ __html: editedDescription }}
+//         ></div>
+//       </div>
+
+//       <div className="flex justify-center py-2">
+//         <div className="flex items-start w-full px-5">
+//           <div className="flex gap-5 justify-between w-full items-center">
+//             <div className="flex flex-col w-full">
+//               <div className="flex gap-5">
+//                 {hasFavoriteSign && (
+//                   <Star
+//                     className={`font-light text-sm cursor-pointer ${
+//                       isFavorite ? "text-yellow-300" : ""
+//                     }`}
+//                     onClick={(e) => toggleFavorite(e)}
+//                   >
+//                     {isFavorite
+//                       ? "Remove from favourites"
+//                       : "Add to favourites"}
+//                   </Star>
+//                 )}
+
+//                 {user?.id === userId && (
+//                   <AlertDialog>
+//                     <AlertDialogTrigger>
+//                       <Trash2Icon className="font-light text-red-500 text-sm">
+//                         Delete
+//                       </Trash2Icon>
+//                     </AlertDialogTrigger>
+//                     <AlertDialogContent className="">
+//                       <AlertDialogHeader>
+//                         <AlertDialogTitle>
+//                           Are you absolutely sure?
+//                         </AlertDialogTitle>
+//                         <AlertDialogDescription>
+//                           This will permanently delete this meal.
+//                         </AlertDialogDescription>
+//                       </AlertDialogHeader>
+//                       <AlertDialogFooter>
+//                         <AlertDialogCancel>Cancel</AlertDialogCancel>
+//                         <AlertDialogAction
+//                           className="bg-red-500"
+//                           onClick={handleDeleteClick}
+//                         >
+//                           Delete
+//                         </AlertDialogAction>
+//                       </AlertDialogFooter>
+//                     </AlertDialogContent>
+//                   </AlertDialog>
+//                 )}
+//               </div>
+//               <div className="font-light mt-5">
+//                 <div className="w-full flex justify-between items-center gap-5">
+//                   {user?.id === userId && (
+//                     <Button size="sm" asChild className="w-full">
+//                       <Link href={`/recipes/${name}`}>View</Link>
+//                     </Button>
+//                   )}
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   )}
+// </>
