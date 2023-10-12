@@ -1,4 +1,5 @@
 import RecipeEditor from "@/components/recipe-editor";
+import QuillEditor from "@/components/ui/text-editor";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import React from "react";
@@ -19,16 +20,18 @@ export default async function RecipeDetailsPage({
   });
   console.log("ID:", params.id);
   console.log("Meal:", meal);
-  const { user} = auth();
+  const { user } = auth();
   return (
-    <div className="grid grid-cols-1 w-1/2 mx-auto">
-      
-      <RecipeEditor
+    <div className="">
+      {/* <RecipeEditor
         name={meal?.name}
         description={meal?.description}
-        meal={meal} 
-        
-        
+        meal={meal}
+      /> */}
+      <QuillEditor
+        name={meal?.name}
+        description={meal?.description}
+        meal={meal}
       />
     </div>
   );

@@ -17,6 +17,7 @@ import {
   AlertDialogTrigger,
 } from "./alert-dialog";
 import Spinner from "./spinner";
+import Link from "next/link";
 interface FoodCardProps {
   id: string;
   name: string;
@@ -236,6 +237,7 @@ export default function FoodCard({
                         {" "}
                         {new Date(createdAt).toLocaleDateString()}
                       </p>
+                   <Link href={`/recipes/${name}`}>Details</Link>
                     </div>
                   </div>
                 </div>

@@ -34,10 +34,7 @@ export default async function RecipesPage() {
       </Link>
       <div className="grid md:grid-cols-3 place-items-center mt-10 gap-5">
         {meals?.map((meal) => (
-          <Link
-            href={`/recipes/${meal.name}`}
-            className="cursor-pointer w-full grid place-items-center"
-          >
+         
             <FoodCard
               hasFavoriteSign={true}
               userId={meal.creator?.userId}
@@ -51,7 +48,7 @@ export default async function RecipesPage() {
               createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
               // favoritedBy={mealsWithFavorites}
             />
-          </Link>
+  
         ))}
       </div>
     </div>
