@@ -18,6 +18,12 @@ ol {
   list-style-type: decimal;
   padding-left: 40px;
 }
+.foodcard-list li:nth-child(n + 3) {
+  display: none;
+}
+.foodcard-list li:nth-child(2)::after {
+  content: "...";
+}
 
 @layer base {
   :root {

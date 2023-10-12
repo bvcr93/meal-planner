@@ -67,10 +67,10 @@ export default function SearchSection({ meals }: SearchInputProps) {
       <Input
         onChange={onChange}
         value={value}
-        className="border"
-        placeholder="search"
+        className="md:w-1/2 mx-auto md:mx-0 bg-transparent border-b border-slate-300"
+        placeholder="Search meals"
       />
-      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
+      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
           <FoodCard
             hasFavoriteSign={false}

@@ -113,8 +113,8 @@ export default function QuillEditor({
     <div className="maincol h-screen">
       <div className="w-full flex flex-col items-center justify-start">
         <form action={action}>
-          <input
-            className="w-full border rounded-full shadow-xl p-2 outline-none my-4"
+          <Input
+            className="w-full border shadow-xl p-2 outline-none my-4"
             type="text"
             value={editedName || ""}
             onChange={(e) => setEditedName(e.target.value)}
@@ -136,12 +136,6 @@ export default function QuillEditor({
             formats={formats}
           />
         </form>
-
-        <div id="" className="w-1/2 mt-10">
-          {formattedText && (
-            <div dangerouslySetInnerHTML={{ __html: formattedText }} />
-          )}
-        </div>
         <div className="flex items-start w-1/2 mx-auto">
           <Button className="mt-5" onClick={handleSaveClick} type="submit">
             Save

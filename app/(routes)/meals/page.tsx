@@ -53,7 +53,7 @@ export default function FavoriteMeals() {
   // even after the button delete was clicked
   return (
     <div className="h-screen">
-      <div className="w-full grid grid-cols-4">
+      <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-10 place-items-center">
         {meals.map((meal) => (
           <FavoriteCard
             id={meal.id}

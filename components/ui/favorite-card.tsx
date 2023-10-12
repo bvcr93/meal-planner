@@ -63,7 +63,7 @@ export default function FavoriteCard({
     }
   };
   return (
-    <Card className="w-56 h-56 rounded-full hover:shadow-lg flex items-center justify-center flex-col">
+    <Card className="w-[350px] h-auto hover:shadow-lg flex items-center justify-center flex-col">
       <CardHeader>
         <CardTitle className="text-center font-mono font-medium">
           {name}

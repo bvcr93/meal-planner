@@ -44,7 +44,7 @@ export default async function RecipesPage() {
       <Link href={`/recipes/new`}>
         <Button className="mt-20">Create new recipe</Button>
       </Link>
-      <div className="grid md:grid-cols-3 place-items-center mt-10 gap-5">
+      <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 place-items-center mt-10 gap-y-10">
         {meals?.map((meal) => (
           <FoodCard
             hasFavoriteSign={true}
