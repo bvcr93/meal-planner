@@ -3,12 +3,7 @@ import { Facebook, Instagram, Twitter } from "lucide-react"; // Or any other pac
 
 export default function Footer() {
   return (
-    <div className="w-full bg-slate-200 h-[400px] flex flex-col items-center justify-center text-gray-800">
-      <div className="mb-6 text-center">
-        Plan your meals efficiently, discover exciting recipes, and create
-        shopping lists with ease.
-      </div>
-
+    <div className="w-full bg-slate-200 h-[300px] flex flex-col items-center justify-center text-gray-800">
       <div className="flex space-x-8 mb-6">
         <a href="/about" className="hover:text-gray-600">
           About Us
@@ -36,16 +31,7 @@ export default function Footer() {
         </a>
       </div>
 
-      <div className="mb-6">
-        <input
-          type="email"
-          placeholder="Subscribe to our newsletter"
-          className="p-2 border rounded-md outline-none focus:border-blue-500"
-        />
-        <button className="ml-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-          Subscribe
-        </button>
-      </div>
+
 
       <div className="mb-6">
         Need help? Email us at:{" "}

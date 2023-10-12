@@ -237,7 +237,7 @@ export default function FoodCard({
                         {" "}
                         {new Date(createdAt).toLocaleDateString()}
                       </p>
-                   <Link href={`/recipes/${name}`}>Details</Link>
+                      <Link href={`/recipes/${name}`}>Details</Link>
                     </div>
                   </div>
                 </div>
