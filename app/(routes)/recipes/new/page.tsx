@@ -13,7 +13,7 @@ export default async function RepcipeCreationPage() {
   const currentUser = meals?.find((meal) => meal?.creator?.userId === userId);
   const currentUserCreatorId = currentUser?.creator?.id || null;
   return (
-    <div className="maincol h-screen">
+    <div className="h-screen">
       <NewMealForm />
       <Link href={`/recipes`}>
         <Button className="mt-10">go back</Button>

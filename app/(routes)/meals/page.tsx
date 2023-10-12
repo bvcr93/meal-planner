@@ -52,8 +52,8 @@ export default function FavoriteMeals() {
   } // function here because of re-render of the child component otherwise the card stays
   // even after the button delete was clicked
   return (
-    <div className="maincol h-screen">
-      <div className="w-full grid grid-cols-5">
+    <div className="h-screen">
+      <div className="w-full grid grid-cols-4">
         {meals.map((meal) => (
           <FavoriteCard
             id={meal.id}

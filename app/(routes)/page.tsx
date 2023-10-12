@@ -5,17 +5,16 @@ import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
 import AboutSection from "@/components/about";
 import Slider from "@/components/ui/slider";
-
 export default async function Home() {
   return (
     <main>
       <div className="maincol h-full">
         <div className="mt-20 h-[500px] md:flex ">
           <div className="basis-1/2 flex flex-col items-start justify-center  leading-normal space-y-7">
-            <h2 className="text-4xl">
+            <h2 className="md:text-5xl text-3xl">
               The easiest way to make your favourite meal
             </h2>
-            <p>
+            <p className="md:text-xl text-md">
               Discover the best recipes from around the world and learn how to
               cook them at home
             </p>
@@ -78,6 +77,7 @@ export default async function Home() {
       <div className="maincol ">
         <Slider />
       </div>
+    
     </main>
   );
 }

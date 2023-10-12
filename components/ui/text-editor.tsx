@@ -148,11 +148,6 @@ export default function QuillEditor({
           </Button>
         </div>
       </div>
-      <div id="preview" className="w-1/2 mt-10">
-        {formattedText && (
-          <div dangerouslySetInnerHTML={{ __html: formattedText }} />
-        )}
-      </div>
     </div>
   );
 }

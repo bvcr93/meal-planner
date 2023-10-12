@@ -53,6 +53,7 @@ export default function NewMealForm() {
           </div>
         </div>
       </form>
+      
     </>
   );
 }

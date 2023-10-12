@@ -40,7 +40,7 @@ export default async function RecipesPage() {
     (meal) => meal.mealId
   );
   return (
-    <div className="maincol w-full min-h-screen">
+    <div className="w-full min-h-screen">
       <Link href={`/recipes/new`}>
         <Button className="mt-20">Create new recipe</Button>
       </Link>

@@ -4,7 +4,7 @@ export default async function ExplorePage() {
   const { meals } = await getMeals();
 
   return (
-    <div className="maincol min-h-screen">
+    <div className="min-h-screen">
       <SearchSection meals={meals} />
     </div>
   );

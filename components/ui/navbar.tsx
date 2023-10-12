@@ -45,7 +45,7 @@ export default async function Navbar() {
           <Link href={`/recipes`}>Recipes</Link>
 
           <Link
-            href={`/upgrade-to-pro`}
+            href={`/pro`}
             className="text-orange-500 font-semibold"
           >
             Upgrade to Pro

@@ -3,5 +3,5 @@ interface MainLayoutProps {
   children: ReactNode;
 }
 export default function MainLayout({ children }: MainLayoutProps) {
-  return <div>{children}</div>;
+  return <div className="maincol">{children}</div>;
 }

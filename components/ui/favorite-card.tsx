@@ -4,6 +4,14 @@ import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { Button } from "./button";
 import { useToast } from "./use-toast";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface FavoriteCardProps {
   id: string;
@@ -18,7 +26,6 @@ export default function FavoriteCard({
   description,
   onRemove,
 }: FavoriteCardProps) {
-
   const { toast } = useToast();
   const { user } = useUser();
   const [isFavorite, setIsFavorite] = useState(false);
@@ -56,13 +63,26 @@ export default function FavoriteCard({
     }
   };
   return (
-    <div className="w-48 h-64 rounded-xl shadow-xl border flex flex-col items-center justify-center mt-20">
-      <div>{name}</div>
-      <div dangerouslySetInnerHTML={{ __html: description }}></div>
+    <Card className="w-56 h-56 rounded-full hover:shadow-lg flex items-center justify-center flex-col">
+      <CardHeader>
+        <CardTitle className="text-center font-mono font-medium">
+          {name}
+        </CardTitle>
+        <CardDescription className="text-center">
+          <div dangerouslySetInnerHTML={{ __html: description }}></div>
+        </CardDescription>
+      </CardHeader>
 
-      <Button onClick={handleRemoveFromFavourites} size={"sm"} className="mt-5">
-        Remove
-      </Button>
-    </div>
+      <CardFooter>
+        {" "}
+        <Button
+          onClick={handleRemoveFromFavourites}
+          size={"sm"}
+          className="mt-5"
+        >
+          Remove
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
