@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/navbar";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+
 const inter = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,12 +21,21 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.className} bg-slate-50`}>
-          <Navbar />
-          {children}
-          <Toaster />
-          <Footer />
+      <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} bg-slate-50 dark:bg-neutral-900`}>
+
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="mealplanner"
+          >
+            <Navbar />
+            {children}
+            <Toaster />
+            <Footer />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

@@ -12,6 +12,9 @@ import Link from "next/link";
 import { Button } from "./button";
 import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
 import { NavbarSpinner } from "./navbar-spinner";
+import Image from "next/image";
+import foody from "@/public/foody.png";
+import { ModeToggle } from "../mode-toggle";
 export default async function Navbar() {
   const { userId }: { userId: string | null } = auth();
 
@@ -20,7 +23,13 @@ export default async function Navbar() {
       <div className="maincol flex justify-between items-center h-14 ">
         <div className="hidden md:flex items-center just">
           <Link href={`/`} className="font-semibold italic text-xl mr-10">
-            Foody
+            <Image
+              src={foody}
+              width={200}
+              height={200}
+              className="object-cover h-12"
+              alt=""
+            />
           </Link>
         </div>
         <div className="md:hidden flex">
@@ -58,6 +67,7 @@ export default async function Navbar() {
               <ClerkLoading>
                 <NavbarSpinner />
               </ClerkLoading>
+              <ModeToggle />
               <UserButton afterSignOutUrl="/" />
             </div>
           ) : (

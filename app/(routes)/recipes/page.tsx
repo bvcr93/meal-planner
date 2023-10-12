@@ -1,16 +1,34 @@
 import { Button } from "@/components/ui/button";
 import FoodCard from "@/components/ui/food-card";
 import { db } from "@/lib/db";
-import Link from "next/link";
-import { getMeals } from "@/lib/meals";
-import UserCount from "@/components/ui/user-count";
 import { auth } from "@clerk/nextjs";
+import Link from "next/link";
 export default async function RecipesPage() {
   const { userId }: { userId: string | null } = auth();
+  console.log("Logged in User ID:", userId);
+
   if (!userId) {
     throw new Error("User not authenticated.");
   }
-  const { meals } = await getMeals();
+  const userProfile = await db.profile.findUnique({
+    where: {
+      userId: userId,
+    },
+  });
+
+  if (!userProfile) {
+    throw new Error("Profile not found for the authenticated user.");
+  }
+
+  const meals = await db.meal.findMany({
+    where: {
+      creatorId: userProfile.id,
+    },
+    include: {
+      creator: true,
+    },
+  });
+
   const favoriteMeals = await db.favoriteMeals.findMany();
   const favoriteMealIds = favoriteMeals.map((meal) => meal.mealId);
   meals?.sort(

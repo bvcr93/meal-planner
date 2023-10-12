@@ -66,18 +66,18 @@ export default async function Home() {
           </div>
         </div>
       </div>
-      <div className="md:py-24  bg-slate-200 flex items-center justify-center">
+      <div className="md:py-24 bg-slate-200 dark:bg-neutral-900 flex items-center justify-center">
         <div className="maincol ">
           <Reviews />
         </div>
       </div>
+
       {/* <div className="maincol">
         <AboutSection />
       </div> */}
       <div className="maincol ">
         <Slider />
       </div>
-    
     </main>
   );
 }

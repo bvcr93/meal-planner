@@ -63,7 +63,7 @@ export default function SearchSection({ meals }: SearchInputProps) {
   }, [debouncedValue, categoryId, meals]);
 
   return (
-    <div className="">
+    <div className="mb-20">
       <Input
         onChange={onChange}
         value={value}
@@ -73,7 +73,7 @@ export default function SearchSection({ meals }: SearchInputProps) {
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
           <FoodCard
-            hasFavoriteSign={false}
+            hasFavoriteSign={true}
             key={meal.id}
             id={meal.id}
             name={meal.name}

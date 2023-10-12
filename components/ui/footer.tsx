@@ -3,7 +3,7 @@ import { Facebook, Instagram, Twitter } from "lucide-react"; // Or any other pac
 
 export default function Footer() {
   return (
-    <div className="w-full bg-slate-200 h-[300px] flex flex-col items-center justify-center text-gray-800">
+    <div className="w-full bg-slate-200 dark:bg-neutral-800 dark:text-white  h-[300px] flex flex-col items-center justify-center text-gray-800">
       <div className="flex space-x-8 mb-6">
         <a href="/about" className="hover:text-gray-600">
           About Us
