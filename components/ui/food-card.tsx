@@ -1,13 +1,12 @@
 "use client";
 import { deleteMealAction } from "@/app/actions";
 import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { Star, Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { BellRing, Check } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+
 import {
   Card,
   CardContent,
@@ -16,6 +15,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import useFoodModal from "@/hooks/useFoodModal";
+import Link from "next/link";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,9 +28,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog";
-import Spinner from "./spinner";
-import Link from "next/link";
 import { Button } from "./button";
+import Spinner from "./spinner";
+interface MealDetails {
+  id: string;
+  name: string;
+  description: string;
+}
 interface FoodCardProps {
   id: string;
   name: string;
@@ -41,6 +46,9 @@ interface FoodCardProps {
   favoriteMeals?: any[];
   userId?: string;
   favoritedBy?: { name: string }[];
+  hasViewMore?: boolean;
+  isModalOpen?: boolean;
+  onOpenDialog?: (isOpen: boolean) => void;
 }
 
 export default function FoodCard({
@@ -50,14 +58,16 @@ export default function FoodCard({
   creatorImageUrl,
   favoriteMeals = [],
   userId,
+  hasViewMore,
 }: FoodCardProps) {
+  const foodModal = useFoodModal();
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
-
+  const { onOpen } = useFoodModal();
   const { user } = useUser();
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
@@ -157,7 +167,15 @@ export default function FoodCard({
       });
     }
   };
-  // Favorite star is not yellow when navgating back to the recipes route when favorite is active
+
+  const handleViewClick = () => {
+    const mealDetails: MealDetails = {
+      id,
+      name,
+      description,
+    };
+    onOpen(mealDetails);
+  };
   return (
     <>
       {isClient && (
@@ -241,10 +259,17 @@ export default function FoodCard({
             </div>
             <div></div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="grid grid-cols-1">
             {user?.id === userId && (
-              <Button size="sm" asChild className="w-full bg-emerald-500">
-                <Link href={`/recipes/${name}`}>Edit</Link>
+              <>
+                <Button size="sm" asChild className="w-full bg-emerald-500">
+                  <Link href={`/recipes/${name}`}>Edit</Link>
+                </Button>
+              </>
+            )}
+            {hasViewMore && (
+              <Button className="bg-emerald-500" onClick={handleViewClick}>
+                View
               </Button>
             )}
           </CardFooter>
@@ -253,97 +278,3 @@ export default function FoodCard({
     </>
   );
 }
-
-// <>
-//   {isClient && (
-//     <div
-//       className={`w-80 h-[400px] md:w-full min-h-96 border rounded-xl bg-white shadow-md hover:shadow-xl duration-200 relative`}
-//     >
-//       {loading && (
-//         <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-opacity-70 bg-black">
-//           <Spinner />
-//         </div>
-//       )}
-//       <div className="w-full mt-10 text-center py-2 font-semibold flex justify-between items-center px-5">
-//         <p className="text-lg">{name}</p>
-//         {creatorImageUrl && (
-//           <Image
-//             alt=""
-//             src={creatorImageUrl}
-//             width={100}
-//             height={100}
-//             className="rounded-full h-10 w-10"
-//           />
-//         )}
-//       </div>
-
-//       <div className="min-h-[200px] md:w-[280px] mx-auto font-light text-sm overflow-y-auto overflow-x-hidden">
-//         <div
-//           className="foodcard-list px-10"
-//           dangerouslySetInnerHTML={{ __html: editedDescription }}
-//         ></div>
-//       </div>
-
-//       <div className="flex justify-center py-2">
-//         <div className="flex items-start w-full px-5">
-//           <div className="flex gap-5 justify-between w-full items-center">
-//             <div className="flex flex-col w-full">
-//               <div className="flex gap-5">
-//                 {hasFavoriteSign && (
-//                   <Star
-//                     className={`font-light text-sm cursor-pointer ${
-//                       isFavorite ? "text-yellow-300" : ""
-//                     }`}
-//                     onClick={(e) => toggleFavorite(e)}
-//                   >
-//                     {isFavorite
-//                       ? "Remove from favourites"
-//                       : "Add to favourites"}
-//                   </Star>
-//                 )}
-
-//                 {user?.id === userId && (
-//                   <AlertDialog>
-//                     <AlertDialogTrigger>
-//                       <Trash2Icon className="font-light text-red-500 text-sm">
-//                         Delete
-//                       </Trash2Icon>
-//                     </AlertDialogTrigger>
-//                     <AlertDialogContent className="">
-//                       <AlertDialogHeader>
-//                         <AlertDialogTitle>
-//                           Are you absolutely sure?
-//                         </AlertDialogTitle>
-//                         <AlertDialogDescription>
-//                           This will permanently delete this meal.
-//                         </AlertDialogDescription>
-//                       </AlertDialogHeader>
-//                       <AlertDialogFooter>
-//                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-//                         <AlertDialogAction
-//                           className="bg-red-500"
-//                           onClick={handleDeleteClick}
-//                         >
-//                           Delete
-//                         </AlertDialogAction>
-//                       </AlertDialogFooter>
-//                     </AlertDialogContent>
-//                   </AlertDialog>
-//                 )}
-//               </div>
-//               <div className="font-light mt-5">
-//                 <div className="w-full flex justify-between items-center gap-5">
-//                   {user?.id === userId && (
-//                     <Button size="sm" asChild className="w-full">
-//                       <Link href={`/recipes/${name}`}>View</Link>
-//                     </Button>
-//                   )}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   )}
-// </>

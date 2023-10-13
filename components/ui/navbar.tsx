@@ -59,15 +59,16 @@ export default async function Navbar() {
         </div>
         <div>
           {userId ? (
-            <div className="flex gap-5">
+            <div className="flex gap-5 items-center">
               {/* <Input
                 className="border-b rounded-none bg-transparent"
                 placeholder="Search"
               /> */}
+
+              <ModeToggle />
               <ClerkLoading>
                 <NavbarSpinner />
               </ClerkLoading>
-              <ModeToggle />
               <UserButton afterSignOutUrl="/" />
             </div>
           ) : (

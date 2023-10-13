@@ -5,6 +5,7 @@ import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
 import AboutSection from "@/components/about";
 import Slider from "@/components/ui/slider";
+
 export default async function Home() {
   return (
     <main>
@@ -18,11 +19,11 @@ export default async function Home() {
               Discover the best recipes from around the world and learn how to
               cook them at home
             </p>
-            <Link href={`/meals`}>
-              <Button size="lg" className="text-md">
-                Start trial
-              </Button>
-            </Link>
+
+            <Button size="lg" className="text-md">
+              Start trial
+            </Button>
+
             <div className="flex items-center pt-14 space-x-4">
               <div className="flex justify-start w-3/4 space-x-[calc(-11%)]">
                 <div

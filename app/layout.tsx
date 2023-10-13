@@ -6,6 +6,8 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/navbar";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import ModalProvider from "@/components/providers/modal-provider";
+
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -22,8 +24,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-slate-50 dark:bg-neutral-900`}>
-
+        <body className={`${inter.className} bg-slate-50 dark:bg-neutral-900`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -31,10 +32,14 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="mealplanner"
           >
-            <Navbar />
-            {children}
-            <Toaster />
-            <Footer />
+            <ModalProvider />
+    
+              <Navbar />
+
+              {children}
+              <Toaster />
+              <Footer />
+         
           </ThemeProvider>
         </body>
       </html>

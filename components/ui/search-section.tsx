@@ -6,6 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 type TMeal = {
   id: string;
@@ -30,6 +38,7 @@ export default function SearchSection({
   // console.log(meals);
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const categoryId = searchParams.get("categoryId");
   const name = searchParams.get("name");
   const [value, setValue] = useState(name || "");
@@ -86,6 +95,9 @@ export default function SearchSection({
             creatorId={meal.creatorId}
             creatorImageUrl={meal.creator?.imageUrl}
             favoriteMeals={favoriteMeals}
+            onOpenDialog={() => setIsModalOpen(true)}
+            isModalOpen={isModalOpen}
+            hasViewMore={true}
           />
         ))}
       </div>

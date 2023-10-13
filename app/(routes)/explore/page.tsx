@@ -10,12 +10,6 @@ export default async function ExplorePage() {
     throw new Error("User ID is null or undefined.");
   }
 
-  const userProfile = await db.profile.findUnique({
-    where: {
-      userId: userId,
-    },
-  });
-
   if (userId) {
     const favoriteMealsForUser = await db.favoriteMeals.findMany({
       where: {
