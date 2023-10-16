@@ -55,7 +55,7 @@ function Modal({
               mb-4
             "
           >
-            {selectedMeal?.name || "No meal selected"}
+            {selectedMeal?.name || ""}
           </DialogTitle>
           <DialogDescription
             className="

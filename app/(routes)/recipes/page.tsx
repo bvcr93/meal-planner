@@ -57,7 +57,7 @@ export default async function RecipesPage() {
   const favoriteMealIdsForUser = favoriteMealsForUser.map(
     (meal) => meal.mealId
   );
-  
+
   return (
     <div className="w-full min-h-screen mb-20">
       <Link href={`/recipes/new`}>

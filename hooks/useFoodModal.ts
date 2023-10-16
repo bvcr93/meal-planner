@@ -3,16 +3,15 @@ interface MealDetails {
   id: string;
   name: string;
   description: string;
-  // ... any other details you want to include
 }
-interface FoodModalStore {
+interface FoodModalInterface {
   isOpen: boolean;
   selectedMeal: MealDetails | null;
   onOpen: (meal: MealDetails) => void;
   onClose: () => void;
 }
 
-const useFoodModal = create<FoodModalStore>((set) => ({
+const useFoodModal = create<FoodModalInterface>((set) => ({
   isOpen: false,
   selectedMeal: null,
   onOpen: (meal) => set({ isOpen: true, selectedMeal: meal }),

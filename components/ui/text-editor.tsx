@@ -59,6 +59,9 @@ export default function QuillEditor({
         setIsEditing(false);
         setEditedName(termporaryName);
         revalidatePath("/recipes");
+        toast({
+          description: editedDescription,
+        });
       } else {
         console.error("Required data is missing or undefined.");
       }

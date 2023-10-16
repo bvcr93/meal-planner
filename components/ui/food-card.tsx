@@ -60,7 +60,6 @@ export default function FoodCard({
   userId,
   hasViewMore,
 }: FoodCardProps) {
-  const foodModal = useFoodModal();
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
@@ -181,7 +180,7 @@ export default function FoodCard({
       {isClient && (
         <Card
           className={cn(
-            "lg:w-[500px] xl:w-[450px] w-full min-h-[500px] flex flex-col hover:shadow-xl duration-300"
+            "lg:w-[500px] xl:w-[450px] w-full min-h-[500px] rounded-xl flex flex-col shadow-lg hover:shadow-xl duration-300"
           )}
         >
           {loading && (
@@ -192,7 +191,8 @@ export default function FoodCard({
           <CardHeader className="flex-grow">
             <div className="flex justify-between">
               {" "}
-              <CardTitle className="w-2/3 leading-7 mb-5">{name}</CardTitle>
+              <CardTitle className="w-2/3 leading-7 mb-5 line-clamp-2">{name}</CardTitle>
+
               {creatorImageUrl && (
                 <Image
                   alt=""

@@ -21,7 +21,7 @@ export default function FoodModal({ meals }: FoodModalProps) {
   return (
     <div>
       <Modal
-        title={selectedMeal?.name || "No meal selected"}
+        title={selectedMeal?.name || ""}
         description={selectedMeal?.description || ""}
         isOpen={isOpen}
         onChange={onChange}
