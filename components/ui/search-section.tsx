@@ -78,7 +78,7 @@ export default function SearchSection({
       />
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
-          <Link href={`/explore/${meal.name}`} className="w-full">
+
             <FoodCard
               key={meal.id}
               id={meal.id}
@@ -89,10 +89,10 @@ export default function SearchSection({
               creatorId={meal.creatorId}
               creatorImageUrl={meal.creator?.imageUrl}
               favoriteMeals={favoriteMeals}
-              hasViewMore={true}
               coverImage={meal.coverImage || undefined}
+              hasViewDetails={true}
             />
-          </Link>
+   
         ))}
       </div>
     </div>

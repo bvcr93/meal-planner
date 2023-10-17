@@ -46,7 +46,7 @@ interface FoodCardProps {
   favoriteMeals?: any[];
   userId?: string;
   favoritedBy?: { name: string }[];
-  hasViewMore?: boolean;
+  hasViewDetails?: boolean;
   coverImage?: string;
 }
 
@@ -57,7 +57,7 @@ export default function FoodCard({
   creatorImageUrl,
   favoriteMeals = [],
   userId,
-  hasViewMore,
+  hasViewDetails,
   coverImage,
 }: FoodCardProps) {
   const { toast } = useToast();
@@ -262,7 +262,13 @@ export default function FoodCard({
                 </p>
               </div>
             </div>
-            <div></div>
+            <div>
+              {hasViewDetails && (
+                <Button size="sm" asChild className="w-full bg-emerald-500">
+                  <Link href={`/explore/${name}`}>View Details</Link>
+                </Button>
+              )}
+            </div>
           </CardContent>
           <CardFooter className="grid grid-cols-1">
             {user?.id === userId && (
