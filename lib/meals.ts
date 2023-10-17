@@ -25,10 +25,13 @@ export async function getMealsByUser(creatorId: string) {
     return { error };
   }
 }
-
-export async function createMeal(name: string, description: string) {
+export async function createMeal(
+  name: string,
+  description: string,
+  coverImage: string
+) {
   const profile = await initialProfile();
-  // console.log("profile: ", profile);
+
   if (!profile || !profile.id) {
     throw new Error("Profile ID is missing or null");
   }
@@ -38,6 +41,7 @@ export async function createMeal(name: string, description: string) {
       data: {
         name,
         description,
+        coverImage,
         creatorId: profile.id,
       },
     });

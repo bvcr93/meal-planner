@@ -1,16 +1,21 @@
 "use client";
 import { createMealAction } from "@/app/actions";
+import { useEdgeStore } from "@/lib/edgestore";
+import { useUser } from "@clerk/clerk-react";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { experimental_useFormStatus as UseFormStatus } from "react-dom";
+import { SingleImageDropzone } from "../single-image-dropzone";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
-import { useUser } from "@clerk/clerk-react";
 import { useToast } from "./use-toast";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import Link from "next/link";
 export default function NewMealForm() {
+  const [url, setUrl] = useState<{ url: string }>();
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [file, setFile] = useState<File>();
+  const { edgestore } = useEdgeStore();
   const { toast } = useToast();
   const { user } = useUser();
   const formRef = useRef<HTMLFormElement>(null);
@@ -20,11 +25,13 @@ export default function NewMealForm() {
     try {
       const name = data.get("name");
       const description = data.get("description");
+      const coverImage = data.get("coverImage");
 
       if (!name || typeof name !== "string") return;
       if (!description || typeof description !== "string") return;
+      if (!coverImage || typeof coverImage !== "string") return;
       if (user && user.id) {
-        await createMealAction(name, description);
+        await createMealAction(name, description, coverImage);
 
         toast({
           title: `Meal created : ${name}`,
@@ -34,6 +41,7 @@ export default function NewMealForm() {
 
       formRef.current?.reset();
     } catch (error) {
+      console.error("Error creating meal:", error);
     } finally {
     }
   }
@@ -42,7 +50,11 @@ export default function NewMealForm() {
     <>
       <form
         ref={formRef}
-        action={createMeal}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(e.currentTarget);
+          createMeal(formData);
+        }}
         className="flex flex-col md:w-1/2 mt-10"
       >
         <div className="space-y-5">
@@ -52,8 +64,38 @@ export default function NewMealForm() {
             <SubmitButton />
           </div>
         </div>
+
+        <input
+          type="file"
+          onChange={(e) => {
+            setFile(e.target.files?.[0]);
+          }}
+        />
       </form>
-      
+
+      <button
+        type="button"
+        onClick={async () => {
+          if (file) {
+            const res = await edgestore.publicFiles.upload({ file });
+
+            if (res && res.url) {
+              setUrl({ url: res.url }); // set the URL in your local state (if needed)
+              setImageUrl(res.url); // set the URL in your local state (if needed)
+
+              const formData = new FormData(formRef.current as HTMLFormElement);
+              formData.append("coverImage", res.url);
+              createMeal(formData); // this will handle the logic to store meal data + image URL in your database
+            } else {
+              console.error("Failed to upload image or accessUrl is missing");
+            }
+          }
+        }}
+      >
+        Upload
+      </button>
+
+      {url?.url && <Link href={url.url}>{url.url}</Link>}
     </>
   );
 }

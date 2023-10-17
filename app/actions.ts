@@ -1,17 +1,21 @@
 "use server";
-import { getUserMealCount } from "@/lib/meals";
-import { createMeal, updateMeal, deleteMeal } from "@/lib/meals";
-import { revalidatePath, revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
+import { createMeal, deleteMeal, getUserMealCount, updateMeal } from "@/lib/meals";
+import { revalidatePath } from "next/cache";
 
-export async function createMealAction(name: string, description: string) {
+export async function createMealAction(
+  name: string,
+  description: string,
+  coverImage: string
+) {
   console.log(
     "Creating meal with name:",
     name,
-    "and description:",
-    description
+    "description:",
+    description,
+    "and coverImage:",
+    coverImage
   );
-  await createMeal(name, description);
+  await createMeal(name, description,coverImage);
   setTimeout(() => {
     revalidatePath("/(routes)/recipes");
   }, 3000);

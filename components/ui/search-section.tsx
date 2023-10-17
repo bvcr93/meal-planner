@@ -17,6 +17,7 @@ type TMeal = {
   updatedAt: Date | null;
   creatorId: string;
   creator?: Profile;
+  coverImage?: string | null;
 };
 
 type SearchInputProps = {
@@ -28,7 +29,6 @@ export default function SearchSection({
   meals,
   favoriteMeals,
 }: SearchInputProps) {
-
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,6 +90,7 @@ export default function SearchSection({
               creatorImageUrl={meal.creator?.imageUrl}
               favoriteMeals={favoriteMeals}
               hasViewMore={true}
+              coverImage={meal.coverImage || undefined}
             />
           </Link>
         ))}

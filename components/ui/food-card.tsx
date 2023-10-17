@@ -47,6 +47,7 @@ interface FoodCardProps {
   userId?: string;
   favoritedBy?: { name: string }[];
   hasViewMore?: boolean;
+  coverImage?: string;
 }
 
 export default function FoodCard({
@@ -57,6 +58,7 @@ export default function FoodCard({
   favoriteMeals = [],
   userId,
   hasViewMore,
+  coverImage,
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -164,7 +166,6 @@ export default function FoodCard({
     }
   };
 
-
   return (
     <>
       {isClient && (
@@ -199,6 +200,19 @@ export default function FoodCard({
                 className="foodcard-list overflow-x-hidden overflow-y-auto break-words"
                 dangerouslySetInnerHTML={{ __html: editedDescription }}
               ></div>
+              <div>
+                {coverImage && (
+                  <div>
+                    <Image
+                      src={coverImage}
+                      width={1000}
+                      height={1000}
+                      alt=""
+                      className="max-h-[200px] object-cover"
+                    />
+                  </div>
+                )}
+              </div>
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">

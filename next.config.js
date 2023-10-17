@@ -5,7 +5,12 @@ const nextConfig = {
   },
 
   images: {
-    domains: ["img.clerk.com", "images.unsplash.com", "plus.unsplash.com"],
+    domains: [
+      "img.clerk.com",
+      "images.unsplash.com",
+      "plus.unsplash.com",
+      "files.edgestore.dev",
+    ],
   },
 };
 
