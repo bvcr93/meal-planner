@@ -10,7 +10,7 @@ interface MealDetails {
   id: string;
   name: string;
   description: string;
-  // ... any other details you want to include
+
 }
 interface ModalProps {
   isOpen: boolean;
@@ -19,7 +19,7 @@ interface ModalProps {
   description: string;
   children: React.ReactNode;
   meals: Meal[];
-  selectedMeal: MealDetails | null; // Add this line
+  selectedMeal: MealDetails | null;
 }
 
 function Modal({

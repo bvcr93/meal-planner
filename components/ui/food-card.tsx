@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import useFoodModal from "@/hooks/useFoodModal";
+// import useFoodModal from "@/hooks/useFoodModal";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -30,6 +30,7 @@ import {
 } from "./alert-dialog";
 import { Button } from "./button";
 import Spinner from "./spinner";
+import { useModal } from "@/context/ModalContext";
 interface MealDetails {
   id: string;
   name: string;
@@ -66,7 +67,7 @@ export default function FoodCard({
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
-  const { onOpen } = useFoodModal();
+  const { openModal, selectedMeal } = useModal();
   const { user } = useUser();
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
@@ -76,7 +77,7 @@ export default function FoodCard({
       handleAddToFavourites();
     }
   };
-
+  console.log(selectedMeal);
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -173,7 +174,8 @@ export default function FoodCard({
       name,
       description,
     };
-    onOpen(mealDetails);
+    openModal(mealDetails);
+    console.log(selectedMeal)
   };
   return (
     <>
@@ -191,8 +193,9 @@ export default function FoodCard({
           <CardHeader className="flex-grow">
             <div className="flex justify-between">
               {" "}
-              <CardTitle className="w-2/3 leading-7 mb-5 line-clamp-2">{name}</CardTitle>
-
+              <CardTitle className="w-2/3 leading-7 mb-5 line-clamp-2">
+                {name}
+              </CardTitle>
               {creatorImageUrl && (
                 <Image
                   alt=""

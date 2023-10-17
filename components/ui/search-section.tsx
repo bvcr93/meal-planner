@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import Link from "next/link";
 
 type TMeal = {
   id: string;
@@ -85,6 +86,7 @@ export default function SearchSection({
       />
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
+          // <Link href={`/explore/${meal.name}`}>
           <FoodCard
             key={meal.id}
             id={meal.id}
@@ -99,6 +101,7 @@ export default function SearchSection({
             isModalOpen={isModalOpen}
             hasViewMore={true}
           />
+          // </Link>
         ))}
       </div>
     </div>

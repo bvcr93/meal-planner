@@ -6,8 +6,8 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/navbar";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import ModalProvider from "@/components/providers/modal-provider";
-
+// import ModalProvider from "@/components/providers/modal-provider";
+import { ModalProvider } from "@/context/ModalContext";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -32,14 +32,13 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="mealplanner"
           >
-            <ModalProvider />
-    
+            <ModalProvider>
               <Navbar />
 
               {children}
               <Toaster />
-              <Footer />
-         
+            </ModalProvider>
+            <Footer />
           </ThemeProvider>
         </body>
       </html>
