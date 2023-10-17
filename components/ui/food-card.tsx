@@ -202,7 +202,7 @@ export default function FoodCard({
               ></div>
               <div>
                 {coverImage && (
-                  <div>
+                  <div className="mt-10">
                     <Image
                       src={coverImage}
                       width={1000}
@@ -264,7 +264,7 @@ export default function FoodCard({
             </div>
             <div>
               {hasViewDetails && (
-                <Button size="sm" asChild className="w-full bg-emerald-500">
+                <Button  size="sm" asChild className="w-full bg-sky-500">
                   <Link href={`/explore/${name}`}>View Details</Link>
                 </Button>
               )}

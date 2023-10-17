@@ -2,18 +2,19 @@
 import { createMealAction } from "@/app/actions";
 import { useEdgeStore } from "@/lib/edgestore";
 import { useUser } from "@clerk/clerk-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { experimental_useFormStatus as UseFormStatus } from "react-dom";
-import { SingleImageDropzone } from "../single-image-dropzone";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
 import { useToast } from "./use-toast";
-import Link from "next/link";
 export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
   const { toast } = useToast();
@@ -22,6 +23,7 @@ export default function NewMealForm() {
   const router = useRouter();
 
   async function createMeal(data: FormData) {
+    setIsLoading(true);
     try {
       const name = data.get("name");
       const description = data.get("description");
@@ -43,6 +45,7 @@ export default function NewMealForm() {
     } catch (error) {
       console.error("Error creating meal:", error);
     } finally {
+      setIsLoading(false);
     }
   }
 
@@ -61,7 +64,30 @@ export default function NewMealForm() {
           <InputComp />
           <TextAreaComp />
           <div className="flex gap-5 w-full">
-            <SubmitButton />
+            <SubmitButton
+              isLoading={isLoading}
+              file={file}
+              onUpload={async (selectedFile) => {
+                setIsLoading(true);
+                const res = await edgestore.publicFiles.upload({
+                  file: selectedFile,
+                });
+                if (res && res.url) {
+                  setUrl({ url: res.url });
+                  setImageUrl(res.url);
+                  const formData = new FormData(
+                    formRef.current as HTMLFormElement
+                  );
+                  formData.append("coverImage", res.url);
+                  createMeal(formData);
+                } else {
+                  console.error(
+                    "Failed to upload image or accessUrl is missing"
+                  );
+                  setIsLoading(false);
+                }
+              }}
+            />
           </div>
         </div>
 
@@ -73,38 +99,26 @@ export default function NewMealForm() {
         />
       </form>
 
-      <button
-        type="button"
-        onClick={async () => {
-          if (file) {
-            const res = await edgestore.publicFiles.upload({ file });
-
-            if (res && res.url) {
-              setUrl({ url: res.url }); // set the URL in your local state (if needed)
-              setImageUrl(res.url); // set the URL in your local state (if needed)
-
-              const formData = new FormData(formRef.current as HTMLFormElement);
-              formData.append("coverImage", res.url);
-              createMeal(formData); // this will handle the logic to store meal data + image URL in your database
-            } else {
-              console.error("Failed to upload image or accessUrl is missing");
-            }
-          }
-        }}
-      >
-        Upload
-      </button>
-
-      {url?.url && <Link href={url.url}>{url.url}</Link>}
+      {/* {url?.url && <Link href={url.url}>{url.url}</Link>} */}
     </>
   );
 }
 
-function SubmitButton() {
-  const data = UseFormStatus();
-  const isLoading = data.pending;
+interface SubmitButtonProps {
+  file?: File;
+  isLoading: boolean;
+  onUpload: (file: File) => Promise<void>;
+}
+
+function SubmitButton({ file, onUpload, isLoading }: SubmitButtonProps) {
+  const handleClick = async () => {
+    if (file) {
+      await onUpload(file);
+    }
+  };
+
   return (
-    <Button type="submit" disabled={isLoading}>
+    <Button type="submit" onClick={handleClick} disabled={isLoading}>
       {isLoading ? "Creating..." : "Add meal"}
     </Button>
   );

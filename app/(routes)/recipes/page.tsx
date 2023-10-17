@@ -76,6 +76,7 @@ export default async function RecipesPage() {
             description={meal.description}
             createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
             coverImage={meal.coverImage || undefined}
+            hasViewDetails={true}
             // favoritedBy={mealsWithFavorites}
           />
         ))}
