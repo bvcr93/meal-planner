@@ -32,6 +32,7 @@ model Meal {
   creatorId   String       
   creator     Profile?      @relation(fields: [creatorId], references: [id])
   favoritedBy FavoriteMeals[] 
+  coverImage  String?        @db.Text
   @@index([id])
   @@index([creatorId])
 }

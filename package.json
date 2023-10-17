@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.24.1",
+    "@edgestore/react": "^0.1.4",
+    "@edgestore/server": "^0.1.4",
     "@lexical/react": "^0.12.2",
     "@prisma/client": "^5.3.1",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -44,6 +46,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
     "uploadthing": "^5.7.1",
+    "zod": "^3.22.4",
     "zustand": "^4.4.3"
   },
   "devDependencies": {

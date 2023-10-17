@@ -15,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import useFoodModal from "@/hooks/useFoodModal";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -30,7 +29,7 @@ import {
 } from "./alert-dialog";
 import { Button } from "./button";
 import Spinner from "./spinner";
-import { useModal } from "@/context/ModalContext";
+
 interface MealDetails {
   id: string;
   name: string;
@@ -48,8 +47,6 @@ interface FoodCardProps {
   userId?: string;
   favoritedBy?: { name: string }[];
   hasViewMore?: boolean;
-  isModalOpen?: boolean;
-  onOpenDialog?: (isOpen: boolean) => void;
 }
 
 export default function FoodCard({
@@ -67,7 +64,7 @@ export default function FoodCard({
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
-  const { openModal, selectedMeal } = useModal();
+
   const { user } = useUser();
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
@@ -77,7 +74,6 @@ export default function FoodCard({
       handleAddToFavourites();
     }
   };
-  console.log(selectedMeal);
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -168,15 +164,7 @@ export default function FoodCard({
     }
   };
 
-  const handleViewClick = () => {
-    const mealDetails: MealDetails = {
-      id,
-      name,
-      description,
-    };
-    openModal(mealDetails);
-    console.log(selectedMeal)
-  };
+
   return (
     <>
       {isClient && (
@@ -269,11 +257,6 @@ export default function FoodCard({
                   <Link href={`/recipes/${name}`}>Edit</Link>
                 </Button>
               </>
-            )}
-            {hasViewMore && (
-              <Button className="bg-emerald-500" onClick={handleViewClick}>
-                View
-              </Button>
             )}
           </CardFooter>
         </Card>

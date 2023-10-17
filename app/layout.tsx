@@ -7,8 +7,7 @@ import "./globals.css";
 import Navbar from "@/components/ui/navbar";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 // import ModalProvider from "@/components/providers/modal-provider";
-import { ModalProvider } from "@/context/ModalContext";
-
+import { EdgeStoreProvider } from "@/lib/edgestore";
 const inter = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,25 +22,28 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.className} bg-slate-50 dark:bg-neutral-900`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-            storageKey="mealplanner"
+      <EdgeStoreProvider>
+        <html lang="en" suppressHydrationWarning>
+          <body
+            className={`${inter.className} bg-slate-50 dark:bg-neutral-900`}
           >
-            <ModalProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+              storageKey="mealplanner"
+            >
               <Navbar />
 
               {children}
               <Toaster />
-            </ModalProvider>
-            <Footer />
-          </ThemeProvider>
-        </body>
-      </html>
+
+              <Footer />
+            </ThemeProvider>
+          </body>
+        </html>
+      </EdgeStoreProvider>
     </ClerkProvider>
   );
 }

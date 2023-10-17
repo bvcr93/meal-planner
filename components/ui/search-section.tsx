@@ -6,14 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import Link from "next/link";
 
 type TMeal = {
@@ -36,7 +28,7 @@ export default function SearchSection({
   meals,
   favoriteMeals,
 }: SearchInputProps) {
-  // console.log(meals);
+
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,22 +78,20 @@ export default function SearchSection({
       />
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
-          // <Link href={`/explore/${meal.name}`}>
-          <FoodCard
-            key={meal.id}
-            id={meal.id}
-            name={meal.name}
-            description={meal.description}
-            createdAt={meal.createdAt ? meal.createdAt.toISOString() : ""}
-            updatedAt={meal.updatedAt ? meal.updatedAt.toISOString() : ""}
-            creatorId={meal.creatorId}
-            creatorImageUrl={meal.creator?.imageUrl}
-            favoriteMeals={favoriteMeals}
-            onOpenDialog={() => setIsModalOpen(true)}
-            isModalOpen={isModalOpen}
-            hasViewMore={true}
-          />
-          // </Link>
+          <Link href={`/explore/${meal.name}`} className="w-full">
+            <FoodCard
+              key={meal.id}
+              id={meal.id}
+              name={meal.name}
+              description={meal.description}
+              createdAt={meal.createdAt ? meal.createdAt.toISOString() : ""}
+              updatedAt={meal.updatedAt ? meal.updatedAt.toISOString() : ""}
+              creatorId={meal.creatorId}
+              creatorImageUrl={meal.creator?.imageUrl}
+              favoriteMeals={favoriteMeals}
+              hasViewMore={true}
+            />
+          </Link>
         ))}
       </div>
     </div>
