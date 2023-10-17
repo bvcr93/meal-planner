@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import FoodModal from "../ui/food-modal";
 import { db } from "@/lib/db";
-
+import FoodModal from "../ui/FoodModal";
 import { auth } from "@clerk/nextjs";
 
 export default async function ModalProvider() {
