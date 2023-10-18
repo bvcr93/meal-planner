@@ -6,7 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { Star, Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
+import { Edit } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -170,105 +170,93 @@ export default function FoodCard({
       {isClient && (
         <Card
           className={cn(
-            "lg:w-[500px] xl:w-[450px] w-full min-h-[500px] rounded-xl flex flex-col shadow-lg hover:shadow-xl duration-300"
+            " relative dark:bg-transparent w-full min-h-[500px] hover:rounded-xl flex flex-col shadow-lg hover:shadow-xl duration-300"
           )}
         >
-          {loading && (
-            <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-opacity-70 bg-black">
-              <Spinner />
-            </div>
-          )}
-          <CardHeader className="flex-grow">
-            <div className="flex justify-between">
-              {" "}
-              <CardTitle className="leading-7 mb-5 line-clamp-2 text-center w-full">
-                {name}
-              </CardTitle>
-    
-            </div>
+          <CardHeader className="p-0">
             <CardDescription>
-              {/* <div
-                className="foodcard-list overflow-x-hidden overflow-y-auto break-words"
-                dangerouslySetInnerHTML={{ __html: editedDescription }}
-              ></div> */}
-              <div className="">
-                {coverImage && (
-                  <Link href={`/explore/${name}`}>
-                    <div className="mt-10 h-[200px] hover:bg-black relative flex justify-center items-center">
-                      <Image
-                        src={coverImage}
-                        width={1000}
-                        height={1000}
-                        alt=""
-                        className="max-h-[200px] object-cover absolute inset-0 rounded-lg"
-                      />
+              {coverImage && (
+                <Link href={`/explore/${name}`}>
+                  <div className="h-[500px] hover:bg-black relative hover:rounded-xl flex justify-center items-center">
+                    <Image
+                      src={coverImage}
+                      width={1000}
+                      height={1000}
+                      alt=""
+                      className="h-full object-cover absolute inset-0 rounded-xl hover:rounded-xl"
+                    />
 
-                      <div className="absolute inset-0 text-white text-xl flex justify-center items-center bg-black bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
-                        View recipe
-                      </div>
+                    <div className="absolute inset-0 text-white text-xl hover:rounded-xl flex justify-center items-center bg-black bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
+                      <CardTitle className="leading-7 mb-5 line-clamp-2 text-center w-full">
+                        {name}
+                        <div
+                          className="foodcard-list overflow-x-hidden overflow-y-auto break-words"
+                          dangerouslySetInnerHTML={{
+                            __html: editedDescription,
+                          }}
+                        ></div>
+                      </CardTitle>
                     </div>
-                  </Link>
-                )}
-              </div>
+                  </div>
+                </Link>
+              )}
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className=" flex items-center space-x-4 rounded-md border p-4">
-              <Star
-                className={`font-light text-sm cursor-pointer ${
-                  isFavorite ? "text-yellow-300" : ""
-                }`}
-                onClick={(e) => toggleFavorite(e)}
-              >
-                {isFavorite ? "Remove from favourites" : "Add to favourites"}
-              </Star>
 
-              <div className="flex justify-between w-full items-center">
-                <p className="text-sm font-medium leading-none">
-                  {!isFavorite ? "Add to favorites" : "Remove from favorites"}
-                </p>
-                <p>
-                  {user?.id === userId && (
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <Trash2Icon className="font-light text-red-500 text-sm">
-                          Delete
-                        </Trash2Icon>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent className="">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you absolutely sure?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This will permanently delete this meal.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            className="bg-red-500"
-                            onClick={handleDeleteClick}
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  )}
-                </p>
+          <CardContent className="flex h-24 absolute right-2 top-4 items-center justify-between space-x-6 w-full">
+            <div>
+              {creatorImageUrl && (
+                <Image
+                  src={creatorImageUrl}
+                  width={200}
+                  height={200}
+                  alt="creator image"
+                  className="h-10 w-10 rounded-full"
+                />
+              )}
+            </div>
+            <div className="flex space-x-5 items-center">
+              <div>
+                <Link href={`/recipes/${name}`}>
+                  <Edit size={22} className="hover:cursor-pointer" />
+                </Link>
               </div>
+              <div>
+                <Star
+                  className={`font-light text-sm cursor-pointer ${
+                    isFavorite ? "text-yellow-300" : ""
+                  }`}
+                  onClick={(e) => toggleFavorite(e)}
+                ></Star>
+              </div>{" "}
+              {user?.id === userId && (
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Trash2Icon className="text-red-500">Delete</Trash2Icon>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will permanently delete this meal.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-red-500"
+                        onClick={handleDeleteClick}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </div>
           </CardContent>
-          <CardFooter className="grid grid-cols-1">
-            {user?.id === userId && (
-              <>
-                <Button size="sm" asChild className="w-full bg-emerald-500">
-                  <Link href={`/recipes/${name}`}>Edit</Link>
-                </Button>
-              </>
-            )}
-          </CardFooter>
         </Card>
       )}
     </>

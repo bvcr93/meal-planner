@@ -55,28 +55,29 @@ export default async function RecipesPage() {
   );
 
   return (
-    <div className="w-full min-h-screen mb-20">
-      <Link href={`/recipes/new`}>
+    <div className="min-h-screen mb-20">
+    <Link href={`/recipes/new`}>
         <Button className="mt-20">Create new recipe</Button>
-      </Link>
-      <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 place-items-center mt-10 gap-y-10 gap-x-5">
+    </Link>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
         {meals?.map((meal) => (
-          <FoodCard
-            userId={meal.creator?.userId}
-            creatorImageUrl={meal.creator?.imageUrl}
-            creatorId={meal.creatorId}
-            key={meal.id}
-            id={meal.id}
-            favoriteMeals={favoriteMealIdsForUser}
-            name={meal.name}
-            description={meal.description}
-            createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
-            coverImage={meal.coverImage || undefined}
-            hasViewDetails={true}
-            // favoritedBy={mealsWithFavorites}
-          />
+            <FoodCard
+                userId={meal.creator?.userId}
+                creatorImageUrl={meal.creator?.imageUrl}
+                creatorId={meal.creatorId}
+                key={meal.id}
+                id={meal.id}
+                favoriteMeals={favoriteMealIdsForUser}
+                name={meal.name}
+                description={meal.description}
+                createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
+                coverImage={meal.coverImage || undefined}
+                hasViewDetails={true}
+                // favoritedBy={mealsWithFavorites}
+            />
         ))}
-      </div>
     </div>
+</div>
+
   );
 }

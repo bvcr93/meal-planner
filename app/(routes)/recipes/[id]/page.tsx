@@ -1,5 +1,7 @@
+import EditArea from "@/components/edit-area";
 import RecipeEditor from "@/components/recipe-editor";
 import QuillEditor from "@/components/ui/text-editor";
+import { Textarea } from "@/components/ui/textarea";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import React from "react";
@@ -27,12 +29,13 @@ export default async function RecipeDetailsPage({
         name={meal?.name}
         description={meal?.description}
         meal={meal}
-      /> */}
-      <QuillEditor
+      /> */}{" "}
+      <EditArea name={meal?.name} description={meal?.description} meal={meal} />
+      {/* <QuillEditor
         name={meal?.name}
         description={meal?.description}
         meal={meal}
-      />
+      /> */}
     </div>
   );
 }

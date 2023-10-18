@@ -6,15 +6,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { experimental_useFormStatus as UseFormStatus } from "react-dom";
-import { Button } from "./button";
-import { Input } from "./input";
-import { Textarea } from "./textarea";
-import { useToast } from "./use-toast";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { useToast } from "./ui/use-toast";
+import IngredientsInput from "./ingredients-input";
 export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isIngredientInputShown, setIsIngredientInputShown] = useState(false);
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
   const { toast } = useToast();
@@ -23,7 +24,6 @@ export default function NewMealForm() {
   const router = useRouter();
 
   async function createMeal(data: FormData) {
-
     try {
       const name = data.get("name");
       const description = data.get("description");
@@ -45,7 +45,6 @@ export default function NewMealForm() {
     } catch (error) {
       console.error("Error creating meal:", error);
     } finally {
-     
     }
   }
 
@@ -63,6 +62,10 @@ export default function NewMealForm() {
         <div className="space-y-5">
           <InputComp />
           <TextAreaComp />
+          <Button onClick={() => setIsIngredientInputShown(true)}>
+            Add ingredient
+          </Button>
+          {isIngredientInputShown && <IngredientsInput />}
           <div className="flex gap-5 w-full">
             <SubmitButton
               isLoading={isLoading}
@@ -84,7 +87,6 @@ export default function NewMealForm() {
                   console.error(
                     "Failed to upload image or accessUrl is missing"
                   );
-           
                 }
               }}
             />
@@ -111,7 +113,6 @@ interface SubmitButtonProps {
 }
 
 function SubmitButton({ file, onUpload, isLoading }: SubmitButtonProps) {
-
   const handleClick = async () => {
     if (file) {
       await onUpload(file);
