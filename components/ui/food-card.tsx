@@ -6,7 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { Star, Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Edit } from "lucide-react";
+import { Edit, Clock } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -48,6 +48,7 @@ interface FoodCardProps {
   favoritedBy?: { name: string }[];
   hasViewDetails?: boolean;
   coverImage?: string;
+  cookingTime?: number | null;
 }
 
 export default function FoodCard({
@@ -57,7 +58,7 @@ export default function FoodCard({
   creatorImageUrl,
   favoriteMeals = [],
   userId,
-  hasViewDetails,
+  cookingTime,
   coverImage,
 }: FoodCardProps) {
   const { toast } = useToast();
@@ -187,10 +188,12 @@ export default function FoodCard({
                     />
 
                     <div className="absolute inset-0 text-white text-xl hover:rounded-xl flex justify-center items-center bg-black bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
-                      <CardTitle className="leading-7 mb-5 line-clamp-2 text-center w-full">
-                        {name}
+                      <CardTitle className="l">
+                        <div className="eading-7 mb-5 line-clamp-2 text-center w-full tracking-wide">
+                          {name}
+                        </div>
                         <div
-                          className="foodcard-list overflow-x-hidden overflow-y-auto break-words"
+                          className="foodcard-list overflow-x-hidden overflow-y-auto break-words text-sm mt-10 px-5"
                           dangerouslySetInnerHTML={{
                             __html: editedDescription,
                           }}
@@ -210,7 +213,7 @@ export default function FoodCard({
                   src={creatorImageUrl}
                   width={200}
                   height={200}
-                  alt="creator image"
+                  alt=""
                   className="h-10 w-10 rounded-full"
                 />
               )}
@@ -257,6 +260,11 @@ export default function FoodCard({
               )}
             </div>
           </CardContent>
+          {cookingTime && (
+            <div className="absolute bottom-2 right-2 text-sm p-2rounded-md flex items-center gap-2">
+              <Clock /> {cookingTime}m
+            </div>
+          )}
         </Card>
       )}
     </>

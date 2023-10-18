@@ -5,7 +5,8 @@ import { revalidatePath } from "next/cache";
 export async function createMealAction(
   name: string,
   description: string,
-  coverImage: string
+  coverImage: string,
+  cookingTime: number
 ) {
   console.log(
     "Creating meal with name:",
@@ -13,9 +14,11 @@ export async function createMealAction(
     "description:",
     description,
     "and coverImage:",
-    coverImage
+    coverImage,
+    "and cookingTime:",
+    cookingTime
   );
-  await createMeal(name, description,coverImage);
+  await createMeal(name, description,coverImage, cookingTime);
   setTimeout(() => {
     revalidatePath("/(routes)/recipes");
   }, 3000);

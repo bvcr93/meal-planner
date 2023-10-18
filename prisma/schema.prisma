@@ -21,6 +21,21 @@ model Profile {
   favorites FavoriteMeals[] 
 
 }
+model Ingredient {
+  id     String          @id @default(uuid())
+  name   String          @unique
+  meals  MealIngredient[]
+}
+
+model MealIngredient {
+  mealId      String
+  ingredientId String
+  meal        Meal        @relation(fields: [mealId], references: [id])
+  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+  @@id([mealId, ingredientId])
+  @@index([mealId])
+  @@index([ingredientId])
+}
 
 model Meal {
   id          String        @id @default(uuid())
@@ -29,9 +44,11 @@ model Meal {
   isEdited    Boolean?      @default(false)
   createdAt   DateTime?     @default(now())
   updatedAt   DateTime?
+  ingredients MealIngredient[]
   creatorId   String       
   creator     Profile?      @relation(fields: [creatorId], references: [id])
   favoritedBy FavoriteMeals[] 
+  cookingTime    Int?
   coverImage  String?        @db.Text
   @@index([id])
   @@index([creatorId])

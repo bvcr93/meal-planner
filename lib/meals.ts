@@ -28,7 +28,8 @@ export async function getMealsByUser(creatorId: string) {
 export async function createMeal(
   name: string,
   description: string,
-  coverImage: string
+  coverImage: string,
+  cookingTime: number
 ) {
   const profile = await initialProfile();
 
@@ -43,6 +44,7 @@ export async function createMeal(
         description,
         coverImage,
         creatorId: profile.id,
+        cookingTime
       },
     });
 

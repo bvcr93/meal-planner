@@ -32,8 +32,17 @@ export default function NewMealForm() {
       if (!name || typeof name !== "string") return;
       if (!description || typeof description !== "string") return;
       if (!coverImage || typeof coverImage !== "string") return;
+      const cookingTime = data.get("cookingTime");
+      const cookingTimeNumber = parseInt(cookingTime as string);
+      if (!cookingTime || isNaN(cookingTimeNumber)) return;
+      console.log(cookingTimeNumber);
       if (user && user.id) {
-        await createMealAction(name, description, coverImage);
+        await createMealAction(
+          name,
+          description,
+          coverImage,
+          cookingTimeNumber
+        );
 
         toast({
           title: `Meal created : ${name}`,
@@ -91,6 +100,13 @@ export default function NewMealForm() {
               }}
             />
           </div>
+          <select name="cookingTime" id="cookingTime">
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="20">20 minutes</option>
+            <option value="25">25 minutes</option>
+          </select>
         </div>
 
         <input
