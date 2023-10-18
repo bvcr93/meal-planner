@@ -16,13 +16,9 @@ export default async function RecipesPage() {
     },
   });
 
-  if (!userProfile) {
-    throw new Error("Profile not found for the authenticated user.");
-  }
-
   const meals = await db.meal.findMany({
     where: {
-      creatorId: userProfile.id,
+      creatorId: userProfile?.id,
     },
     include: {
       creator: true,
