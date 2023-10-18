@@ -20,8 +20,8 @@ export default async function Home() {
               cook them at home
             </p>
 
-            <Button size="lg" className="text-md">
-              Start trial
+            <Button asChild size="lg" className="text-md">
+              <Link href="/recipes/new">Get started</Link>
             </Button>
 
             <div className="flex items-center pt-14 space-x-4">

@@ -221,12 +221,12 @@ export default function FoodCard({
             <div className="flex space-x-5 items-center">
               <div>
                 <Link href={`/recipes/${name}`}>
-                  <Edit size={22} className="hover:cursor-pointer" />
+                  <Edit size={22} className="hover:cursor-pointer text-white" />
                 </Link>
               </div>
               <div>
                 <Star
-                  className={`font-light text-sm cursor-pointer ${
+                  className={`font-light text-sm cursor-pointer  ${
                     isFavorite ? "text-yellow-300" : ""
                   }`}
                   onClick={(e) => toggleFavorite(e)}

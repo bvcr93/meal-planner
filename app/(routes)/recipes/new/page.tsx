@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 import { getMeals } from "@/lib/meals";
 import { auth } from "@clerk/nextjs";
+import { ArrowLeft } from "lucide-react";
 export default async function RepcipeCreationPage() {
   const { meals } = await getMeals();
   const { userId }: { userId: string | null } = auth();
@@ -16,8 +17,10 @@ export default async function RepcipeCreationPage() {
     <div className="h-screen">
       <NewMealForm />
       <Link href={`/recipes`}>
-        <Button className="mt-10">go back</Button>
-        <UserCount creatorId={currentUserCreatorId} meals={meals} />
+        <Button className="mt-10">
+          <ArrowLeft className="inline-block w-4 h-4 mr-2" />
+        </Button>
+        {/* <UserCount creatorId={currentUserCreatorId} meals={meals} /> */}
       </Link>
     </div>
   );

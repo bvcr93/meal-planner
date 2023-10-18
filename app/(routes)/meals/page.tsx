@@ -50,11 +50,10 @@ export default function FavoriteMeals() {
 
   function removeMealFromList(id: string) {
     setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== id));
-  } // function here because of re-render of the child component otherwise the card stays
-  // even after the button delete was clicked
+  } 
   return (
     <div className="h-screen">
-      <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-10 place-items-center">
+      <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-10 place-items-center mt-10">
         {meals.map((meal) => (
           <FavoriteCard
             id={meal.id}

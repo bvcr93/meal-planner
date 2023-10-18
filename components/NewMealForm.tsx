@@ -2,7 +2,6 @@
 import { createMealAction } from "@/app/actions";
 import { useEdgeStore } from "@/lib/edgestore";
 import { useUser } from "@clerk/clerk-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { experimental_useFormStatus as UseFormStatus } from "react-dom";
@@ -10,12 +9,12 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
-import IngredientsInput from "./ingredients-input";
+
+
 export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isIngredientInputShown, setIsIngredientInputShown] = useState(false);
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
   const { toast } = useToast();
@@ -66,53 +65,50 @@ export default function NewMealForm() {
           const formData = new FormData(e.currentTarget);
           createMeal(formData);
         }}
-        className="flex flex-col md:w-1/2 mt-10"
+        className="flex flex-col w-full mt-10"
       >
         <div className="space-y-5">
           <InputComp />
           <TextAreaComp />
-          <Button onClick={() => setIsIngredientInputShown(true)}>
-            Add ingredient
-          </Button>
-          {isIngredientInputShown && <IngredientsInput />}
+          <h1>Select cooking time</h1>
           <div className="flex gap-5 w-full">
-            <SubmitButton
-              isLoading={isLoading}
-              file={file}
-              onUpload={async (selectedFile) => {
-                setIsLoading(true);
-                const res = await edgestore.publicFiles.upload({
-                  file: selectedFile,
-                });
-                if (res && res.url) {
-                  setUrl({ url: res.url });
-                  setImageUrl(res.url);
-                  const formData = new FormData(
-                    formRef.current as HTMLFormElement
-                  );
-                  formData.append("coverImage", res.url);
-                  createMeal(formData);
-                } else {
-                  console.error(
-                    "Failed to upload image or accessUrl is missing"
-                  );
-                }
-              }}
-            />
+            <select
+              name="cookingTime"
+              className="w-full md:w-1/2 py-2 px-4 border rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            >
+              <option value="5">5 minutes</option>
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="20">20 minutes</option>
+              <option value="25">25 minutes</option>
+            </select>
           </div>
-          <select name="cookingTime" id="cookingTime">
-            <option value="5">5 minutes</option>
-            <option value="10">10 minutes</option>
-            <option value="15">15 minutes</option>
-            <option value="20">20 minutes</option>
-            <option value="25">25 minutes</option>
-          </select>
         </div>
-
-        <input
+        <h2 className="mt-5">Select an image</h2>
+        <Input
+          className="mt-5"
           type="file"
           onChange={(e) => {
             setFile(e.target.files?.[0]);
+          }}
+        />
+        <SubmitButton
+          isLoading={isLoading}
+          file={file}
+          onUpload={async (selectedFile) => {
+            setIsLoading(true);
+            const res = await edgestore.publicFiles.upload({
+              file: selectedFile,
+            });
+            if (res && res.url) {
+              setUrl({ url: res.url });
+              setImageUrl(res.url);
+              const formData = new FormData(formRef.current as HTMLFormElement);
+              formData.append("coverImage", res.url);
+              createMeal(formData);
+            } else {
+              console.error("Failed to upload image or accessUrl is missing");
+            }
           }}
         />
       </form>
@@ -136,7 +132,12 @@ function SubmitButton({ file, onUpload, isLoading }: SubmitButtonProps) {
   };
 
   return (
-    <Button type="submit" onClick={handleClick} disabled={isLoading}>
+    <Button
+      type="submit"
+      className="md:w-1/2 mt-10"
+      onClick={handleClick}
+      disabled={isLoading}
+    >
       {isLoading ? "Creating..." : "Add meal"}
     </Button>
   );
@@ -149,7 +150,7 @@ function InputComp() {
     <Input
       type="text"
       placeholder="Name"
-      className="border"
+      className="border rounded-full md:w-1/2"
       name="name"
       disabled={isLoading}
     />
@@ -161,8 +162,8 @@ function TextAreaComp() {
   const isLoading = data.pending;
   return (
     <Textarea
-      placeholder="Ingredients, cooking time, etc..."
-      className="border"
+      placeholder="Describe your meal"
+      className="border md:w-1/2"
       name="description"
       disabled={isLoading}
     />
