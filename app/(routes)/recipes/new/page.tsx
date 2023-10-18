@@ -14,12 +14,17 @@ export default async function RepcipeCreationPage() {
   const currentUser = meals?.find((meal) => meal?.creator?.userId === userId);
   const currentUserCreatorId = currentUser?.creator?.id || null;
   return (
-    <div className="h-screen">
+    <div className="h-screen w-full flex md:items-center md:justify-center flex-col">
       <NewMealForm />
       <Link href={`/recipes`}>
-        <Button className="mt-10">
-          <ArrowLeft className="inline-block w-4 h-4 mr-2" />
-        </Button>
+        <div className="w-full flex items-center justify-center">
+          <Button
+            className="mt-10 border w-14 h-14 rounded-full"
+            variant={"ghost"}
+          >
+            <ArrowLeft size={20} />
+          </Button>
+        </div>
         {/* <UserCount creatorId={currentUserCreatorId} meals={meals} /> */}
       </Link>
     </div>

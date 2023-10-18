@@ -20,16 +20,17 @@ export default async function Navbar() {
 
   return (
     <div className="w-full py-5">
-      <div className="maincol flex justify-between items-center h-14 ">
+      <div className="maincol flex justify-between items-center">
         <div className="hidden md:flex items-center just">
-          <Link href={`/`} className="font-semibold italic text-xl mr-10">
-            <Image
+          <Link href={`/`} className="font-semibold font-mono tracking-widest text-xl mr-10">
+            {/* <Image
               src={foody}
               width={200}
               height={200}
               className="object-cover h-12"
               alt=""
-            />
+            /> */}
+            <h1 className="text-2xl">Foody</h1>
           </Link>
         </div>
         <div className="md:hidden flex">

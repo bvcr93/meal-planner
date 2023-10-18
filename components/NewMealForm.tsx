@@ -10,7 +10,6 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 
-
 export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -31,8 +30,10 @@ export default function NewMealForm() {
       if (!name || typeof name !== "string") return;
       if (!description || typeof description !== "string") return;
       if (!coverImage || typeof coverImage !== "string") return;
+
       const cookingTime = data.get("cookingTime");
       const cookingTimeNumber = parseInt(cookingTime as string);
+
       if (!cookingTime || isNaN(cookingTimeNumber)) return;
       console.log(cookingTimeNumber);
       if (user && user.id) {
@@ -57,64 +58,63 @@ export default function NewMealForm() {
   }
 
   return (
-    <>
-      <form
-        ref={formRef}
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          createMeal(formData);
-        }}
-        className="flex flex-col w-full mt-10"
-      >
-        <div className="space-y-5">
-          <InputComp />
-          <TextAreaComp />
-          <h1>Select cooking time</h1>
-          <div className="flex gap-5 w-full">
-            <select
-              name="cookingTime"
-              className="w-full md:w-1/2 py-2 px-4 border rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              <option value="5">5 minutes</option>
-              <option value="10">10 minutes</option>
-              <option value="15">15 minutes</option>
-              <option value="20">20 minutes</option>
-              <option value="25">25 minutes</option>
-            </select>
-          </div>
+    <form
+      ref={formRef}
+      onSubmit={(e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        createMeal(formData);
+      }}
+      className="flex flex-col md:w-2/3 mx-auto w-full"
+    >
+      <h1 className="text-center md:text-3xl text-xl font-mono my-10 tracking-widest ">
+        CREATE YOUR FAVORITE MEAL
+      </h1>
+      <div className="space-y-5 flex flex-col justify-center ">
+        <InputComp />
+        <TextAreaComp />
+        <h2 className="pt-10 text-lg">Select cooking time</h2>
+        <div className="flex gap-5 w-full items-center justify-center">
+          <select
+            name="cookingTime"
+            className="w-full  py-2 px-4 border rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="20">20 minutes</option>
+            <option value="25">25 minutes</option>
+          </select>
         </div>
-        <h2 className="mt-5">Select an image</h2>
-        <Input
-          className="mt-5"
-          type="file"
-          onChange={(e) => {
-            setFile(e.target.files?.[0]);
-          }}
-        />
-        <SubmitButton
-          isLoading={isLoading}
-          file={file}
-          onUpload={async (selectedFile) => {
-            setIsLoading(true);
-            const res = await edgestore.publicFiles.upload({
-              file: selectedFile,
-            });
-            if (res && res.url) {
-              setUrl({ url: res.url });
-              setImageUrl(res.url);
-              const formData = new FormData(formRef.current as HTMLFormElement);
-              formData.append("coverImage", res.url);
-              createMeal(formData);
-            } else {
-              console.error("Failed to upload image or accessUrl is missing");
-            }
-          }}
-        />
-      </form>
-
-      {/* {url?.url && <Link href={url.url}>{url.url}</Link>} */}
-    </>
+      </div>
+      <h2 className="mt-14 text-lg text-start ">Select an image</h2>
+      <Input
+        className="mt-5 w-full"
+        type="file"
+        onChange={(e) => {
+          setFile(e.target.files?.[0]);
+        }}
+      />
+      <SubmitButton
+        isLoading={isLoading}
+        file={file}
+        onUpload={async (selectedFile) => {
+          setIsLoading(true);
+          const res = await edgestore.publicFiles.upload({
+            file: selectedFile,
+          });
+          if (res && res.url) {
+            setUrl({ url: res.url });
+            setImageUrl(res.url);
+            const formData = new FormData(formRef.current as HTMLFormElement);
+            formData.append("coverImage", res.url);
+            createMeal(formData);
+          } else {
+            console.error("Failed to upload image or accessUrl is missing");
+          }
+        }}
+      />
+    </form>
   );
 }
 
@@ -134,7 +134,7 @@ function SubmitButton({ file, onUpload, isLoading }: SubmitButtonProps) {
   return (
     <Button
       type="submit"
-      className="md:w-1/2 mt-10"
+      className="mt-10 w-full text-md"
       onClick={handleClick}
       disabled={isLoading}
     >
@@ -150,7 +150,7 @@ function InputComp() {
     <Input
       type="text"
       placeholder="Name"
-      className="border rounded-full md:w-1/2"
+      className="border rounded md:"
       name="name"
       disabled={isLoading}
     />
@@ -163,7 +163,7 @@ function TextAreaComp() {
   return (
     <Textarea
       placeholder="Describe your meal"
-      className="border md:w-1/2"
+      className="border md:"
       name="description"
       disabled={isLoading}
     />
