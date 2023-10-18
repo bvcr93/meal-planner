@@ -8,6 +8,7 @@ import "react-quill/dist/quill.snow.css";
 import { useRouter } from "next/navigation";
 import { useToast } from "./use-toast";
 import { revalidatePath } from "next/cache";
+import { set } from "zod";
 interface RecipeEditorProps {
   meal: Meal | null;
   name: string | undefined;
@@ -19,6 +20,7 @@ export default function QuillEditor({
   description,
 }: RecipeEditorProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [editorContent, setEditorContent] = useState("");
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
@@ -52,6 +54,7 @@ export default function QuillEditor({
     }
 
     try {
+      setIsLoading(true);
       if (meal?.id && editedName && editedDescription) {
         console.log("Edited Name:", editedName);
         console.log("Edited Description:", editedDescription);
@@ -69,6 +72,7 @@ export default function QuillEditor({
       console.error("Error updating meal:", error);
     } finally {
       router.refresh();
+      setIsLoading(false);
     }
   };
 
@@ -122,6 +126,7 @@ export default function QuillEditor({
             value={editedName || ""}
             onChange={(e) => setEditedName(e.target.value)}
             name="name"
+            disabled={isLoading}
           />
 
           <textarea
@@ -129,6 +134,7 @@ export default function QuillEditor({
             style={{ display: "none" }}
             value={editorContent}
             readOnly
+            disabled={isLoading}
           ></textarea>
 
           <ReactQuill

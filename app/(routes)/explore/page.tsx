@@ -21,8 +21,6 @@ export default async function ExplorePage() {
   }
 
   const { meals } = await getMeals();
-  console.log("favoriteMealIdsForUser:", favoriteMealIdsForUser);
-  console.log("meals prop in FoodCard:", meals);
 
   return (
     <div className="min-h-screen">

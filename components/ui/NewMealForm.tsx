@@ -23,7 +23,7 @@ export default function NewMealForm() {
   const router = useRouter();
 
   async function createMeal(data: FormData) {
-    setIsLoading(true);
+
     try {
       const name = data.get("name");
       const description = data.get("description");
@@ -45,7 +45,7 @@ export default function NewMealForm() {
     } catch (error) {
       console.error("Error creating meal:", error);
     } finally {
-      setIsLoading(false);
+     
     }
   }
 
@@ -84,7 +84,7 @@ export default function NewMealForm() {
                   console.error(
                     "Failed to upload image or accessUrl is missing"
                   );
-                  setIsLoading(false);
+           
                 }
               }}
             />
@@ -111,6 +111,7 @@ interface SubmitButtonProps {
 }
 
 function SubmitButton({ file, onUpload, isLoading }: SubmitButtonProps) {
+
   const handleClick = async () => {
     if (file) {
       await onUpload(file);

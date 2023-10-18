@@ -12,12 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Image from "next/image";
 
 interface FavoriteCardProps {
   id: string;
   name: string;
   description: string;
   onRemove: (id: string) => void;
+  coverImage?: string;
 }
 
 export default function FavoriteCard({
@@ -25,6 +27,7 @@ export default function FavoriteCard({
   name,
   description,
   onRemove,
+  coverImage,
 }: FavoriteCardProps) {
   const { toast } = useToast();
   const { user } = useUser();
@@ -70,6 +73,17 @@ export default function FavoriteCard({
         </CardTitle>
         <CardDescription className="text-center">
           <div dangerouslySetInnerHTML={{ __html: description }}></div>
+          {coverImage && (
+            <Image
+              onLoad={() => {
+                console.log("image loaded");
+              }}
+              src={coverImage}
+              alt=""
+              height={400}
+              width={400}
+            />
+          )}
         </CardDescription>
       </CardHeader>
 

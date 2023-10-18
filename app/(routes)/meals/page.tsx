@@ -7,6 +7,7 @@ interface Meal {
   id: string;
   name: string;
   description: string;
+  coverImage?: string;
 }
 
 export default function FavoriteMeals() {
@@ -60,6 +61,7 @@ export default function FavoriteMeals() {
             name={meal.name}
             description={meal.description}
             onRemove={removeMealFromList}
+            coverImage={meal.coverImage}
           />
         ))}
       </div>

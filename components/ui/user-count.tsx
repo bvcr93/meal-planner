@@ -26,7 +26,7 @@ export default function UserCount({ creatorId, meals }: UserCountProps) {
       setIsAlertDialogOpen(true);
     }
   }, [remainingMeals]);
-  
+
   useEffect(() => {
     if (remainingMeals === 0) {
       toast({

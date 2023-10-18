@@ -31,7 +31,6 @@ export default function SearchSection({
 }: SearchInputProps) {
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const categoryId = searchParams.get("categoryId");
   const name = searchParams.get("name");
   const [value, setValue] = useState(name || "");

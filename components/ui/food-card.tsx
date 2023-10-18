@@ -109,7 +109,6 @@ export default function FoodCard({
 
       if (data.success) {
         setIsFavorite(true);
-        console.log(data.favorite);
         toast({
           description: "Meal successfully added to favorites!",
         });
@@ -182,35 +181,33 @@ export default function FoodCard({
           <CardHeader className="flex-grow">
             <div className="flex justify-between">
               {" "}
-              <CardTitle className="w-2/3 leading-7 mb-5 line-clamp-2">
+              <CardTitle className="leading-7 mb-5 line-clamp-2 text-center w-full">
                 {name}
               </CardTitle>
-              {creatorImageUrl && (
-                <Image
-                  alt=""
-                  src={creatorImageUrl}
-                  width={100}
-                  height={100}
-                  className="rounded-full h-10 w-10"
-                />
-              )}
+    
             </div>
             <CardDescription>
-              <div
+              {/* <div
                 className="foodcard-list overflow-x-hidden overflow-y-auto break-words"
                 dangerouslySetInnerHTML={{ __html: editedDescription }}
-              ></div>
-              <div>
+              ></div> */}
+              <div className="">
                 {coverImage && (
-                  <div className="mt-10">
-                    <Image
-                      src={coverImage}
-                      width={1000}
-                      height={1000}
-                      alt=""
-                      className="max-h-[200px] object-cover"
-                    />
-                  </div>
+                  <Link href={`/explore/${name}`}>
+                    <div className="mt-10 h-[200px] hover:bg-black relative flex justify-center items-center">
+                      <Image
+                        src={coverImage}
+                        width={1000}
+                        height={1000}
+                        alt=""
+                        className="max-h-[200px] object-cover absolute inset-0 rounded-lg"
+                      />
+
+                      <div className="absolute inset-0 text-white text-xl flex justify-center items-center bg-black bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
+                        View recipe
+                      </div>
+                    </div>
+                  </Link>
                 )}
               </div>
             </CardDescription>
@@ -261,13 +258,6 @@ export default function FoodCard({
                   )}
                 </p>
               </div>
-            </div>
-            <div>
-              {hasViewDetails && (
-                <Button  size="sm" asChild className="w-full bg-sky-500">
-                  <Link href={`/explore/${name}`}>View Details</Link>
-                </Button>
-              )}
             </div>
           </CardContent>
           <CardFooter className="grid grid-cols-1">
