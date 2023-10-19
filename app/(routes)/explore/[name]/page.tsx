@@ -21,24 +21,14 @@ export default async function MealDetails({
     },
   });
 
-  console.log("Decoded Name:", decodedName);
-  console.log("Retrieved Meal:", meal);
-
+  if (!meal) {
+    return <div>Meal not found.</div>;
+  }
   return (
     <div className="h-screen flex flex-col items-center justify-center">
-      {meal ? (
-        <>
-          <div className="text-2xl">{meal.name}</div>
-          <p>Description: {meal.description}</p>
-          {meal.creator && (
-            <>
-              <p>Created by: {meal.creator.name}</p>
-            </>
-          )}
-        </>
-      ) : (
-        <p>Meal not found.</p>
-      )}
+      <div className="text-2xl">{meal.name}</div>
+      <p>Description: {meal.description}</p>
+      {meal.creator && <p>Created by: {meal.creator.name}</p>}
     </div>
   );
 }

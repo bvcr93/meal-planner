@@ -22,46 +22,49 @@ export default function EditArea({
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
   const [isEditing, setIsEditing] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
   const { toast } = useToast();
-  console.log("Meal Name:", meal?.name);
-  console.log("Meal Description:", meal?.description);
-  console.log(allMeals);
-  
-  async function action(data: FormData) {
-    const name = data.get("name") as string;
-    const description = data.get("description") as string;
 
-    if (!name || !description || !meal?.id) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!editedName || !editedDescription || !meal?.id) {
+      console.error("Required data is missing or undefined.");
       return;
     }
-    if (editedName && editedDescription) {
-      await updateMealAction(meal.id, editedName, editedDescription, isEditing);
-      toast({
-        description: editedDescription,
-      });
-    } else {
-      console.error("Required data is missing or undefined.");
-    }
 
-    formRef.current?.reset();
-  }
+    setIsEditing(true);
+
+    try {
+      await updateMealAction(meal.id, editedName, editedDescription, false);
+      toast({
+        description: "Meal updated successfully!",
+      });
+      router.push("/recipes");
+    } catch (error) {
+      console.error("Error updating meal:", error);
+    } finally {
+      setIsEditing(false);
+    }
+  };
+
   return (
-    <form ref={formRef} action={action} className="w-full h-screen">
+    <form onSubmit={handleSubmit} className="w-full h-screen">
       <Input
+        disabled={isEditing}
         className="w-2/3 rounded"
         value={editedName}
         onChange={(e) => setEditedName(e.target.value)}
       />
       <Textarea
-        name=""
-        id=""
+        disabled={isEditing}
         className="w-2/3 mt-5"
         value={editedDescription}
         onChange={(e) => setEditedDescription(e.target.value)}
       ></Textarea>
-      <Button className="mt-10">Save</Button>
+      <Button type="submit" className="mt-10" disabled={isEditing}>
+        {isEditing ? "Editing..." : "Save"}{" "}
+      </Button>
     </form>
   );
 }
