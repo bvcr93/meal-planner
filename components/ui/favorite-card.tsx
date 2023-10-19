@@ -72,7 +72,7 @@ export default function FavoriteCard({
           {name}
         </CardTitle>
         <CardDescription className="text-center flex flex-col items-center justify-center">
-          <div dangerouslySetInnerHTML={{ __html: description }}></div>
+          <div dangerouslySetInnerHTML={{ __html: description }} className="my-5"></div>
           {coverImage && (
             <Image className="w-16 h-16 rounded-full"
               onLoad={() => {

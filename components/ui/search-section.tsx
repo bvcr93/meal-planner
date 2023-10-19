@@ -96,7 +96,8 @@ export default function SearchSection({
             creatorImageUrl={meal.creator?.imageUrl}
             favoriteMeals={favoriteMeals}
             coverImage={meal.coverImage || undefined}
-            hasViewDetails={true}
+            hasCreatorImage = {true}
+          
           />
         ))}
       </div>

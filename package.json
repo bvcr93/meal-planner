@@ -14,6 +14,7 @@
     "@edgestore/react": "^0.1.4",
     "@edgestore/server": "^0.1.4",
     "@lexical/react": "^0.12.2",
+    "@plaiceholder/next": "^3.0.0",
     "@prisma/client": "^5.3.1",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",

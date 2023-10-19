@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import Spinner from "./spinner";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { Clock, Edit, Star, Trash2Icon } from "lucide-react";
@@ -37,9 +38,9 @@ interface FoodCardProps {
   favoriteMeals?: string[];
   userId?: string;
   favoritedBy?: { name: string }[];
-  hasViewDetails?: boolean;
-  coverImage?: string;
+  coverImage?: string | undefined;
   cookingTime?: number | null;
+  hasCreatorImage?: boolean;
 }
 
 export default function FoodCard({
@@ -51,12 +52,15 @@ export default function FoodCard({
   userId,
   cookingTime,
   coverImage,
+  hasCreatorImage = false,
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
   const [isClient, setIsClient] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
+  const [imageLoaded, setImageLoaded] = useState(false);
 
+  const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
+  console.log(coverImage);
   const { user } = useUser();
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
@@ -163,6 +167,11 @@ export default function FoodCard({
               {coverImage && (
                 <Link href={`/explore/${name}`}>
                   <div className="h-[500px] relative hover:bg-black hover:rounded-xl flex justify-center items-center">
+                    {!imageLoaded && (
+                      <div className="absolute inset-0 flex justify-center items-center">
+                        <Spinner />
+                      </div>
+                    )}
                     <Image
                       src={coverImage}
                       fill
@@ -171,6 +180,9 @@ export default function FoodCard({
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       placeholder="blur"
                       blurDataURL={coverImage}
+                      onLoad={() => {
+                        setImageLoaded(true);
+                      }}
                     />
 
                     <div className="absolute inset-0 text-white text-xl hover:rounded-xl flex justify-center items-center bg-black bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
@@ -179,7 +191,7 @@ export default function FoodCard({
                           {name}
                         </div>
                         <div
-                          className="foodcard-list overflow-x-hidden overflow-y-auto break-words text-sm mt-10 px-5"
+                          className="text-center text-sm mt-10 px-5"
                           dangerouslySetInnerHTML={{
                             __html: editedDescription,
                           }}
@@ -194,9 +206,9 @@ export default function FoodCard({
 
           <CardContent className="flex h-24 absolute right-2 top-4 items-center justify-between space-x-6 w-full">
             <div>
-              {creatorImageUrl && (
+              {hasCreatorImage && (
                 <Image
-                  src={creatorImageUrl}
+                  src={creatorImageUrl || ""}
                   width={200}
                   height={200}
                   alt=""
