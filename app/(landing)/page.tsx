@@ -5,8 +5,9 @@ import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
 import AboutSection from "@/components/about";
 import Slider from "@/components/ui/slider";
-
+import { db } from "@/lib/db";
 export default async function Home() {
+  const meals = await db.meal.findMany();
   return (
     <main>
       <div className="maincol h-full">
@@ -78,7 +79,7 @@ export default async function Home() {
         <AboutSection />
       </div> */}
       <div className="maincol ">
-        <Slider />
+        <Slider meals={meals} />
       </div>
     </main>
   );

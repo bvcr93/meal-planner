@@ -73,7 +73,7 @@ export default function NewMealForm() {
       <div className="space-y-5 flex flex-col justify-center ">
         <InputComp />
         <TextAreaComp />
-        <h2 className="pt-10 text-lg">Select cooking time</h2>
+        <h2 className="pt-10 text-lg">Select prep time</h2>
         <div className="flex gap-5 w-full items-center justify-center">
           <select
             name="cookingTime"

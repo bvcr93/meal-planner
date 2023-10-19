@@ -41,6 +41,7 @@ interface FoodCardProps {
   coverImage?: string | undefined;
   cookingTime?: number | null;
   hasCreatorImage?: boolean;
+  hasEditButton?: boolean;
 }
 
 export default function FoodCard({
@@ -53,6 +54,7 @@ export default function FoodCard({
   cookingTime,
   coverImage,
   hasCreatorImage = false,
+  hasEditButton = false,
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -187,7 +189,7 @@ export default function FoodCard({
 
                     <div className="absolute inset-0 text-white text-xl hover:rounded-xl flex justify-center items-center bg-black bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
                       <CardTitle className="l">
-                        <div className="eading-7 mb-5 py-2 line-clamp-2 text-center w-full tracking-wide">
+                        <div className="eading-7 mb-5 py-2 line-clamp-2 text-center w-full tracking-wide px-5">
                           {name}
                         </div>
                         <div
@@ -218,9 +220,14 @@ export default function FoodCard({
             </div>
             <div className="flex space-x-5 items-center">
               <div>
-                <Link href={`/recipes/${name}`}>
-                  <Edit size={22} className="hover:cursor-pointer text-white" />
-                </Link>
+                {hasEditButton && (
+                  <Link href={`/recipes/${name}`}>
+                    <Edit
+                      size={22}
+                      className="hover:cursor-pointer text-white"
+                    />
+                  </Link>
+                )}
               </div>
               <div>
                 <Star

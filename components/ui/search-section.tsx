@@ -97,6 +97,8 @@ export default function SearchSection({
             favoriteMeals={favoriteMeals}
             coverImage={meal.coverImage || undefined}
             hasCreatorImage = {true}
+            hasEditButton = {false}
+            cookingTime={meal.cookingTime}
           
           />
         ))}

@@ -25,7 +25,7 @@ export default async function MealDetails({
     return <div>Meal not found.</div>;
   }
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
+    <div className="h-screen flex flex-col items-center justify-start mt-10">
       <div className="text-2xl">{meal.name}</div>
       <p>Description: {meal.description}</p>
       {meal.creator && <p>Created by: {meal.creator.name}</p>}
