@@ -1,69 +1,85 @@
 "use client";
-import { useState } from "react";
-import { Textarea } from "./ui/textarea";
+
+import { updateMealAction } from "@/app/actions";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { updateMealAction } from "@/app/actions";
-import { useRef } from "react";
-import { useRouter } from "next/navigation";
+import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
+
 interface EditAreaProps {
   name: string | undefined;
   description: string | undefined;
-  meal: Meal | null;
-  allMeals: Meal[];
+  id: string;
 }
-export default function EditArea({
-  name,
-  description,
-  meal,
-  allMeals,
-}: EditAreaProps) {
+export default function EditArea({ name, description, id }: EditAreaProps) {
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedName, setEditedName] = useState(name);
   const [isEditing, setIsEditing] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  const [error, setError] = useState("");
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (error) {
+      setError("");
+    }
+    if (editedName === name && editedDescription === description) {
+      setIsButtonDisabled(true);
+    } else {
+      setIsButtonDisabled(false);
+    }
+  }, [editedName, editedDescription]);
+
+  const handleUpdateMeal = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!editedName || !editedDescription || !meal?.id) {
-      console.error("Required data is missing or undefined.");
+    if (!editedName || !editedDescription) {
+      setError("Please fill out all fields.");
       return;
     }
-
     setIsEditing(true);
 
     try {
-      await updateMealAction(meal.id, editedName, editedDescription, false);
+      await updateMealAction(id, editedName, editedDescription, false);
       toast({
         description: "Meal updated successfully!",
       });
       router.push("/recipes");
     } catch (error) {
-      console.error("Error updating meal:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setIsEditing(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full h-screen">
+    <form onSubmit={handleUpdateMeal} className="w-full h-screen">
       <Input
         disabled={isEditing}
         className="w-2/3 rounded"
         value={editedName}
         onChange={(e) => setEditedName(e.target.value)}
       />
+
       <Textarea
         disabled={isEditing}
         className="w-2/3 mt-5"
         value={editedDescription}
         onChange={(e) => setEditedDescription(e.target.value)}
       ></Textarea>
-      <Button type="submit" className="mt-10" disabled={isEditing}>
-        {isEditing ? "Editing..." : "Save"}{" "}
+      {error && <p className="text-red-500 mt-5">{error}</p>}
+      <Button
+        type="submit"
+        className="mt-10"
+        disabled={isEditing || isButtonDisabled}
+      >
+        {isEditing ? "Editing..." : "Save"}
       </Button>
     </form>
   );

@@ -1,10 +1,6 @@
 import EditArea from "@/components/edit-area";
 import { db } from "@/lib/db";
-interface Props {
-  params: {
-    id: string;
-  };
-}
+
 export default async function RecipeDetailsPage({
   params,
 }: {
@@ -26,17 +22,13 @@ export default async function RecipeDetailsPage({
 
   return (
     <div className="">
-      <EditArea
-        name={meal?.name}
-        description={meal?.description}
-        meal={meal}
-        allMeals={allMeals}
-      />
-      {/* <QuillEditor
-        name={meal?.name}
-        description={meal?.description}
-        meal={meal}
-      /> */}
+      {meal && (
+        <EditArea
+          name={meal.name}
+          description={meal.description}
+          id={meal.id}
+        />
+      )}
     </div>
   );
 }
