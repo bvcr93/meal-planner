@@ -63,6 +63,7 @@ export default async function Home() {
               className="rounded-full w-[500px] h-[500px] object-cover hidden md:flex"
               src={meallanding}
               width={1000}
+              priority
             />
           </div>
         </div>

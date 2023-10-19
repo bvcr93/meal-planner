@@ -2,6 +2,8 @@ import { db } from "./db";
 import { auth } from "@clerk/nextjs";
 import { initialProfile } from "./profile";
 import { redirect } from "next/navigation";
+import { Ingredient } from "@prisma/client";
+import ingredients from "@/ingredients";
 export async function getMeals() {
   try {
     const meals = await db.meal.findMany({
@@ -44,7 +46,7 @@ export async function createMeal(
         description,
         coverImage,
         creatorId: profile.id,
-        cookingTime
+        cookingTime,
       },
     });
 

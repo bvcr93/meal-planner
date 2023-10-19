@@ -21,12 +21,14 @@ export default async function ExplorePage() {
   }
 
   const { meals } = await getMeals();
-
+  if (!meals) {
+    return <div>Error loading meals</div>;
+  }
   return (
     <div className="min-h-screen">
-      <div className="flex">
-        <h2 className="text-lg sm:text-xl mb-16 mt-10">
-          Find you favorite meal
+      <div className="flex w-full text-center">
+        <h2 className="text-lg sm:text-xl mb-16 mt-10 ">
+          Find your favorite meal
         </h2>
       </div>
       <SearchSection meals={meals} favoriteMeals={favoriteMealIdsForUser} />
