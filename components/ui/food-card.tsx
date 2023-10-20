@@ -60,9 +60,8 @@ export default function FoodCard({
   const [editedDescription, setEditedDescription] = useState(description);
   const [isClient, setIsClient] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
-  console.log(coverImage);
+
   const { user } = useUser();
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
@@ -187,13 +186,13 @@ export default function FoodCard({
                       }}
                     />
 
-                    <div className="absolute inset-0 text-white text-xl hover:rounded-xl flex justify-center items-center bg-black bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
+                    <div className="absolute inset-0 text-white text-xl bg-black hover:rounded-xl flex justify-center items-center bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
                       <CardTitle className="l">
-                        <div className="eading-7 mb-5 py-2 line-clamp-2 text-center w-full tracking-wide px-5">
+                        <div className="leading-7 line-clamp-2 h-[100px] flex items-center justify-center text-center w-full tracking-wide px-5">
                           {name}
                         </div>
                         <div
-                          className="text-center text-sm mt-10 px-5"
+                          className="text-center text-sm mt-5 px-5"
                           dangerouslySetInnerHTML={{
                             __html: editedDescription,
                           }}

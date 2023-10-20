@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { TMeal } from "./search-section";
@@ -10,8 +10,26 @@ interface SliderProps {
 
 export default function Slider({ meals }: SliderProps) {
   const [startIndex, setStartIndex] = useState(0);
-  const ITEMS_TO_SHOW = 5;
+  const ITEMS_TO_SHOW = 4;
+  const [itemsToShow, setItemsToShow] = useState(5);
 
+  useEffect(() => {
+    const updateItemsToShow = () => {
+      if (window.innerWidth <= 640) {
+        setItemsToShow(2);
+      } else {
+        setItemsToShow(4);
+      }
+    };
+
+    updateItemsToShow();
+
+    window.addEventListener("resize", updateItemsToShow);
+
+    return () => {
+      window.removeEventListener("resize", updateItemsToShow);
+    };
+  }, []);
   const latestMeals = meals
     .sort((a, b) => {
       if (a.createdAt && b.createdAt) {
@@ -21,7 +39,7 @@ export default function Slider({ meals }: SliderProps) {
       }
       return 0;
     })
-    .slice(startIndex, startIndex + ITEMS_TO_SHOW);
+    .slice(startIndex, startIndex + itemsToShow);
 
   const handleNext = () => {
     if (startIndex + ITEMS_TO_SHOW < meals.length) {
