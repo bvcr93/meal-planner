@@ -27,7 +27,7 @@ export default async function ExplorePage() {
   return (
     <div className="min-h-screen">
       <div className="flex w-full text-center">
-        <h2 className="text-lg sm:text-xl mb-16 mt-10 ">
+        <h2 className="text-lg sm:text-xl mb-16 mt-10 text-center w-full">
           Find your favorite meal
         </h2>
       </div>

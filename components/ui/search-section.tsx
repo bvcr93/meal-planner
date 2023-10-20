@@ -7,7 +7,7 @@ import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
 
-type TMeal = {
+export type TMeal = {
   id: string;
   name: string;
   description: string;
