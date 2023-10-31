@@ -39,7 +39,7 @@ export default async function MealDetails({
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-black opacity-50 rounded-xl w-full h-full"></div>
           <div className="text-white text-center absolute w-full space-y-5">
-            <div className="text-2xl">{meal.name}</div>
+            <div className="text-4xl font-semibold">{meal.name}</div>
             <p>{meal.description}</p>
             {meal.creator && <p>Created by: {meal.creator.name}</p>}
           </div>

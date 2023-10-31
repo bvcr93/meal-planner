@@ -84,8 +84,8 @@ interface SliderCardProps {
 function SliderCard({ meal }: SliderCardProps) {
   return (
     <Link href={`/explore/${meal.name}`}>
-    <div className="w-72 relative h-24 cursor-pointer flex items-center justify-center flex-col text-sm px-5 text-center hover:bg-gray-800 duration-200 rounded-xl">
-      <p className="z-50"> {meal.name}</p>
+    <div className="w-60 relative h-24 cursor-pointer flex items-center justify-center flex-col text-sm px-5 text-center hover:bg-gray-800 duration-200 rounded-xl">
+      <p className="z-50 text-white"> {meal.name}</p>
       <Image
         src={meal.coverImage || ""}
         alt=" "

@@ -43,8 +43,9 @@ interface FoodCardProps {
   cookingTime?: number | null;
   hasCreatorImage?: boolean;
   hasEditButton?: boolean;
-  hasRemoveFromFavorites: boolean;
-  hasFavoriteStar: boolean;
+  hasRemoveFromFavorites?: boolean;
+  hasFavoriteStar?: boolean;
+
 }
 
 export default function FoodCard({
@@ -237,7 +238,7 @@ export default function FoodCard({
               <div>
                 {hasFavoriteStar && (
                   <Star
-                    className={`font-light text-sm cursor-pointer  ${
+                    className={`font-light text-sm cursor-pointer text-white ${
                       isFavorite ? "text-yellow-300" : ""
                     }`}
                     onClick={(e) => toggleFavorite(e)}
@@ -282,7 +283,7 @@ export default function FoodCard({
             </Button>
           )}
           {cookingTime && (
-            <div className="absolute bottom-2 right-2 text-sm p-2rounded-md flex items-center gap-2">
+            <div className="absolute bottom-2 right-2 text-sm p-2rounded-md flex items-center gap-2 text-white">
               <Clock /> {cookingTime}m
             </div>
           )}

@@ -74,8 +74,8 @@ export default async function Home() {
           <Reviews />
         </div>
       </div>
-      <div className="maincol ">
-        <h1 className="text-semibold text-xl">Check latest meals</h1>
+      <div className="maincol">
+        <h1 className="text-semibold text-lg text-center mt-5">Check latest meals</h1>
         <Slider meals={meals} />
       </div>
     </main>

@@ -63,6 +63,7 @@ export default async function RecipesPage() {
     <div className="min-h-screen mb-20">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
         {meals?.map((meal) => (
+    
           <FoodCard
             userId={meal.creator?.userId}
             creatorImageUrl={meal.creator?.imageUrl}
@@ -77,8 +78,7 @@ export default async function RecipesPage() {
             cookingTime={meal.cookingTime}
             hasEditButton={true}
             hasCreatorImage={false}
-            hasFavoriteStar
-            hasRemoveFromFavorites={false}
+      
       
           />
         ))}
