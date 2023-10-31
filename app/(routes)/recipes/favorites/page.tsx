@@ -1,5 +1,6 @@
 "use client";
 import FavoriteCard from "@/components/ui/favorite-card";
+import FoodCard from "@/components/ui/food-card";
 import Spinner from "@/components/ui/spinner";
 import { useEffect, useState } from "react";
 
@@ -47,20 +48,20 @@ export default function FavoriteMeals() {
         <span>You have no favorite meals yet.</span>
       </div>
     );
-
-  function removeMealFromList(id: string) {
+  function removeFromFavorites(id: string) {
     setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== id));
-  } 
+  }
   return (
-    <div className="h-screen">
-      <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-10 place-items-center mt-10">
+    <div className="min-h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 place-items-center">
         {meals.map((meal) => (
           <FavoriteCard
             id={meal.id}
             name={meal.name}
             description={meal.description}
-            onRemove={removeMealFromList}
             coverImage={meal.coverImage}
+            onRemove={removeFromFavorites}
+            key={meal.id}
           />
         ))}
       </div>

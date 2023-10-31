@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
+
 export async function DELETE(
   req: Request,
   { params }: { params: { mealId: string } }
@@ -32,7 +33,7 @@ export async function DELETE(
         },
       },
     });
-
+   
     return new Response(JSON.stringify({ success: true }));
   } catch (error) {
     const errorMessage = (error as Error).message;

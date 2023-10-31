@@ -26,14 +26,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog";
+import { Button } from "./button";
 
 interface FoodCardProps {
   id: string;
   name: string;
   description: string;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
-  creatorId: string;
+  creatorId?: string;
   creatorImageUrl?: string;
   favoriteMeals?: string[];
   userId?: string;
@@ -42,6 +43,8 @@ interface FoodCardProps {
   cookingTime?: number | null;
   hasCreatorImage?: boolean;
   hasEditButton?: boolean;
+  hasRemoveFromFavorites: boolean;
+  hasFavoriteStar: boolean;
 }
 
 export default function FoodCard({
@@ -55,6 +58,9 @@ export default function FoodCard({
   coverImage,
   hasCreatorImage = false,
   hasEditButton = false,
+  hasRemoveFromFavorites,
+  hasFavoriteStar,
+
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -229,12 +235,14 @@ export default function FoodCard({
                 )}
               </div>
               <div>
-                <Star
-                  className={`font-light text-sm cursor-pointer  ${
-                    isFavorite ? "text-yellow-300" : ""
-                  }`}
-                  onClick={(e) => toggleFavorite(e)}
-                ></Star>
+                {hasFavoriteStar && (
+                  <Star
+                    className={`font-light text-sm cursor-pointer  ${
+                      isFavorite ? "text-yellow-300" : ""
+                    }`}
+                    onClick={(e) => toggleFavorite(e)}
+                  ></Star>
+                )}
               </div>{" "}
               {user?.id === userId && (
                 <AlertDialog>
@@ -264,6 +272,15 @@ export default function FoodCard({
               )}
             </div>
           </CardContent>
+          {hasRemoveFromFavorites && (
+            <Button
+              variant={"link"}
+              className="absolute bottom-5 flex w-full items-center justify-center text-red-500"
+              onClick={handleRemoveFromFavourites}
+            >
+              Remove from favorites
+            </Button>
+          )}
           {cookingTime && (
             <div className="absolute bottom-2 right-2 text-sm p-2rounded-md flex items-center gap-2">
               <Clock /> {cookingTime}m

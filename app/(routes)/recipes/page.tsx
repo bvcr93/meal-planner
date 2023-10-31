@@ -57,6 +57,8 @@ export default async function RecipesPage() {
     favoriteMealIdsForUser.includes(meal.id)
   );
   console.log("favorite meals: ", favoriteMealsForUser);
+
+  
   return (
     <div className="min-h-screen mb-20">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
@@ -75,7 +77,9 @@ export default async function RecipesPage() {
             cookingTime={meal.cookingTime}
             hasEditButton={true}
             hasCreatorImage={false}
-            // favoritedBy={mealsWithFavorites}
+            hasFavoriteStar
+            hasRemoveFromFavorites={false}
+      
           />
         ))}
       </div>

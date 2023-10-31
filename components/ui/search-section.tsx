@@ -80,7 +80,7 @@ export default function SearchSection({
       <Input
         onChange={onChange}
         value={value}
-        className="md:w-1/2 mx-auto rounded-full"
+        className="w-full rounded-full"
         placeholder="Search meals"
       />
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
@@ -99,6 +99,9 @@ export default function SearchSection({
             hasCreatorImage = {true}
             hasEditButton = {false}
             cookingTime={meal.cookingTime}
+            hasFavoriteStar
+            hasRemoveFromFavorites={false}
+
           
           />
         ))}

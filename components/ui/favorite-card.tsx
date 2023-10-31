@@ -15,11 +15,11 @@ import {
 import Image from "next/image";
 
 interface FavoriteCardProps {
+  onRemove: (id: string) => void;
+  coverImage?: string;
   id: string;
   name: string;
   description: string;
-  onRemove: (id: string) => void;
-  coverImage?: string;
 }
 
 export default function FavoriteCard({
