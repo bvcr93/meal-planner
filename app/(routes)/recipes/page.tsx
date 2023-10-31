@@ -53,33 +53,32 @@ export default async function RecipesPage() {
   const favoriteMealIdsForUser = favoriteMealsForUser.map(
     (meal) => meal.mealId
   );
-
+  const favoriteMealsToShow = meals?.filter((meal) =>
+    favoriteMealIdsForUser.includes(meal.id)
+  );
+  console.log("favorite meals: ", favoriteMealsForUser);
   return (
     <div className="min-h-screen mb-20">
-    <Link href={`/recipes/new`}>
-        <Button className="mt-20">Create new recipe</Button>
-    </Link>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
         {meals?.map((meal) => (
-            <FoodCard
-                userId={meal.creator?.userId}
-                creatorImageUrl={meal.creator?.imageUrl}
-                creatorId={meal.creatorId}
-                key={meal.id}
-                id={meal.id}
-                favoriteMeals={favoriteMealIdsForUser}
-                name={meal.name}
-                description={meal.description}
-                createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
-                coverImage={meal.coverImage || undefined}
-                cookingTime={meal.cookingTime}
-                hasEditButton={true}
-                hasCreatorImage={false}
-                // favoritedBy={mealsWithFavorites}
-            />
+          <FoodCard
+            userId={meal.creator?.userId}
+            creatorImageUrl={meal.creator?.imageUrl}
+            creatorId={meal.creatorId}
+            key={meal.id}
+            id={meal.id}
+            favoriteMeals={favoriteMealIdsForUser}
+            name={meal.name}
+            description={meal.description}
+            createdAt={meal.createdAt ? meal.createdAt.toString() : ""}
+            coverImage={meal.coverImage || undefined}
+            cookingTime={meal.cookingTime}
+            hasEditButton={true}
+            hasCreatorImage={false}
+            // favoritedBy={mealsWithFavorites}
+          />
         ))}
+      </div>
     </div>
-</div>
-
   );
 }

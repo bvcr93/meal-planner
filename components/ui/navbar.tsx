@@ -22,7 +22,10 @@ export default async function Navbar() {
     <div className="w-full py-5">
       <div className="maincol flex justify-between items-center">
         <div className="hidden md:flex items-center just">
-          <Link href={`/`} className="font-semibold font-mono tracking-widest text-xl mr-10">
+          <Link
+            href={`/`}
+            className="font-semibold font-mono tracking-widest text-xl mr-10"
+          >
             {/* <Image
               src={foody}
               width={200}
@@ -50,7 +53,6 @@ export default async function Navbar() {
           </Sheet>
         </div>
         <div className="md:flex gap-10 hidden">
-          <Link href={`/meals`}>Favorites</Link>
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/recipes`}>My Recipes</Link>
 

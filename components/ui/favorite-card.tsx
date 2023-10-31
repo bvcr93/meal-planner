@@ -66,15 +66,19 @@ export default function FavoriteCard({
     }
   };
   return (
-    <Card className="w-[350px] hover:cursor-pointer hover:shadow-xl hover:shadow-red-500 duration-300 bg-transparent h-auto flex items-center justify-center flex-col">
+    <Card className="w-[350px] hover:cursor-pointer hover:shadow-xl h-[500px] hover:shadow-red-500 duration-300 bg-transparent flex items-center justify-center flex-col">
       <CardHeader>
         <CardTitle className="text-center font-mono font-medium">
           {name}
         </CardTitle>
         <CardDescription className="text-center flex flex-col items-center justify-center">
-          <div dangerouslySetInnerHTML={{ __html: description }} className="my-5"></div>
+          <div
+            dangerouslySetInnerHTML={{ __html: description }}
+            className="my-5"
+          ></div>
           {coverImage && (
-            <Image className="w-16 h-16 rounded-full"
+            <Image
+              className="w-16 h-16 rounded-full"
               onLoad={() => {
                 console.log("image loaded");
               }}
