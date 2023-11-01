@@ -60,8 +60,9 @@ export default function FavoriteMeals() {
             name={meal.name}
             description={meal.description}
             coverImage={meal.coverImage}
-            onRemove={removeFromFavorites}
             key={meal.id}
+            onRemove={removeFromFavorites}
+            // removing is not reflected immediatelly
           />
         ))}
       </div>

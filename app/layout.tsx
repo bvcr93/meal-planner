@@ -29,16 +29,14 @@ export default function RootLayout({
           >
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
+              defaultTheme="light"
               enableSystem
               disableTransitionOnChange
               storageKey="mealplanner"
             >
               <Navbar />
-
               {children}
               <Toaster />
-
               <Footer />
             </ThemeProvider>
           </body>

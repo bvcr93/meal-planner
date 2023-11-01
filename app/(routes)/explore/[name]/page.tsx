@@ -26,15 +26,15 @@ export default async function MealDetails({
   }
   return (
     <div className="h-screen flex flex-col items-center justify-start mt-10 gap-10">
-      <div className="relative w-1/2">
+      <div className="relative w-full">
         {" "}
         {/* Adjust width as needed */}
         <Image
           src={meal.coverImage || ""}
-          width={400}
+          width={600}
           height={100}
           alt=""
-          className="w-full object-cover rounded-xl"
+          className="w-full object-cover rounded-xl h-96"
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-black opacity-50 rounded-xl w-full h-full"></div>

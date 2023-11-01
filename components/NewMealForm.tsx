@@ -14,6 +14,7 @@ export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
   const { toast } = useToast();
@@ -65,7 +66,7 @@ export default function NewMealForm() {
         const formData = new FormData(e.currentTarget);
         createMeal(formData);
       }}
-      className="flex flex-col md:w-2/3 mx-auto w-full"
+      className="flex flex-col md:w-2/3 mx-auto w-full mt-10"
     >
       <h1 className="text-center md:text-3xl text-xl font-mono my-10 tracking-widest ">
         CREATE YOUR FAVORITE MEAL

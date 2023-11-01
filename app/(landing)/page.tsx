@@ -6,6 +6,7 @@ import meallanding from "../../public/meal-landing.jpg";
 import AboutSection from "@/components/about";
 import Slider from "@/components/ui/slider";
 import { db } from "@/lib/db";
+import VercelCard from "@/components/ui/vercel-card";
 export default async function Home() {
   const meals = await db.meal.findMany();
   return (
@@ -75,7 +76,9 @@ export default async function Home() {
         </div>
       </div>
       <div className="maincol">
-        <h1 className="text-semibold text-lg text-center mt-5">Check latest meals</h1>
+        <h1 className="text-semibold text-lg text-center mt-5">
+          Check latest meals
+        </h1>
         <Slider meals={meals} />
       </div>
     </main>

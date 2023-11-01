@@ -21,7 +21,7 @@ export default async function RecipeDetailsPage({
   console.log("Searching for meal with name:", params.id);
 
   return (
-    <div className="">
+    <div className="mt-10">
       {meal && (
         <EditArea
           name={meal.name}

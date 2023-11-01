@@ -1,18 +1,17 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { useState } from "react";
-import { Button } from "./button";
-import { useToast } from "./use-toast";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
+import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import { useState } from "react";
+import { Button } from "./button";
+import { useToast } from "./use-toast";
 
 interface FavoriteCardProps {
   onRemove: (id: string) => void;
@@ -66,7 +65,7 @@ export default function FavoriteCard({
     }
   };
   return (
-    <Card className="w-[350px] hover:cursor-pointer hover:shadow-xl h-[500px] hover:shadow-red-500 duration-300 bg-transparent flex items-center justify-center flex-col">
+    <Card className="w-[350px] hover:cursor-pointer hover:shadow-xl h-[500px] duration-300 bg-transparent flex items-center justify-center flex-col">
       <CardHeader>
         <CardTitle className="text-center font-mono font-medium">
           {name}
