@@ -1,12 +1,10 @@
 import Reviews from "@/components/reviews";
 import { Button } from "@/components/ui/button";
+import Slider from "@/components/ui/slider";
+import { db } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
-import AboutSection from "@/components/about";
-import Slider from "@/components/ui/slider";
-import { db } from "@/lib/db";
-import VercelCard from "@/components/ui/vercel-card";
 export default async function Home() {
   const meals = await db.meal.findMany();
   return (
