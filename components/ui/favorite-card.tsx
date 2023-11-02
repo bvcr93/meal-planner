@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "./button";
 import { useToast } from "./use-toast";
+import Link from "next/link";
 
 interface FavoriteCardProps {
   onRemove: (id: string) => void;
@@ -90,7 +91,7 @@ export default function FavoriteCard({
         </CardDescription>
       </CardHeader>
 
-      <CardFooter>
+      <CardFooter className="flex items-center gap-5">
         {" "}
         <Button
           onClick={handleRemoveFromFavourites}
@@ -99,6 +100,9 @@ export default function FavoriteCard({
         >
           Remove
         </Button>
+        <Link href={`/explore/${name}`}>
+          <Button className="mt-10">See</Button>
+        </Link>
       </CardFooter>
     </Card>
   );

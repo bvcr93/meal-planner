@@ -28,14 +28,8 @@ export default function NewMealForm() {
       const description = data.get("description");
       const coverImage = data.get("coverImage");
 
-      if (!name || typeof name !== "string") {
-        return;
-      } else {
-      }
-      if (!description || typeof description !== "string") {
-        return;
-      } else {
-      }
+      if (!name || typeof name !== "string") return;
+      if (!description || typeof description !== "string") return;
       if (!coverImage || typeof coverImage !== "string") return;
 
       const cookingTime = data.get("cookingTime");

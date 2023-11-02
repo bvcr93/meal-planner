@@ -56,17 +56,15 @@ export default function FavoriteMeals() {
     <div className="min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 place-items-center">
         {meals.map((meal) => (
-          <Link href={`/explore/${meal.name}`}>
-            <FavoriteCard
-              id={meal.id}
-              name={meal.name}
-              description={meal.description}
-              coverImage={meal.coverImage}
-              key={meal.id}
-              onRemove={removeFromFavorites}
-              // removing is not reflected immediatelly when food card is instead of favorite card
-            />
-          </Link>
+          <FavoriteCard
+            id={meal.id}
+            name={meal.name}
+            description={meal.description}
+            coverImage={meal.coverImage}
+            key={meal.id}
+            onRemove={removeFromFavorites}
+            // removing is not reflected immediatelly when food card is instead of favorite card
+          />
         ))}
       </div>
     </div>
