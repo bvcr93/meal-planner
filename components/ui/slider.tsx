@@ -62,8 +62,8 @@ export default function Slider({ meals }: SliderProps) {
         <ArrowLeft />
       </button>
 
-      {latestMeals.map((meal) => (
-        <SliderCard meal={meal} />
+      {latestMeals.map((meal, idx) => (
+        <SliderCard meal={meal} key={idx} />
       ))}
       <button
         className="absolute right-0 top-1/2 transform -translate-y-1/2"
