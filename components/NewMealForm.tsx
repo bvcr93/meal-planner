@@ -14,8 +14,6 @@ export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [nameError, setNameError] = useState<string | null>(null);
-  const [descriptionError, setDescriptionError] = useState<string | null>(null);
 
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
@@ -31,16 +29,12 @@ export default function NewMealForm() {
       const coverImage = data.get("coverImage");
 
       if (!name || typeof name !== "string") {
-        setNameError("Name is required.");
         return;
       } else {
-        setNameError(null);
       }
       if (!description || typeof description !== "string") {
-        setDescriptionError("Description is required.");
         return;
       } else {
-        setDescriptionError(null);
       }
       if (!coverImage || typeof coverImage !== "string") return;
 
@@ -85,11 +79,9 @@ export default function NewMealForm() {
       </h1>
       <div className="space-y-5 flex flex-col justify-center ">
         <InputComp />
-        {nameError && <p className="text-red-500">{nameError}</p>}{" "}  
+
         <TextAreaComp />
-        {descriptionError && (
-          <p className="text-red-500">{descriptionError}</p>
-        )}{" "}
+
         <h2 className="pt-10 text-lg">Select prep time</h2>
         <div className="flex gap-5 w-full items-center justify-center">
           <select
