@@ -3,7 +3,7 @@ import { createMealAction } from "@/app/actions";
 import { useEdgeStore } from "@/lib/edgestore";
 import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { experimental_useFormStatus as UseFormStatus } from "react-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -14,7 +14,9 @@ export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [descriptionError, setDescriptionError] = useState<string | null>(null);
+
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
   const { toast } = useToast();
@@ -28,15 +30,25 @@ export default function NewMealForm() {
       const description = data.get("description");
       const coverImage = data.get("coverImage");
 
-      if (!name || typeof name !== "string") return;
-      if (!description || typeof description !== "string") return;
+      if (!name || typeof name !== "string") {
+        setNameError("Name is required.");
+        return;
+      } else {
+        setNameError(null);
+      }
+      if (!description || typeof description !== "string") {
+        setDescriptionError("Description is required.");
+        return;
+      } else {
+        setDescriptionError(null);
+      }
       if (!coverImage || typeof coverImage !== "string") return;
 
       const cookingTime = data.get("cookingTime");
       const cookingTimeNumber = parseInt(cookingTime as string);
 
       if (!cookingTime || isNaN(cookingTimeNumber)) return;
-      console.log(cookingTimeNumber);
+
       if (user && user.id) {
         await createMealAction(
           name,
@@ -66,14 +78,18 @@ export default function NewMealForm() {
         const formData = new FormData(e.currentTarget);
         createMeal(formData);
       }}
-      className="flex flex-col md:w-2/3 mx-auto w-full mt-10"
+      className="flex flex-col md:w-2/3 mx-auto w-full"
     >
       <h1 className="text-center md:text-3xl text-xl font-mono my-10 tracking-widest ">
         CREATE YOUR FAVORITE MEAL
       </h1>
       <div className="space-y-5 flex flex-col justify-center ">
         <InputComp />
+        {nameError && <p className="text-red-500">{nameError}</p>}{" "}  
         <TextAreaComp />
+        {descriptionError && (
+          <p className="text-red-500">{descriptionError}</p>
+        )}{" "}
         <h2 className="pt-10 text-lg">Select prep time</h2>
         <div className="flex gap-5 w-full items-center justify-center">
           <select

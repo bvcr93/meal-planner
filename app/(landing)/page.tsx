@@ -75,7 +75,7 @@ export default async function Home() {
           <Reviews />
         </div>
       </div>
-      <div className="maincol">
+      <div className="maincol pb-10">
         <h1 className="text-semibold text-lg text-center mt-5">
           Check latest meals
         </h1>

@@ -54,26 +54,24 @@ export default function Slider({ meals }: SliderProps) {
   };
 
   return (
-    
-      <div className="w-full flex justify-center items-center gap-5 my-10 relative">
-        <button
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
-          onClick={handlePrev}
-        >
-          <ArrowLeft />
-        </button>
+    <div className="w-full flex justify-center items-center gap-5 my-10 relative">
+      <button
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
+        onClick={handlePrev}
+      >
+        <ArrowLeft />
+      </button>
 
-        {latestMeals.map((meal) => (
-          <SliderCard meal={meal} />
-        ))}
-        <button
-          className="absolute right-0 top-1/2 transform -translate-y-1/2"
-          onClick={handleNext}
-        >
-          <ArrowRight />
-        </button>
-      </div>
-   
+      {latestMeals.map((meal) => (
+        <SliderCard meal={meal} />
+      ))}
+      <button
+        className="absolute right-0 top-1/2 transform -translate-y-1/2"
+        onClick={handleNext}
+      >
+        <ArrowRight />
+      </button>
+    </div>
   );
 }
 
@@ -84,16 +82,16 @@ interface SliderCardProps {
 function SliderCard({ meal }: SliderCardProps) {
   return (
     <Link href={`/explore/${meal.name}`}>
-    <div className="w-60 relative h-24 cursor-pointer flex items-center justify-center flex-col text-sm px-5 text-center hover:bg-gray-800 duration-200 rounded-xl">
-      <p className="z-50 text-white"> {meal.name}</p>
-      <Image
-        src={meal.coverImage || ""}
-        alt=" "
-        fill
-        className="object-cover rounded-xl"
-      />
-      <div className="absolute inset-0 bg-black opacity-50 rounded-xl"></div>
-    </div>
+      <div className="w-60 relative h-24 cursor-pointer flex items-center justify-center flex-col text-sm px-5 text-center hover:bg-gray-800 duration-200 rounded-xl">
+        <p className="z-50 text-white"> {meal.name}</p>
+        <Image
+          src={meal.coverImage || ""}
+          alt=" "
+          fill
+          className="object-cover rounded-xl"
+        />
+        <div className="absolute inset-0 bg-black opacity-50 rounded-xl"></div>
+      </div>
     </Link>
   );
 }

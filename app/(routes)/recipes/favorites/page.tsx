@@ -2,6 +2,7 @@
 import FavoriteCard from "@/components/ui/favorite-card";
 import FoodCard from "@/components/ui/food-card";
 import Spinner from "@/components/ui/spinner";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Meal {
@@ -55,15 +56,17 @@ export default function FavoriteMeals() {
     <div className="min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 place-items-center">
         {meals.map((meal) => (
-          <FavoriteCard
-            id={meal.id}
-            name={meal.name}
-            description={meal.description}
-            coverImage={meal.coverImage}
-            key={meal.id}
-            onRemove={removeFromFavorites}
-            // removing is not reflected immediatelly
-          />
+          <Link href={`/explore/${meal.name}`}>
+            <FavoriteCard
+              id={meal.id}
+              name={meal.name}
+              description={meal.description}
+              coverImage={meal.coverImage}
+              key={meal.id}
+              onRemove={removeFromFavorites}
+              // removing is not reflected immediatelly when food card is instead of favorite card
+            />
+          </Link>
         ))}
       </div>
     </div>

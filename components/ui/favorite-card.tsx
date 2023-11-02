@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
@@ -77,7 +77,7 @@ export default function FavoriteCard({
           ></div>
           {coverImage && (
             <Image
-              className="w-16 h-16 rounded-full"
+              className="w-32 h-32 rounded-full"
               onLoad={() => {
                 console.log("image loaded");
               }}
@@ -95,7 +95,7 @@ export default function FavoriteCard({
         <Button
           onClick={handleRemoveFromFavourites}
           size={"sm"}
-          className="mt-5"
+          className="mt-10"
         >
           Remove
         </Button>

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
+import { Search } from "lucide-react";
 
 export type TMeal = {
   id: string;
@@ -15,7 +16,7 @@ export type TMeal = {
   createdAt: Date | null;
   updatedAt: Date | null;
   creatorId: string;
-  cookingTime: number | null; 
+  cookingTime: number | null;
   coverImage: string | null;
   creator?: {
     id: string;
@@ -29,8 +30,8 @@ export type TMeal = {
 };
 
 type SearchInputProps = {
-  meals: TMeal[]; 
-  favoriteMeals: string[];
+  meals: TMeal[];
+favoriteMeals: string[];
 };
 
 export default function SearchSection({
@@ -77,12 +78,17 @@ export default function SearchSection({
 
   return (
     <div className="mb-20">
-      <Input
-        onChange={onChange}
-        value={value}
-        className="w-full rounded-full"
-        placeholder="Search meals"
-      />
+      <div className="relative">
+        <Input
+          onChange={onChange}
+          value={value}
+          className="w-full rounded-full shadow-md py-6"
+          placeholder="Search meals"
+        />
+        <div>
+          <Search className="absolute top-3 right-5 dark:text-slate-200 text-neutral-600" />
+        </div>
+      </div>
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.map((meal: TMeal) => (
           <FoodCard
@@ -96,13 +102,11 @@ export default function SearchSection({
             creatorImageUrl={meal.creator?.imageUrl}
             favoriteMeals={favoriteMeals}
             coverImage={meal.coverImage || undefined}
-            hasCreatorImage = {true}
-            hasEditButton = {false}
+            hasCreatorImage={true}
+            hasEditButton={false}
             cookingTime={meal.cookingTime}
             hasFavoriteStar
             hasRemoveFromFavorites={false}
-
-          
           />
         ))}
       </div>
