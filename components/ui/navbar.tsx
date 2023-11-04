@@ -43,10 +43,14 @@ export default async function Navbar() {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-                <SheetDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
+                <SheetTitle className="text-start text-2xl">Foody</SheetTitle>
+                <SheetDescription className="flex flex-col w-full items-start text-lg pt-10 space-y-2">
+                  <Link href={`/explore`}>Explore</Link>
+                  <Link href={`/recipes`}>My Recipes</Link>
+
+                  <Link href={`/pro`} className="text-orange-500 font-semibold">
+                    Upgrade to Pro
+                  </Link>
                 </SheetDescription>
               </SheetHeader>
             </SheetContent>
