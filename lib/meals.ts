@@ -1,9 +1,6 @@
 import { db } from "./db";
-import { auth } from "@clerk/nextjs";
 import { initialProfile } from "./profile";
-import { redirect } from "next/navigation";
-import { Ingredient } from "@prisma/client";
-import ingredients from "@/ingredients";
+
 export async function getMeals() {
   try {
     const meals = await db.meal.findMany({
@@ -21,7 +18,6 @@ export async function getMeals() {
 export async function getMealsByUser(creatorId: string) {
   try {
     const meals = await db.meal.findMany({ where: { creatorId } });
-    // console.log("meals found for user:", creatorId, meals);
     return { meals };
   } catch (error) {
     return { error };

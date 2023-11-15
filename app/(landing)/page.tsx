@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
+import chicken from "../../public/chicken.jpg";
+import Specials from "@/components/specials";
 
 export default async function Home() {
   const meals = await db.meal.findMany();
@@ -79,6 +81,11 @@ export default async function Home() {
           Check latest meals
         </h1>
         <Slider meals={meals} />
+      </div>
+      <div className="maincol">
+        <h1 className="text-orange-500 font-semibold text-2xl">Specials</h1>
+        <hr className="mt-2 dark:border-slate-600 border-black" />
+        <Specials meals={meals} />
       </div>
     </main>
   );

@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import FoodCard from "@/components/ui/food-card";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import Link from "next/link";
+import { MealsDisplay } from "@/components/meals-display";
 export default async function RecipesPage() {
   const { userId }: { userId: string | null } = auth();
   console.log("Logged in User ID:", userId);

@@ -1,6 +1,6 @@
-import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
+import { NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const { userId } = auth();
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         mealId: mealId,
       },
     });
-
+    
     return new Response(JSON.stringify({ success: true, favorite }));
   } catch (error) {
     const errorMessage = (error as Error).message;

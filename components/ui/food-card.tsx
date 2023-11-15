@@ -115,7 +115,7 @@ export default function FoodCard({
     } catch (error) {
       console.error("Error adding to favorites:", error);
       toast({
-        description: "Failed to add to favorites. Please try again.",
+        description: "Failed to add to favorites. Please try again or sign in",
       });
     }
   };

@@ -3,7 +3,7 @@ import { createMealAction } from "@/app/actions";
 import { useEdgeStore } from "@/lib/edgestore";
 import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { experimental_useFormStatus as UseFormStatus } from "react-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -21,6 +21,16 @@ export default function NewMealForm() {
   const { user } = useUser();
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
+
+  
+  const hardcodedIngredients = [
+    { id: '1', name: 'Salt' },
+    { id: '2', name: 'Pepper' },
+    { id: '3', name: 'Garlic' },
+    { id: '4', name: 'Olive Oil' },
+    { id: '5', name: 'Lemon' },
+  ];
+
 
   async function createMeal(data: FormData) {
     try {

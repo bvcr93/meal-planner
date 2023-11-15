@@ -30,7 +30,7 @@ export default function Slider({ meals }: SliderProps) {
       window.removeEventListener("resize", updateItemsToShow);
     };
   }, []);
-  const latestMeals = meals
+   const latestMeals = meals
     .sort((a, b) => {
       if (a.createdAt && b.createdAt) {
         return (
