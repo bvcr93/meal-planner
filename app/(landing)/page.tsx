@@ -1,12 +1,11 @@
 import Reviews from "@/components/reviews";
+import Specials from "@/components/specials";
 import { Button } from "@/components/ui/button";
 import Slider from "@/components/ui/slider";
 import { db } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import meallanding from "../../public/meal-landing.jpg";
-import chicken from "../../public/chicken.jpg";
-import Specials from "@/components/specials";
 
 export default async function Home() {
   const meals = await db.meal.findMany();
@@ -77,14 +76,16 @@ export default async function Home() {
         </div>
       </div>
       <div className="maincol pb-10">
-        <h1 className="text-semibold text-lg text-center mt-5">
+        <h1 className="text-semibold text-lg text-center mt-5 ">
           Check latest meals
         </h1>
         <Slider meals={meals} />
       </div>
-      <div className="maincol">
-        <h1 className="text-orange-500 font-semibold text-2xl">Specials</h1>
-        <hr className="mt-2 dark:border-slate-600 border-black" />
+      <hr />
+      <div className="maincol mt-10">
+        <h1 className="text-yellow-500 font-semibold text-2xl text-center">
+          Specials
+        </h1>
         <Specials meals={meals} />
       </div>
     </main>

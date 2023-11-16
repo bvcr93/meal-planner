@@ -3,7 +3,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { TMeal } from "./search-section";
+import { TMeal } from "@/types";
+
 interface SliderProps {
   meals: TMeal[];
 }

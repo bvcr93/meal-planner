@@ -1,30 +1,12 @@
 "use client";
 
+import { TMeal } from "@/types";
 import { Button } from "./ui/button";
 import FoodCard from "./ui/food-card";
 import { useState } from "react";
-interface Profile {
-  id: string;
-  userId: string;
-  name: string;
-  imageUrl: string;
-}
-
- interface Meal {
-  id: string;
-  name: string;
-  description: string;
-  isEdited: boolean | null;
-  createdAt: Date | null;
-  updatedAt: Date | null;
-  creatorId: string;
-  cookingTime: number | null;
-  coverImage: string | null;
-  creator: Profile | null;
-}
 
 interface FavoriteMealsProps {
-  meals: Meal[];
+  meals: TMeal[];
   favoriteMealIds: string[];
 }
 
@@ -63,5 +45,3 @@ export function MealsDisplay({ meals, favoriteMealIds }: FavoriteMealsProps) {
     </div>
   );
 }
-
-// for filtering the favorite meals

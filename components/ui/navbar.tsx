@@ -47,8 +47,7 @@ export default async function Navbar() {
                 <SheetDescription className="flex flex-col w-full items-start text-lg pt-10 space-y-2">
                   <Link href={`/explore`}>Explore</Link>
                   <Link href={`/recipes`}>My Recipes</Link>
-
-                  <Link href={`/pro`} className="text-orange-500 font-semibold">
+                 <Link href={`/pro`} className="text-orange-500 font-semibold">
                     Upgrade to Pro
                   </Link>
                 </SheetDescription>
