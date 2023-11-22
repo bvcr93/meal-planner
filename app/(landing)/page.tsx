@@ -73,6 +73,7 @@ export default async function Home() {
       <div className="md:py-24 bg-slate-200 dark:bg-neutral-900 flex items-center justify-center">
         <div className="maincol ">
           <Reviews />
+   
         </div>
       </div>
       <div className="maincol pb-10">
