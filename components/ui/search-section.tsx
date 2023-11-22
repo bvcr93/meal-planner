@@ -11,7 +11,7 @@ import { TMeal } from "@/types";
 
 type SearchInputProps = {
   meals: TMeal[];
-favoriteMeals: string[];
+  favoriteMeals: string[];
 };
 
 export default function SearchSection({
@@ -70,7 +70,7 @@ export default function SearchSection({
         </div>
       </div>
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
-        {filteredMeals.map((meal: TMeal) => (
+        {filteredMeals.slice(0, 6).map((meal: TMeal) => (
           <FoodCard
             key={meal.id}
             id={meal.id}

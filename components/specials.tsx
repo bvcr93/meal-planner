@@ -30,7 +30,7 @@ export default function Specials({ meals }: SpecialsProps) {
           >
             <div
               onClick={() => handleMealDisplay(meal.id, index)}
-              className="w-full cursor-pointe "
+              className="w-full cursor-pointer"
             >
               {meal.name}
             </div>
