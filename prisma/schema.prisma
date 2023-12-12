@@ -19,6 +19,7 @@ model Profile {
   updatedAt DateTime      @updatedAt
   createdMeals Meal[]     
   favorites FavoriteMeals[] 
+  
 
 }
 model Ingredient {
@@ -46,7 +47,7 @@ model Meal {
   updatedAt   DateTime?
   ingredients MealIngredient[]
   creatorId   String       
-  creator     Profile?      @relation(fields: [creatorId], references: [id])
+  creator     Profile?      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   favoritedBy FavoriteMeals[] 
   cookingTime    Int?
   coverImage  String?        @db.Text
@@ -57,7 +58,7 @@ model Meal {
 model FavoriteMeals {
   profileId String
   mealId    String
-  profile   Profile @relation(fields: [profileId], references: [id])
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   meal      Meal    @relation(fields: [mealId], references: [id])
   @@id([profileId, mealId])
   @@index([profileId])

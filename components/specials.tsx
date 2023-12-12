@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { TMeal } from "@/types";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 interface SpecialsProps {
   meals: TMeal[];
@@ -16,6 +18,17 @@ export default function Specials({ meals }: SpecialsProps) {
     const foundMeal = meals.find((meal) => meal.id === mealId);
     setSelectedMeal(foundMeal);
     setCurrentIndex(index);
+  }
+  if(meals.length === 0) {
+    return (
+
+      <div className="flex flex-col gap-5 items-center py-5 justify-center">
+      <div>No meals to show! Create one</div>
+      <Link href={'/recipes/new'}>
+      <Button className="mb-10">Create meal</Button>
+      </Link>
+      </div>
+    )
   }
 
   return (

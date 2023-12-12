@@ -21,11 +21,16 @@ export default async function Home() {
               Discover the best recipes from around the world and learn how to
               cook them at home
             </p>
-
-            <Button asChild size="lg" className="text-md">
-              <Link href="/recipes/new">Get started</Link>
-            </Button>
-
+            <div className="flex gap-10 items-center">
+              <Button asChild size="lg" className="text-md">
+                <Link href="/recipes/new">Get started</Link>
+              </Button>
+              <Link href={"/weekly-plan"}>
+                <Button size="lg" variant={"ghost"}>
+                  Create weekly plan
+                </Button>
+              </Link>
+            </div>
             <div className="flex items-center pt-14 space-x-4">
               <div className="flex justify-start w-3/4 space-x-[calc(-11%)]">
                 <div
@@ -73,7 +78,6 @@ export default async function Home() {
       <div className="md:py-24 bg-slate-200 dark:bg-neutral-900 flex items-center justify-center">
         <div className="maincol ">
           <Reviews />
-   
         </div>
       </div>
       <div className="maincol pb-10">

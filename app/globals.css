@@ -5,7 +5,11 @@
 .maincol {
   @apply max-w-screen-2xl px-10 mx-auto;
 }
-
+html,
+body,
+:root {
+  height: 100%;
+}
 ul {
   list-style-type: disc;
   padding-left: 40px;
