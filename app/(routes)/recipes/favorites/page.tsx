@@ -1,8 +1,6 @@
 "use client";
 import FavoriteCard from "@/components/ui/favorite-card";
-import FoodCard from "@/components/ui/food-card";
 import Spinner from "@/components/ui/spinner";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Meal {

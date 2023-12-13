@@ -27,6 +27,7 @@ import {
   AlertDialogTrigger,
 } from "./alert-dialog";
 import { Button } from "./button";
+import MealHashtag from "../meal-hashtag";
 
 interface FoodCardProps {
   id: string;
@@ -272,6 +273,7 @@ export default function FoodCard({
                 </AlertDialog>
               )}
             </div>
+        
           </CardContent>
           {hasRemoveFromFavorites && (
             <Button
@@ -287,6 +289,7 @@ export default function FoodCard({
               <Clock /> {cookingTime}m
             </div>
           )}
+              <MealHashtag name= {name}/>
         </Card>
       )}
     </>

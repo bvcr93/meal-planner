@@ -8,6 +8,7 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
 import { Search } from "lucide-react";
 import { TMeal } from "@/types";
+import SelectComponent from "./select";
 
 type SearchInputProps = {
   meals: TMeal[];
@@ -21,7 +22,9 @@ export default function SearchSection({
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
   const categoryId = searchParams.get("categoryId");
+  const cookingTime = searchParams.get("cookingTime"); 
   const name = searchParams.get("name");
+  const [selectedSearchOption, setSelectedSearchOption] = useState("name"); 
   const [value, setValue] = useState(name || "");
   const router = useRouter();
 
@@ -30,11 +33,16 @@ export default function SearchSection({
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.target.value);
   };
+  const onSelectChange = (option: string) => {
+    setSelectedSearchOption(option);
+  };
   useEffect(() => {
-    const query = {
-      name: debouncedValue,
+    const query: Record<string, string | null> = {
+      name: selectedSearchOption === "name" ? debouncedValue : null,
       categoryId: categoryId,
+      cookingTime: selectedSearchOption === "cookingTime" ? debouncedValue : null,
     };
+
     const url = qs.stringifyUrl(
       {
         url: window.location.href,
@@ -50,11 +58,20 @@ export default function SearchSection({
       router.push(url);
     }
 
-    const filtered = meals.filter((meal: Meal) =>
-      meal.name.toLowerCase().includes(debouncedValue.toLowerCase())
-    );
+    const filtered = meals.filter((meal: Meal) => {
+      const nameMatch =
+        selectedSearchOption === "name" &&
+        meal.name.toLowerCase().includes(debouncedValue.toLowerCase());
+
+      const cookingTimeMatch =
+        selectedSearchOption === "cookingTime" &&
+        meal.cookingTime === parseInt(debouncedValue);
+
+      return nameMatch || cookingTimeMatch;
+    });
+
     setFilteredMeals(filtered);
-  }, [debouncedValue, categoryId, meals]);
+  }, [debouncedValue, categoryId, meals, selectedSearchOption]);
 
   return (
     <div className="mb-20">
@@ -63,8 +80,11 @@ export default function SearchSection({
           onChange={onChange}
           value={value}
           className="w-full rounded-full shadow-md py-6"
-          placeholder="Search meals"
+          placeholder="Search meals, cooking time (in mins....)"
         />
+        <div className="mt-20">
+        <SelectComponent onSelectChange={onSelectChange} />
+        </div>
         <div>
           <Search className="absolute top-3 right-5 dark:text-slate-200 text-neutral-600" />
         </div>

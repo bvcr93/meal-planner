@@ -2,6 +2,7 @@ import FoodCard from "@/components/ui/food-card";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { MealsDisplay } from "@/components/meals-display";
+import { Button } from "@/components/ui/button";
 export default async function RecipesPage() {
   const { userId }: { userId: string | null } = auth();
   console.log("Logged in User ID:", userId);
@@ -63,6 +64,7 @@ export default async function RecipesPage() {
   }
   return (
     <div className="min-h-screen mb-20">
+   
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
         {meals?.map((meal) => (
           <FoodCard
