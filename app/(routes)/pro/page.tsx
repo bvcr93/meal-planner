@@ -45,7 +45,7 @@ export default function ProPage() {
         <CardContent>
           <p className="my-2 font-semibold text-2xl">20$/month</p>
           <p className="my-2">Create infinite amount of recipes</p>
-          <Button className="w-full mt-5 bg-gradient-to-b from-orange-300 to-orange-500 hover:bg-gradient-to-b hover:from-orange-400 hover:to-orange-600 duration-300">
+          <Button className="w-full mt-7 bg-gradient-to-b from-orange-300 to-orange-500 hover:bg-gradient-to-b hover:from-orange-400 hover:to-orange-600 duration-300">
             Start Pro
           </Button>
           <div className="flex flex-col space-y-5 mt-10">

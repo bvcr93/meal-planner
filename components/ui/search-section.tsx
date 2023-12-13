@@ -1,13 +1,13 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Meal, Profile } from "@prisma/client";
+import { TMeal } from "@/types";
+import { Meal } from "@prisma/client";
+import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
-import { Search } from "lucide-react";
-import { TMeal } from "@/types";
 import SelectComponent from "./select";
 
 type SearchInputProps = {
@@ -22,7 +22,6 @@ export default function SearchSection({
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
   const categoryId = searchParams.get("categoryId");
-  const cookingTime = searchParams.get("cookingTime"); 
   const name = searchParams.get("name");
   const [selectedSearchOption, setSelectedSearchOption] = useState("name"); 
   const [value, setValue] = useState(name || "");
