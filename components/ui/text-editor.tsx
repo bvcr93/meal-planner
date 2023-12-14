@@ -8,7 +8,7 @@ import "react-quill/dist/quill.snow.css";
 import { useRouter } from "next/navigation";
 import { useToast } from "./use-toast";
 import { revalidatePath } from "next/cache";
-import { set } from "zod";
+import { Meal } from "@prisma/client";
 interface RecipeEditorProps {
   meal: Meal | null;
   name: string | undefined;

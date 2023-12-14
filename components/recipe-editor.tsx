@@ -11,7 +11,7 @@ import FroalaEditor from "react-froala-wysiwyg";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
-
+import { Meal } from "@prisma/client";
 interface RecipeEditorProps {
   meal: Meal | null;
   name: string | undefined;
