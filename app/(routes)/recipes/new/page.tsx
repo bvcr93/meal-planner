@@ -14,8 +14,10 @@ export default async function RepcipeCreationPage() {
   const currentUser = meals?.find((meal) => meal?.creator?.userId === userId);
   const currentUserCreatorId = currentUser?.creator?.id || null;
   return (
-    <div className="min-h-screen w-full flex md:items-center md:justify-center flex-col">
-      <NewMealForm />
+    <div className="min-h-screen w-full flex md:items-center flex-col">
+      <div className="w-full mt-20">
+        <NewMealForm />
+      </div>
       <Link href={`/recipes`}>
         <div className="w-full flex items-center justify-center">
           <Button
