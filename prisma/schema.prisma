@@ -3,54 +3,54 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
-
 model Profile {
-  id        String        @id @default(uuid())
-  userId    String        @unique
-  name      String
-  imageUrl  String        @db.Text
-  email     String        @db.Text
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  createdMeals Meal[]     
-  favorites FavoriteMeals[] 
-  
-
+  id           String          @id @default(uuid())
+  userId       String          @unique
+  name         String
+  imageUrl     String          @db.Text
+  email        String          @db.Text
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  createdMeals Meal[]
+  favorites    FavoriteMeals[]
 }
+
 model Ingredient {
-  id     String          @id @default(uuid())
-  name   String          @unique
-  meals  MealIngredient[]
+  id    String           @id @default(uuid())
+  name  String           @unique
+  meals MealIngredient[]
 }
 
 model MealIngredient {
-  mealId      String
+  mealId       String
   ingredientId String
-  meal        Meal        @relation(fields: [mealId], references: [id])
-  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+  meal         Meal       @relation(fields: [mealId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+
   @@id([mealId, ingredientId])
   @@index([mealId])
   @@index([ingredientId])
 }
 
 model Meal {
-  id          String        @id @default(uuid())
+  id          String           @id @default(uuid())
   name        String
   description String
-  isEdited    Boolean?      @default(false)
-  createdAt   DateTime?     @default(now())
+  isEdited    Boolean?         @default(false)
+  createdAt   DateTime?        @default(now())
   updatedAt   DateTime?
   ingredients MealIngredient[]
-  creatorId   String       
-  creator     Profile?      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
-  favoritedBy FavoriteMeals[] 
-  cookingTime    Int?
-  coverImage  String?        @db.Text
+  creatorId   String
+  creator     Profile?         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  favoritedBy FavoriteMeals[]
+  cookingTime Int?
+  coverImage  String?          @db.Text
+
   @@index([id])
   @@index([creatorId])
 }
@@ -60,8 +60,8 @@ model FavoriteMeals {
   mealId    String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   meal      Meal    @relation(fields: [mealId], references: [id])
+
   @@id([profileId, mealId])
   @@index([profileId])
   @@index([mealId])
 }
-

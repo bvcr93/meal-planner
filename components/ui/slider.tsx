@@ -31,7 +31,7 @@ export default function Slider({ meals }: SliderProps) {
       window.removeEventListener("resize", updateItemsToShow);
     };
   }, []);
-   const latestMeals = meals
+  const latestMeals = meals
     .sort((a, b) => {
       if (a.createdAt && b.createdAt) {
         return (
@@ -53,6 +53,7 @@ export default function Slider({ meals }: SliderProps) {
       setStartIndex(startIndex - 1);
     }
   };
+
 
   return (
     <div className="w-full flex justify-center items-center gap-5 my-10 relative">
