@@ -63,7 +63,7 @@ export default async function RecipesPage() {
     return <div className="text-white flex items-center justify-center text-4xl">No meals to show</div>
   }
   return (
-    <div className="min-h-screen mb-20">
+    <div className="mb-20">
    
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
         {meals?.map((meal) => (

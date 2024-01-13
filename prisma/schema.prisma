@@ -19,6 +19,7 @@ model Profile {
   createdMeals Meal[]
   favorites    FavoriteMeals[]
   comments     Comment[]       @relation("ProfileComments")
+  subcomments  Subcomment[]    @relation("profile")
 }
 
 model Ingredient {
@@ -69,15 +70,31 @@ model FavoriteMeals {
 }
 
 model Comment {
+  id          String       @id @default(uuid())
+  text        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  profileId   String
+  mealId      String
+  commentId   String       @default("")
+  profile     Profile      @relation("ProfileComments", fields: [profileId], references: [id])
+  meal        Meal         @relation("MealComments", fields: [mealId], references: [id])
+  subcomments Subcomment[] @relation("comment")
+
+  @@index([profileId])
+  @@index([mealId])
+}
+
+model Subcomment {
   id        String   @id @default(uuid())
   text      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   profileId String
-  mealId    String
-  profile   Profile  @relation("ProfileComments", fields: [profileId], references: [id])
-  meal      Meal     @relation("MealComments", fields: [mealId], references: [id])
+  commentId String
+  profile   Profile  @relation("profile", fields: [profileId], references: [id])
+  comment   Comment  @relation("comment", fields: [commentId], references: [id])
 
   @@index([profileId])
-  @@index([mealId])
+  @@index([commentId])
 }
