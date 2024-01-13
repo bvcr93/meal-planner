@@ -1,3 +1,4 @@
+
 import {
   Sheet,
   SheetContent,
@@ -6,21 +7,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { UserButton, auth } from "@clerk/nextjs";
+import { ClerkLoading, UserButton, auth } from "@clerk/nextjs";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { Button } from "./button";
-import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
-import { NavbarSpinner } from "./navbar-spinner";
-import Image from "next/image";
-import foody from "@/public/foody.png";
 import { ModeToggle } from "../mode-toggle";
+import { Button } from "./button";
+import { NavbarSpinner } from "./navbar-spinner";
 export default async function Navbar() {
   const { userId }: { userId: string | null } = auth();
 
   return (
-    <div className="w-full py-5">
-      <div className="maincol flex justify-between items-center">
+    <div className="w-full py-5 sticky top-0 z-50 bg-neutral-900">
+      <div className="maincol flex justify-between items-center ">
         <div className="hidden md:flex items-center just">
           <Link
             href={`/`}

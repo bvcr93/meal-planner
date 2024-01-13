@@ -1,31 +1,36 @@
 "use client";
 import { createCommentAction, deleteMealAction } from "@/app/actions";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-
-import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { useToast } from "@/components/ui/use-toast";
-import Spinner from "./spinner";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { Clock, Edit, Star, Trash2Icon, MessageSquare } from "lucide-react";
+import {
+  Clock,
+  Edit,
+  MessageSquare,
+  Send,
+  Star,
+  Trash2Icon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import MealHashtag from "../meal-hashtag";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,7 +43,7 @@ import {
   AlertDialogTrigger,
 } from "./alert-dialog";
 import { Button } from "./button";
-import MealHashtag from "../meal-hashtag";
+import Spinner from "./spinner";
 import { Textarea } from "./textarea";
 
 interface FoodCardProps {
@@ -79,7 +84,8 @@ export default function FoodCard({
   const [isClient, setIsClient] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
-
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const { user } = useUser();
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
@@ -177,6 +183,7 @@ export default function FoodCard({
   const handleCreateComment = async (data: FormData) => {
     try {
       console.log("Handling comment creation...");
+      setIsLoading(true);
 
       const text = data.get("text");
       const mealId = data.get("mealId");
@@ -192,12 +199,13 @@ export default function FoodCard({
         toast({
           title: `Comment added`,
         });
+        router.push(`/explore/${name}`);
       }
       console.log(data);
     } catch (error) {
       console.error("Error creating comment:", error);
     } finally {
-      // Any cleanup or additional actions can be placed here
+      setIsLoading(false);
     }
   };
 
@@ -351,12 +359,14 @@ export default function FoodCard({
                         </div>
 
                         <Textarea
-                          className="bg-white text-black"
+                          className="bg-slate-100 text-black md:w-1/2 mx-auto w-full h-36"
                           placeholder="Leave your comment here..."
                           name="text"
                         />
                       </div>
-                      <Button type="submit">Submit</Button>
+                      <div className="md:w-full flex justify-center">
+                        <SubmitButton isLoading={isLoading} />
+                      </div>
                       <DrawerClose>
                         <Button variant="outline">Cancel</Button>
                       </DrawerClose>
@@ -364,17 +374,6 @@ export default function FoodCard({
                   </form>
                 </DrawerContent>
               </Drawer>
-              {/* <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleCreateComment(
-                    new FormData(e.target as HTMLFormElement)
-                  );
-                }}
-              >
-                <input type="text" name="text" />
-                <button type="submit">submit</button>
-              </form> */}
               <Clock /> {cookingTime}m
             </div>
           )}
@@ -382,5 +381,13 @@ export default function FoodCard({
         </Card>
       )}
     </>
+  );
+}
+
+function SubmitButton({ isLoading }: { isLoading: boolean }) {
+  return (
+    <Button className="my-5 md:w-48 w-full bg-blue-500 hover:bg-blue-600 text-white" type="submit" disabled={isLoading}>
+      {isLoading ? "Loading..." : <Send size={20} />}
+    </Button>
   );
 }

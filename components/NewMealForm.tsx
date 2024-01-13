@@ -137,7 +137,7 @@ interface SubmitButtonProps {
   onUpload: (file: File) => Promise<void>;
 }
 
-function SubmitButton({ file, onUpload, isLoading }: SubmitButtonProps) {
+export function SubmitButton({ file, onUpload, isLoading }: SubmitButtonProps) {
   const handleClick = async () => {
     if (file) {
       await onUpload(file);

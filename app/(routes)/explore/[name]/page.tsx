@@ -28,6 +28,9 @@ export default async function MealDetails({
     include: {
       profile: true,
     },
+    orderBy: {
+      createdAt: 'desc', 
+    },
   });
   if (!meal) {
     return <div>Meal not found.</div>;
@@ -45,10 +48,9 @@ export default async function MealDetails({
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-black opacity-50 rounded-xl w-full h-full"></div>
-          <div className="text-white text-center absolute w-full space-y-5">
+          <div className="text-white text-center absolute w-full space-y-5 md:px-20 px-10 text-sm">
             <div className="text-4xl font-semibold">{meal.name}</div>
-            <p>{meal.description}</p>
-            {meal.creator && <p>Created by: {meal.creator.name}</p>}
+            <p className="font-sm text-slate-300">{meal.description}</p>
           </div>
         </div>
       </div>

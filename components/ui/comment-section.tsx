@@ -9,6 +9,7 @@ import {
 import { Profile } from "@prisma/client";
 import { Trash } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface CommentProps {
   text: string;
@@ -37,8 +38,9 @@ export default function CommentSection({
             src={user.imageUrl}
             className="object-cover rounded-full"
           />
-
-          <p className="text-sm text-slate-300 font-semibold">{user.name}</p>
+          <Link href={`/profile/${user.id}`}>
+            <p className="text-sm text-slate-300 font-semibold">{user.name}</p>
+          </Link>
         </div>
         <div>
           <Trash size={20} className="text-slate-200 cursor-pointer" />
