@@ -8,7 +8,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
-import SelectComponent from "./select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type SearchInputProps = {
   meals: TMeal[];
@@ -23,7 +29,7 @@ export default function SearchSection({
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
   const categoryId = searchParams.get("categoryId");
   const name = searchParams.get("name");
-  const [selectedSearchOption, setSelectedSearchOption] = useState("name"); 
+  const [selectedSearchOption, setSelectedSearchOption] = useState("name");
   const [value, setValue] = useState(name || "");
   const router = useRouter();
 
@@ -39,7 +45,8 @@ export default function SearchSection({
     const query: Record<string, string | null> = {
       name: selectedSearchOption === "name" ? debouncedValue : null,
       categoryId: categoryId,
-      cookingTime: selectedSearchOption === "cookingTime" ? debouncedValue : null,
+      cookingTime:
+        selectedSearchOption === "cookingTime" ? debouncedValue : null,
     };
 
     const url = qs.stringifyUrl(
@@ -81,12 +88,20 @@ export default function SearchSection({
           className="w-full rounded-full shadow-md py-6"
           placeholder="Search meals, cooking time (in mins....)"
         />
-        <div className="mt-20">
-        <SelectComponent onSelectChange={onSelectChange} />
-        </div>
+        <div className="mt-20"></div>
         <div>
           <Search className="absolute top-3 right-5 dark:text-slate-200 text-neutral-600" />
         </div>
+        <Select>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Search by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="light">Name</SelectItem>
+            <SelectItem value="dark">Cooking time</SelectItem>
+            <SelectItem value="system">Recipee</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.slice(0, 6).map((meal: TMeal) => (

@@ -1,5 +1,11 @@
 "use server";
-import { createMeal, deleteMeal, getUserMealCount, updateMeal } from "@/lib/meals";
+import {
+  createMeal,
+  deleteMeal,
+  getUserMealCount,
+  updateMeal,
+  createComment,
+} from "@/lib/meals";
 import { revalidatePath } from "next/cache";
 
 export async function createMealAction(
@@ -18,7 +24,7 @@ export async function createMealAction(
     "and cookingTime:",
     cookingTime
   );
-  await createMeal(name, description,coverImage, cookingTime);
+  await createMeal(name, description, coverImage, cookingTime);
   setTimeout(() => {
     revalidatePath("/(routes)/recipes");
   }, 3000);
@@ -43,4 +49,10 @@ export async function getUserMealCountAction(userId: string): Promise<number> {
   const count = await getUserMealCount(userId);
   revalidatePath("/recipes");
   return count;
+}
+
+export async function createCommentAction(mealId: string, text: string) {
+  console.log("Creating comment with text:", text);
+  await createComment(mealId, text);
+  revalidatePath(`/recipes/${mealId}`);
 }

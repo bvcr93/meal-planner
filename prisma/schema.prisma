@@ -18,6 +18,7 @@ model Profile {
   updatedAt    DateTime        @updatedAt
   createdMeals Meal[]
   favorites    FavoriteMeals[]
+  comments     Comment[]       @relation("ProfileComments")
 }
 
 model Ingredient {
@@ -50,6 +51,7 @@ model Meal {
   favoritedBy FavoriteMeals[]
   cookingTime Int?
   coverImage  String?          @db.Text
+  comments    Comment[]        @relation("MealComments")
 
   @@index([id])
   @@index([creatorId])
@@ -62,6 +64,20 @@ model FavoriteMeals {
   meal      Meal    @relation(fields: [mealId], references: [id])
 
   @@id([profileId, mealId])
+  @@index([profileId])
+  @@index([mealId])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profileId String
+  mealId    String
+  profile   Profile  @relation("ProfileComments", fields: [profileId], references: [id])
+  meal      Meal     @relation("MealComments", fields: [mealId], references: [id])
+
   @@index([profileId])
   @@index([mealId])
 }

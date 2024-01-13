@@ -162,3 +162,29 @@ export async function getFavoriteMeals(userId: string) {
     return { error };
   }
 }
+
+export async function createComment(mealId: string, text: string) {
+  const profile = await initialProfile();
+
+  if (!profile || !profile.id) {
+    throw new Error("Profile ID is missing or null");
+  }
+
+  try {
+    const comment = await db.comment.create({
+      data: {
+        text,
+        mealId,
+        profileId: profile.id,
+      },
+    });
+    console.log("comment created with line: ", comment);
+
+    return { comment };
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    return { error };
+  }
+}
+
+

@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import React from "react";
 import Image from "next/image";
+import CommentSection from "@/components/ui/comment-section";
 interface MealDetailsProps {
   params: {
     name: string;
@@ -20,15 +21,21 @@ export default async function MealDetails({
       creator: true,
     },
   });
-
+  const comments = await db.comment.findMany({
+    where: {
+      mealId: meal?.id,
+    },
+    include: {
+      profile: true,
+    },
+  });
   if (!meal) {
     return <div>Meal not found.</div>;
   }
+
   return (
-    <div className="h-screen flex flex-col items-center justify-start mt-10 gap-10">
+    <div className="min-h-screen flex flex-col items-center justify-start mt-10 gap-10 mb-20">
       <div className="relative w-full">
-        {" "}
-        {/* Adjust width as needed */}
         <Image
           src={meal.coverImage || ""}
           width={600}
@@ -45,6 +52,11 @@ export default async function MealDetails({
           </div>
         </div>
       </div>
+      {comments.map((comment) => (
+        <div className="w-full">
+          <CommentSection {...comment} user={comment.profile} />
+        </div>
+      ))}
     </div>
   );
 }

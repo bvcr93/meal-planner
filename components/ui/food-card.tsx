@@ -1,5 +1,16 @@
 "use client";
-import { deleteMealAction } from "@/app/actions";
+import { createCommentAction, deleteMealAction } from "@/app/actions";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+
 import {
   Card,
   CardContent,
@@ -11,7 +22,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Spinner from "./spinner";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { Clock, Edit, Star, Trash2Icon } from "lucide-react";
+import { Clock, Edit, Star, Trash2Icon, MessageSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -28,6 +39,7 @@ import {
 } from "./alert-dialog";
 import { Button } from "./button";
 import MealHashtag from "../meal-hashtag";
+import { Textarea } from "./textarea";
 
 interface FoodCardProps {
   id: string;
@@ -46,7 +58,6 @@ interface FoodCardProps {
   hasEditButton?: boolean;
   hasRemoveFromFavorites?: boolean;
   hasFavoriteStar?: boolean;
-
 }
 
 export default function FoodCard({
@@ -62,7 +73,6 @@ export default function FoodCard({
   hasEditButton = false,
   hasRemoveFromFavorites,
   hasFavoriteStar,
-
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -160,6 +170,34 @@ export default function FoodCard({
       toast({
         description: "Failed to remove from favorites. Please try again.",
       });
+    }
+  };
+  console.log(userId);
+
+  const handleCreateComment = async (data: FormData) => {
+    try {
+      console.log("Handling comment creation...");
+
+      const text = data.get("text");
+      const mealId = data.get("mealId");
+      console.log(text);
+      console.log(mealId);
+
+      if (!text || typeof text !== "string") return;
+      if (!mealId || typeof mealId !== "string") return;
+
+      if (user && user.id) {
+        await createCommentAction(mealId, text);
+
+        toast({
+          title: `Comment added`,
+        });
+      }
+      console.log(data);
+    } catch (error) {
+      console.error("Error creating comment:", error);
+    } finally {
+      // Any cleanup or additional actions can be placed here
     }
   };
 
@@ -273,7 +311,6 @@ export default function FoodCard({
                 </AlertDialog>
               )}
             </div>
-        
           </CardContent>
           {hasRemoveFromFavorites && (
             <Button
@@ -286,10 +323,62 @@ export default function FoodCard({
           )}
           {cookingTime && (
             <div className="absolute bottom-2 right-2 text-sm p-2rounded-md flex items-center gap-2 text-white">
+              <Drawer>
+                <DrawerTrigger>
+                  <MessageSquare />
+                </DrawerTrigger>
+                <DrawerContent>
+                  <DrawerHeader></DrawerHeader>{" "}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleCreateComment(new FormData(e.currentTarget));
+                    }}
+                  >
+                    <input type="hidden" name="mealId" value={id} />
+                    <DrawerFooter>
+                      <div className="flex flex-col">
+                        <div className="flex flex-col items-center gap-4 mb-10">
+                          <h1>Leave a rating!</h1>
+                          <div className="flex">
+                            {" "}
+                            <Star className="cursor-pointer" />
+                            <Star className="cursor-pointer" />
+                            <Star className="cursor-pointer" />
+                            <Star className="cursor-pointer" />
+                            <Star className="cursor-pointer" />
+                          </div>
+                        </div>
+
+                        <Textarea
+                          className="bg-white text-black"
+                          placeholder="Leave your comment here..."
+                          name="text"
+                        />
+                      </div>
+                      <Button type="submit">Submit</Button>
+                      <DrawerClose>
+                        <Button variant="outline">Cancel</Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </form>
+                </DrawerContent>
+              </Drawer>
+              {/* <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleCreateComment(
+                    new FormData(e.target as HTMLFormElement)
+                  );
+                }}
+              >
+                <input type="text" name="text" />
+                <button type="submit">submit</button>
+              </form> */}
               <Clock /> {cookingTime}m
             </div>
           )}
-              <MealHashtag name= {name}/>
+          <MealHashtag name={name} />
         </Card>
       )}
     </>
