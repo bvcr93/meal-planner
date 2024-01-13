@@ -187,4 +187,20 @@ export async function createComment(mealId: string, text: string) {
   }
 }
 
+export async function deleteComment(commentId: string) {
+  try {
+    const deletedComment = await db.comment.delete({
+      where: {
+        id: commentId,
+      },
+    });
+
+    console.log("Comment deleted with line: ", deletedComment);
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    return { success: false, error };
+  }
+}
 

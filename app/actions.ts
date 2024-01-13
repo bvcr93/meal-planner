@@ -5,6 +5,7 @@ import {
   getUserMealCount,
   updateMeal,
   createComment,
+  deleteComment,
 } from "@/lib/meals";
 import { revalidatePath } from "next/cache";
 
@@ -55,4 +56,20 @@ export async function createCommentAction(mealId: string, text: string) {
   console.log("Creating comment with text:", text);
   await createComment(mealId, text);
   revalidatePath(`/recipes/${mealId}`);
+}
+
+export async function deleteCommentAction(commentId: string, mealId: string) {
+  try {
+    const result = await deleteComment(commentId);
+
+    if (result.success) {
+      console.log("Comment deleted successfully");
+
+      revalidatePath(`/recipes/${mealId}`);
+    } else {
+      console.error("Failed to delete comment:", result.error);
+    }
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+  }
 }

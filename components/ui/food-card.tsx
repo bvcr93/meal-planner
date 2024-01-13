@@ -386,7 +386,7 @@ export default function FoodCard({
 
 function SubmitButton({ isLoading }: { isLoading: boolean }) {
   return (
-    <Button className="my-5 md:w-48 w-full bg-blue-500 hover:bg-blue-600 text-white" type="submit" disabled={isLoading}>
+    <Button className="my-5 md:w-1/2 w-full bg-blue-500 hover:bg-blue-600 text-white" type="submit" disabled={isLoading}>
       {isLoading ? "Loading..." : <Send size={20} />}
     </Button>
   );
