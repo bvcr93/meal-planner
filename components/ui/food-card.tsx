@@ -65,6 +65,7 @@ interface FoodCardProps {
   hasRemoveFromFavorites?: boolean;
   hasFavoriteStar?: boolean;
   allComments?: Comment[]
+  comments: number | undefined
 }
 
 export default function FoodCard({
@@ -80,7 +81,8 @@ export default function FoodCard({
   hasEditButton = false,
   hasRemoveFromFavorites,
   hasFavoriteStar,
-  allComments
+  allComments,
+  comments
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -377,7 +379,7 @@ export default function FoodCard({
                   </form>
                 </DrawerContent>
               </Drawer>
-              <div className="">{allComments?.length}</div> 
+              <div className="">{comments}</div> 
               {/* ensure comments are per meal card not all the comments */}
               <Clock /> {cookingTime}m
             </div>

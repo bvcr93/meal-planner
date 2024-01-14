@@ -2,6 +2,7 @@ import { Profile } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 interface ProfileProps {
   profiles: Profile[];
@@ -9,11 +10,11 @@ interface ProfileProps {
 
 export default function Profiles({ profiles }: ProfileProps) {
   return (
-    <div className="flex maincol justify-around gap-10">
+    <div className="md:flex maincol justify-around gap-10 grid grid-cols-1 place-items-center">
       {profiles.map((pr) => (
-        <div className="flex" key={pr.id}>
-          <div className="rounded-lg shadow-lg w-64">
-            <div className="h-24 bg-blue-600 rounded-t-lg" />
+        <div className="flex w-full" key={pr.id}>
+          <div className="rounded-lg shadow-lg md:w-64 w-full border border-slate-800">
+            <div className="h-24 bg-neutral-800 rounded-t-lg" />
             <Image
               alt=""
               className="rounded-full -mt-12 w-32 h-32 border-4 border-white mx-auto object-cover"
@@ -36,9 +37,11 @@ export default function Profiles({ profiles }: ProfileProps) {
               </div>
             </div>
             <div className="px-6 py-4">
-              <Button className="w-full bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-                Show recipee
-              </Button>
+              <Link href={`/profile/${pr.name}`}>
+                <Button className="w-full bg-neutral-800 text-white rounded-lg hover:bg-blue-500">
+                  Profile
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

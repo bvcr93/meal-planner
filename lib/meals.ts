@@ -1,11 +1,12 @@
 import { db } from "./db";
 import { initialProfile } from "./profile";
-
+import { Comment } from "@prisma/client";
 export async function getMeals() {
   try {
     const meals = await db.meal.findMany({
       include: {
         creator: true,
+        comments: true
       },
     });
     console.log("meals found: ", meals);
@@ -203,4 +204,22 @@ export async function deleteComment(commentId: string) {
     return { success: false, error };
   }
 }
+
+
+export async function getComments(): Promise<{ comments: Comment[] } | { error: Error }> {
+  try {
+    const comments = await db.comment.findMany({
+      orderBy: {
+        createdAt: 'desc', // Assuming you want to order comments by date in descending order
+      },
+    });
+
+    return { comments };
+  } catch (error: any) {
+    console.error("Error getting comments:", error);
+    return { error };
+  }
+}
+
+
 

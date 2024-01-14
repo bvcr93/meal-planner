@@ -14,6 +14,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { Input } from "./input";
+import { useToast } from "./use-toast";
+
 interface CommentProps {
   text: string;
   id: string;
@@ -31,17 +33,21 @@ export default function CommentSection({
   const { userId } = useAuth();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSubCommentOpened, setIsSubCommentOpened] = useState(false);
+  const { toast } = useToast();
   async function handleDeleteComment(commentId: string, commentMealId: string) {
     try {
       setIsDeleting(true);
       await deleteCommentAction(commentId, commentMealId);
-      // You might want to perform additional actions after deleting the comment
+      toast({
+        title: "Comment deleted!",
+      });
     } catch (error) {
       console.error("Error deleting comment:", error);
     } finally {
       setIsDeleting(false);
     }
   }
+
   const canDeleteComment = userId === user.userId;
 
   function handleOpenSubComment() {
@@ -82,7 +88,7 @@ export default function CommentSection({
             }`}
             onClick={handleOpenSubComment}
           />
-          <Heart size={20} className="mt-1 cursor-pointer"/>
+          <Heart size={20} className="mt-1 cursor-pointer" />
           {canDeleteComment && (
             <Trash
               onClick={() => handleDeleteComment(id, mealId)}

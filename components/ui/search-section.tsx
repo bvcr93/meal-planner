@@ -104,7 +104,8 @@ export default function SearchSection({
             cookingTime={meal.cookingTime}
             hasFavoriteStar
             hasRemoveFromFavorites={false}
-            allComments= {allComments}
+            allComments={allComments}
+            comments={meal.comments?.length}
           />
         ))}
       </div>

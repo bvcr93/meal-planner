@@ -1,3 +1,4 @@
+import { Comment } from "@prisma/client";
 
 export type TMeal = {
   id: string;
@@ -9,6 +10,7 @@ export type TMeal = {
   creatorId: string;
   cookingTime: number | null;
   coverImage: string | null;
+  comments?: Comment[]
   creator?: {
     id: string;
     userId: string;
