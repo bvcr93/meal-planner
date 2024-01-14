@@ -16,7 +16,7 @@ export default async function Navbar() {
   const { userId }: { userId: string | null } = auth();
 
   return (
-    <div className="w-full py-5 sticky top-0 z-50 dark:bg-neutral-900">
+    <div className="w-full py-5 sticky top-0 z-50 dark:bg-neutral-900 bg-white">
       <div className="maincol flex justify-between items-center ">
         <div className="hidden md:flex items-center just">
           <Link

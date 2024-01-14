@@ -65,7 +65,7 @@ interface FoodCardProps {
   hasRemoveFromFavorites?: boolean;
   hasFavoriteStar?: boolean;
   allComments?: Comment[]
-  comments: number | undefined
+  comments?: number | undefined
 }
 
 export default function FoodCard({

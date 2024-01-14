@@ -10,11 +10,11 @@ interface ProfileProps {
 
 export default function Profiles({ profiles }: ProfileProps) {
   return (
-    <div className="md:flex maincol justify-around gap-10 grid grid-cols-1 place-items-center">
+    <div className="md:flex maincol mb-20 justify-around gap-10 grid grid-cols-1 place-items-center">
       {profiles.map((pr) => (
         <div className="flex w-full" key={pr.id}>
           <div className="rounded-lg shadow-lg md:w-64 w-full border border-slate-800">
-            <div className="h-24 bg-neutral-800 rounded-t-lg" />
+            <div className="h-24 dark:bg-neutral-800 bg-slate-900 rounded-t-lg" />
             <Image
               alt=""
               className="rounded-full -mt-12 w-32 h-32 border-4 border-white mx-auto object-cover"

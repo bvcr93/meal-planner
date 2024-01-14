@@ -18,25 +18,26 @@ export default async function Home() {
 
   return (
     <main>
-      {/* <HeroSection /> */}
-      <Hero2 />
+      <HeroSection />
+      {/* <Hero2 /> */}
       {meals.length > 0 && (
         <div className="maincol pb-10">
           <h1 className="text-semibold text-lg text-center mt-5 ">
             Check latest meals
           </h1>
 
-          {/* <Slider meals={meals} /> */}
+          <Slider meals={meals} />
         </div>
       )}
       <hr />
       <div className="maincol mt-10">
-        <h1 className="text-yellow-500 font-semibold text-2xl text-center">
+        {/* <h1 className="text-yellow-500 font-semibold text-2xl text-center">
           Specials
-        </h1>
+        </h1> */}
         {/* <Specials meals={meals} /> */}
       </div>
-      <div className="md:flex w-full">
+      <div className="md:flex flex-col w-full">
+        <h1 className="text-center w-full my-10 text-xl dark:text-yellow-400">Recent users</h1>
         <Profiles profiles={profiles} />
       </div>
     </main>

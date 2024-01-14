@@ -1,4 +1,3 @@
-
 import React from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -22,11 +21,10 @@ export default function HeroSection() {
               <Button asChild size="lg" className="text-md">
                 <Link href="/recipes/new">Get started</Link>
               </Button>
-              <Link href={"/weekly-plan"}>
-                <Button size="lg" variant={"ghost"}>
-                  Create weekly plan
-                </Button>
-              </Link>
+
+              <Button size="lg" variant={"outline"}>
+                Create weekly plan
+              </Button>
             </div>
             <div className="flex items-center pt-14 space-x-4">
               <div className="md:flex">
