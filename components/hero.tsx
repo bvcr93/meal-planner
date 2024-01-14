@@ -7,10 +7,10 @@ import Reviews from "./reviews";
 export default function HeroSection() {
   return (
     <div>
-      <div className="maincol h-full">
-        <div className="mt-20 h-[500px] md:flex ">
-          <div className="basis-1/2 flex flex-col items-start justify-center  leading-normal space-y-7">
-            <h2 className="md:text-5xl text-4xl">
+      <div className="maincol h-full mb-16">
+        <div className="mt-20 h-[500px] xl:flex ">
+          <div className="xl:basis-1/2 flex flex-col items-start justify-center leading-normal space-y-7">
+            <h2 className="md:text-5xl text-4xl leading-[50px] md:leading-[60px]">
               The easiest way to make your favourite meal
             </h2>
             <p className="md:text-xl text-md">
@@ -27,7 +27,7 @@ export default function HeroSection() {
                 Create weekly plan
               </Button>
             </div>
-            <div className="flex items-center pt-14 space-x-4">
+            <div className="flex items-center md:pt-14 space-x-4">
               <div className="md:flex">
                 <div className="flex justify-start w-3/4 space-x-[calc(-11%)]">
                   <div
@@ -53,7 +53,7 @@ export default function HeroSection() {
                     }}
                   ></div>
                 </div>
-                <div className="w-full mt-10">
+                <div className="w-full md:mt-10 mt-4">
                   <span className="font-semibold">+2,000</span> more people are
                   cooking with Foody
                 </div>
@@ -64,7 +64,7 @@ export default function HeroSection() {
           <div className="basis-1/2 flex items-center justify-center ">
             <Image
               alt=""
-              className="rounded-full w-[500px] h-[500px] object-cover hidden md:flex"
+              className="rounded-full w-[500px] h-[500px] object-cover hidden xl:flex"
               src={meallanding}
               width={1000}
               priority

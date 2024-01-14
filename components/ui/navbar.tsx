@@ -44,7 +44,6 @@ export default async function Navbar() {
                 <SheetDescription className="flex flex-col w-full items-start text-lg pt-10 space-y-2">
                   <Link href={`/explore`}>Explore</Link>
                   <Link href={`/recipes`}>My Recipes</Link>
-                  <Link href={`/dashboard`}>Dashboard</Link>
                   <Link href={`/pro`} className="text-orange-500 font-semibold">
                     Upgrade to Pro
                   </Link>
@@ -56,7 +55,6 @@ export default async function Navbar() {
         <div className="md:flex gap-10 hidden">
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/recipes`}>My Recipes</Link>
-          <Link href={`/dashboard`}>Dashboard</Link>
           <Link href={`/pro`} className="text-orange-500 font-semibold">
             Upgrade to Pro
           </Link>

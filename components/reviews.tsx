@@ -45,7 +45,7 @@ const reviews = [
 
 export default function Reviews() {
   return (
-    <div className="w-full effect grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 place-items-center gap-5 mt-10 sm:mt-0">
+    <div className="w-full mb-20 px-10 md:px-0 grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 place-items-center gap-5 mt-10 sm:mt-0">
       {reviews.map((review) => (
         <Card
           key={review.id}
