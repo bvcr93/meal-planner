@@ -1,4 +1,4 @@
-import { Profile } from "@prisma/client";
+import { Comment, Profile } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 import { Button } from "./ui/button";
@@ -6,13 +6,19 @@ import Link from "next/link";
 
 interface ProfileProps {
   profiles: Profile[];
+  reviewsPerUser: number[];
+  mealsPerUser: number[];
 }
 
-export default function Profiles({ profiles }: ProfileProps) {
+export default function Profiles({
+  profiles,
+  reviewsPerUser,
+  mealsPerUser,
+}: ProfileProps) {
   return (
     <div className="md:flex maincol mb-20 justify-around gap-10 grid grid-cols-1 place-items-center">
-      {profiles.map((pr) => (
-        <div className="flex w-full" key={pr.id}>
+      {profiles.map((pr, index) => (
+        <div className="flex w-full bg-white dark:bg-neutral-900" key={pr.id}>
           <div className="rounded-lg shadow-lg md:w-64 w-full border border-slate-800">
             <div className="h-24 dark:bg-neutral-800 bg-slate-900 rounded-t-lg" />
             <Image
@@ -28,12 +34,14 @@ export default function Profiles({ profiles }: ProfileProps) {
             </div>
             <div className="flex justify-around my-4">
               <div className="text-center">
-                <h3 className="font-semibold text-lg">2500</h3>
-                <p className="text-gray-500">Calories</p>
+                <h3 className="font-semibold text-lg">{mealsPerUser[index]}</h3>
+                <p className="text-gray-500">Meals</p>
               </div>
               <div className="text-center">
-                <h3 className="font-semibold text-lg">10</h3>
-                <p className="text-gray-500">Likes</p>
+                <h3 className="font-semibold text-lg">
+                  {reviewsPerUser[index]}
+                </h3>
+                <p className="text-gray-500">Reviews</p>
               </div>
             </div>
             <div className="px-6 py-4">

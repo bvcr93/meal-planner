@@ -90,11 +90,13 @@ model Subcomment {
   text      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  mealId    String   
   profileId String
   commentId String
   profile   Profile  @relation("profile", fields: [profileId], references: [id])
-  comment   Comment  @relation("comment", fields: [commentId], references: [id])
+  comment   Comment  @relation("comment", fields: [commentId], references: [id], onDelete: Cascade) 
 
   @@index([profileId])
   @@index([commentId])
 }
+

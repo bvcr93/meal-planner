@@ -221,5 +221,31 @@ export async function getComments(): Promise<{ comments: Comment[] } | { error: 
   }
 }
 
+export async function createSubcomment(mealId: string, commentId: string, text: string) {
+  const profile = await initialProfile();
+
+  if (!profile || !profile.id) {
+    throw new Error("Profile ID is missing or null");
+  }
+
+  try {
+    const subcomment = await db.subcomment.create({
+      data: {
+        text,
+        mealId,
+        commentId,
+        profileId: profile.id,
+      },
+    });
+    console.log("subcomment created:", subcomment);
+
+    return { subcomment };
+  } catch (error) {
+    console.error("Error creating subcomment:", error);
+    return { error };
+  }
+}
+
+
 
 

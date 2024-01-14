@@ -27,11 +27,17 @@ export default async function MealDetails({
     },
     include: {
       profile: true,
+      subcomments: {
+        include: {
+          profile: true,
+        },
+      },
     },
     orderBy: {
-      createdAt: 'desc', 
+      createdAt: "desc",
     },
   });
+
   if (!meal) {
     return <div>Meal not found.</div>;
   }
@@ -55,10 +61,15 @@ export default async function MealDetails({
         </div>
       </div>
       {comments.map((comment) => (
-        <div className="w-full">
-          <CommentSection {...comment} user={comment.profile} />
+        <div key={comment.id} className="w-full">
+          <CommentSection
+            {...comment}
+            user={comment.profile}
+            subcomments={comment.subcomments}
+          />
         </div>
       ))}
+      <div></div>
     </div>
   );
 }

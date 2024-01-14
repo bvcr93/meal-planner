@@ -63,8 +63,9 @@ export default async function ProfilePage({
       </div>
       <h1>My meals:</h1>
       <hr />
+      <div className="grid md:grid-cols-2 place-items-center gap-5">
       {userProfile?.createdMeals.map((meal) => (
-        <Card className="min-w-[500px] mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <Card className="md:min-w-[600px] w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
           <div className="md:flex">
             <div className="md:flex-shrink-0">
               <Image
@@ -100,6 +101,7 @@ export default async function ProfilePage({
           </div>
         </Card>
       ))}
+      </div>
     </div>
   );
 }
