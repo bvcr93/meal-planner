@@ -11,6 +11,8 @@ interface SpecialsProps {
 }
 export default function Specials({ meals }: SpecialsProps) {
 
+  // most liked recipees, for now just the latest
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedMeal, setSelectedMeal] = useState<TMeal | undefined>(meals[1]);
   useEffect(() => {

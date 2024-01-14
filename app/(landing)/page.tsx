@@ -1,10 +1,22 @@
 import HeroSection from "@/components/hero";
+import Profiles from "@/components/profiles";
 import Specials from "@/components/specials";
 import Slider from "@/components/ui/slider";
 import { db } from "@/lib/db";
 
 export default async function Home() {
-  const meals = await db.meal.findMany();
+  const meals = await db.meal.findMany({
+    include: {
+      creator: true,
+      comments: true,
+    },
+  });
+  
+
+  const profiles = await db.profile.findMany()
+  console.log(profiles);
+  
+
   return (
     <main>
       <HeroSection />
@@ -23,6 +35,9 @@ export default async function Home() {
           Specials
         </h1>
         <Specials meals={meals} />
+      </div>
+      <div className="flex w-full">
+        <Profiles profiles={profiles}/>
       </div>
     </main>
   );

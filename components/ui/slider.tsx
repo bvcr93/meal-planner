@@ -54,9 +54,8 @@ export default function Slider({ meals }: SliderProps) {
     }
   };
 
-
   return (
-    <div className="w-full flex justify-center items-center gap-5 my-10 relative">
+    <div className="w-full flex mx-auto justify-center items-center gap-5 my-10 relative">
       <button
         className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
         onClick={handlePrev}
@@ -84,7 +83,7 @@ interface SliderCardProps {
 function SliderCard({ meal }: SliderCardProps) {
   return (
     <Link href={`/explore/${meal.name}`}>
-      <div className="w-60 relative h-24 cursor-pointer flex items-center justify-center flex-col text-sm px-5 text-center hover:bg-gray-800 duration-200 rounded-xl">
+      <div className="w-40 lg:w-72 relative h-24 cursor-pointer flex items-center justify-center flex-col text-sm px-5 text-center hover:bg-gray-800 duration-200 rounded-xl">
         <p className="z-50 text-white"> {meal.name}</p>
         <Image
           src={meal.coverImage || ""}

@@ -45,6 +45,7 @@ import {
 import { Button } from "./button";
 import Spinner from "./spinner";
 import { Textarea } from "./textarea";
+import { Comment } from "@prisma/client";
 
 interface FoodCardProps {
   id: string;
@@ -63,6 +64,7 @@ interface FoodCardProps {
   hasEditButton?: boolean;
   hasRemoveFromFavorites?: boolean;
   hasFavoriteStar?: boolean;
+  allComments?: Comment[]
 }
 
 export default function FoodCard({
@@ -78,6 +80,7 @@ export default function FoodCard({
   hasEditButton = false,
   hasRemoveFromFavorites,
   hasFavoriteStar,
+  allComments
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -336,7 +339,6 @@ export default function FoodCard({
                   <MessageSquare />
                 </DrawerTrigger>
                 <DrawerContent>
-                  <DrawerHeader></DrawerHeader>{" "}
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -344,6 +346,7 @@ export default function FoodCard({
                     }}
                   >
                     <input type="hidden" name="mealId" value={id} />
+
                     <DrawerFooter>
                       <div className="flex flex-col">
                         <div className="flex flex-col items-center gap-4 mb-10">
@@ -374,6 +377,8 @@ export default function FoodCard({
                   </form>
                 </DrawerContent>
               </Drawer>
+              <div className="">{allComments?.length}</div> 
+              {/* ensure comments are per meal card not all the comments */}
               <Clock /> {cookingTime}m
             </div>
           )}
@@ -386,7 +391,11 @@ export default function FoodCard({
 
 function SubmitButton({ isLoading }: { isLoading: boolean }) {
   return (
-    <Button className="my-5 md:w-1/2 w-full bg-blue-500 hover:bg-blue-600 text-white" type="submit" disabled={isLoading}>
+    <Button
+      className="my-5 md:w-1/2 w-full bg-blue-500 hover:bg-blue-600 text-white"
+      type="submit"
+      disabled={isLoading}
+    >
       {isLoading ? "Loading..." : <Send size={20} />}
     </Button>
   );

@@ -32,19 +32,7 @@ export default async function RecipesPage() {
       (b.createdAt ? new Date(b.createdAt).getTime() : 0) -
       (a.createdAt ? new Date(a.createdAt).getTime() : 0)
   );
-  // const mealsWithFavorites = await db.meal.findMany({
-  //   include: {
-  //     favoritedBy: {
-  //       select: {
-  //         profile: {
-  //           select: {
-  //             name: true,
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
+  
   const favoriteMealsForUser = await db.favoriteMeals.findMany({
     where: {
       profileId: userId,
@@ -56,7 +44,7 @@ export default async function RecipesPage() {
   const favoriteMealsToShow = meals?.filter((meal) =>
     favoriteMealIdsForUser.includes(meal.id)
   );
-  console.log("favorite meals: ", favoriteMealsForUser);
+
 
 
   if(meals.length === 0){
@@ -82,6 +70,7 @@ export default async function RecipesPage() {
             hasEditButton={true}
             hasCreatorImage={false}
             hasFavoriteStar
+          
           />
         ))}
       </div>

@@ -19,8 +19,14 @@ export default async function ExplorePage() {
 
   const { meals } = await getMeals();
   if (!meals) {
-    return <div className="h-screen flex items-center justify-center text-3xl">Error loading meals</div>;
+    return (
+      <div className="h-screen flex items-center justify-center text-3xl">
+        Error loading meals
+      </div>
+    );
   }
+
+  const allComments = await db.comment.findMany();
 
   return (
     <div className="min-h-screen">
@@ -29,7 +35,11 @@ export default async function ExplorePage() {
           Find your favorite meal
         </h2>
       </div>
-      <SearchSection meals={meals} favoriteMeals={favoriteMealIdsForUser || []} />
+      <SearchSection
+        meals={meals}
+        favoriteMeals={favoriteMealIdsForUser || []}
+        allComments={allComments}
+      />
     </div>
   );
 }

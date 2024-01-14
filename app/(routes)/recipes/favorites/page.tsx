@@ -61,7 +61,6 @@ export default function FavoriteMeals() {
             coverImage={meal.coverImage}
             key={meal.id}
             onRemove={removeFromFavorites}
-            // removing is not reflected immediatelly when food card is instead of favorite card
           />
         ))}
       </div>

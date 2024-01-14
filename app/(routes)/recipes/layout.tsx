@@ -1,9 +1,7 @@
-// FavoritesLayout.tsx
 "use client";
-import React from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Footer from "@/components/ui/footer";
+import Link from "next/link";
+import React from "react";
 interface Props {
   children: React.ReactNode;
   withFooter: boolean;

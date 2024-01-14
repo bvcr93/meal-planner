@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
 import { TMeal } from "@/types";
-import { Meal } from "@prisma/client";
+import { Comment, Meal } from "@prisma/client";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
@@ -12,11 +12,13 @@ import FoodCard from "./food-card";
 type SearchInputProps = {
   meals: TMeal[];
   favoriteMeals: string[];
+  allComments: Comment[];
 };
 
 export default function SearchSection({
   meals,
   favoriteMeals,
+  allComments,
 }: SearchInputProps) {
   const searchParams = useSearchParams();
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
@@ -83,7 +85,6 @@ export default function SearchSection({
         <div>
           <Search className="absolute top-3 right-5 dark:text-slate-200 text-neutral-600" />
         </div>
-        
       </div>
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center mt-10 gap-10">
         {filteredMeals.slice(0, 6).map((meal: TMeal) => (
@@ -103,6 +104,7 @@ export default function SearchSection({
             cookingTime={meal.cookingTime}
             hasFavoriteStar
             hasRemoveFromFavorites={false}
+            allComments= {allComments}
           />
         ))}
       </div>

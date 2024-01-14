@@ -78,7 +78,7 @@ model Comment {
   mealId      String
   commentId   String       @default("")
   profile     Profile      @relation("ProfileComments", fields: [profileId], references: [id])
-  meal        Meal         @relation("MealComments", fields: [mealId], references: [id])
+  meal        Meal         @relation("MealComments", fields: [mealId], references: [id], onDelete: Cascade)
   subcomments Subcomment[] @relation("comment")
 
   @@index([profileId])

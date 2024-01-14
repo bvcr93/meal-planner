@@ -1,7 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import React, { useEffect } from "react";
-import { auth } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -10,25 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-
-interface ProfileProps {
-  params: {
-    name: string;
-  };
-}
-
+import { StarIcon } from "lucide-react";
 export default async function ProfilePage({
   params,
 }: {
   params: { name: string };
 }) {
-  const { userId } = auth();
-
   const { name } = params;
   const decodedName = decodeURIComponent(name);
-  console.log(decodedName);
 
   const userProfile = await db.profile.findFirst({
     where: {
@@ -53,7 +42,6 @@ export default async function ProfilePage({
     );
   }
 
-  console.log("User Profile:", userProfile);
   if (!userProfile?.createdMeals || userProfile.createdMeals.length === 0) {
     return (
       <div className="flex flex-col items-center text-2xl justify-center h-96">
@@ -67,39 +55,50 @@ export default async function ProfilePage({
     );
   }
   return (
-    <div className="min-h-screen md:flex gap-5 mt-10">
+    <div className="min-h-screen md:flex flex-col gap-5 mt-10">
+      <div className="w-full border py-4">
+        <h1>
+          {userProfile.name} {userProfile.email}
+        </h1>
+      </div>
+      <h1>My meals:</h1>
+      <hr />
       {userProfile?.createdMeals.map((meal) => (
-        <div className="flex" key={meal.id}>
-          <div className="rounded-lg shadow-lg w-64">
-            <div className="h-24 bg-blue-600 rounded-t-lg" />
-            <Image
-              alt=""
-              className="rounded-full -mt-12 w-32 h-32 border-4 border-white mx-auto object-cover"
-              src={meal.coverImage || ""}
-              width={200}
-              height={200}
-            />
-            <div className="text-center mt-2">
-              <h2 className="text-lg font-semibold">{meal.name}</h2>
-              <p className="text-gray-500">Software Engineer</p>
+        <Card className="min-w-[500px] mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+          <div className="md:flex">
+            <div className="md:flex-shrink-0">
+              <Image
+                alt="food image"
+                className="h-48 w-full object-cover md:h-full md:w-48"
+                src={meal.coverImage || ""}
+                width={200}
+                height={200}
+              />
             </div>
-            <div className="flex justify-around my-4">
-              <div className="text-center">
-                <h3 className="font-semibold text-lg">2500</h3>
-                <p className="text-gray-500">Calories</p>
+            <div className="p-8">
+              <CardTitle className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                {meal.name}
+              </CardTitle>
+              <CardDescription className="block mt-1 text-lg leading-tight font-medium text-black">
+                {meal.description}
+              </CardDescription>
+              <div className="mt-2 text-gray-500">
+                Cooking time: {meal.cookingTime} min
               </div>
-              <div className="text-center">
-                <h3 className="font-semibold text-lg">10</h3>
-                <p className="text-gray-500">Likes</p>
+              <div className="mt-4">
+                <div className="flex items-center">
+                  <StarIcon className="w-4 h-4 fill-primary" />
+                  <StarIcon className="w-4 h-4 fill-primary" />
+                  <StarIcon className="w-4 h-4 fill-primary" />
+                  <StarIcon className="w-4 h-4 fill-primary" />
+                  <StarIcon className="w-4 h-4 fill-muted stroke-muted-foreground" />
+                  <span className="ml-2 text-sm text-gray-600">4.0</span>
+                </div>
+                <div className="mt-2 text-gray-500">200 reviews</div>
               </div>
-            </div>
-            <div className="px-6 py-4">
-              <Button className="w-full bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-                Show recipee
-              </Button>
             </div>
           </div>
-        </div>
+        </Card>
       ))}
     </div>
   );
