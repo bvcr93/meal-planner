@@ -63,44 +63,46 @@ export default async function ProfilePage({
       </div>
       <h1>My meals:</h1>
       <hr />
-      <div className="grid md:grid-cols-2 place-items-center gap-5">
-      {userProfile?.createdMeals.map((meal) => (
-        <Card className="md:min-w-[600px] w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-          <div className="md:flex">
-            <div className="md:flex-shrink-0">
-              <Image
-                alt="food image"
-                className="h-48 w-full object-cover md:h-full md:w-48"
-                src={meal.coverImage || ""}
-                width={200}
-                height={200}
-              />
-            </div>
-            <div className="p-8">
-              <CardTitle className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-                {meal.name}
-              </CardTitle>
-              <CardDescription className="block mt-1 text-lg leading-tight font-medium text-black">
-                {meal.description}
-              </CardDescription>
-              <div className="mt-2 text-gray-500">
-                Cooking time: {meal.cookingTime} min
-              </div>
-              <div className="mt-4">
-                <div className="flex items-center">
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-muted stroke-muted-foreground" />
-                  <span className="ml-2 text-sm text-gray-600">4.0</span>
+      <div className="grid lg:grid-cols-2 place-items-center gap-5">
+        {userProfile?.createdMeals.map((meal) => (
+          <Link href={`/explore/${meal.name}`}>
+            <Card className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+              <div className="md:flex">
+                <div className="md:flex-shrink-0">
+                  <Image
+                    alt="food image"
+                    className="h-48 w-full object-cover md:h-full md:w-48"
+                    width={200}
+                    height={200}
+                    src={meal.coverImage || ""}
+                  />
                 </div>
-                <div className="mt-2 text-gray-500">200 reviews</div>
+                <div className="p-8">
+                  <CardTitle className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                    Delicious Food
+                  </CardTitle>
+                  <CardDescription className="block mt-1 text-lg leading-tight font-medium text-black">
+                    Short food description.
+                  </CardDescription>
+                  <div className="mt-2 text-gray-500">
+                    Cooking time: 30 min. Ingredients: Flour, sugar, eggs.
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex items-center">
+                      <StarIcon className="w-4 h-4 fill-primary" />
+                      <StarIcon className="w-4 h-4 fill-primary" />
+                      <StarIcon className="w-4 h-4 fill-primary" />
+                      <StarIcon className="w-4 h-4 fill-primary" />
+                      <StarIcon className="w-4 h-4 fill-muted stroke-muted-foreground" />
+                      <span className="ml-2 text-sm text-gray-600">4.0</span>
+                    </div>
+                    <div className="mt-2 text-gray-500">200 reviews</div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </Card>
-      ))}
+            </Card>
+          </Link>
+        ))}
       </div>
     </div>
   );

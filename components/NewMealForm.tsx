@@ -9,6 +9,13 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
@@ -22,15 +29,13 @@ export default function NewMealForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
 
-  
   const hardcodedIngredients = [
-    { id: '1', name: 'Salt' },
-    { id: '2', name: 'Pepper' },
-    { id: '3', name: 'Garlic' },
-    { id: '4', name: 'Olive Oil' },
-    { id: '5', name: 'Lemon' },
+    { id: "1", name: "Salt" },
+    { id: "2", name: "Pepper" },
+    { id: "3", name: "Garlic" },
+    { id: "4", name: "Olive Oil" },
+    { id: "5", name: "Lemon" },
   ];
-
 
   async function createMeal(data: FormData) {
     try {
@@ -99,6 +104,30 @@ export default function NewMealForm() {
             <option value="25">25 minutes</option>
           </select>
         </div>
+      </div>
+      <div className="mt-5 space-y-5">
+        <h1 className="text-lg">Select meal time</h1>
+        {/* <Select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Breakfast" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="light">Breakfast</SelectItem>
+            <SelectItem value="dark">Lunch</SelectItem>
+            <SelectItem value="system">Dinner</SelectItem>
+          </SelectContent>
+        </Select>
+        <h1 className="text-lg">Select meal category</h1>
+        <Select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Meat" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="light">Meat</SelectItem>
+            <SelectItem value="dark">Vegetarian</SelectItem>
+            <SelectItem value="system">Vegan</SelectItem>
+          </SelectContent>
+        </Select> */}
       </div>
       <h2 className="mt-14 text-lg text-start ">Select an image</h2>
       <Input

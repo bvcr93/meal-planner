@@ -17,12 +17,13 @@ export default function HeroSection() {
               Discover the best recipes from around the world and learn how to
               cook them at home
             </p>
-            <div className="flex gap-10 items-center">
-              <Button asChild size="lg" className="text-md">
-                <Link href="/recipes/new">Get started</Link>
-              </Button>
-
-              <Button size="lg" variant={"outline"}>
+            <div className="md:flex grid grid-cols-1 md:gap-10 gap-5 items-center">
+              <Link href="/recipes/new">
+                <Button size="lg" className="">
+                  Get started
+                </Button>
+              </Link>
+              <Button size="lg" variant={"outline"} className="">
                 Create weekly plan
               </Button>
             </div>

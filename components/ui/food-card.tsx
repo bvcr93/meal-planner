@@ -91,6 +91,7 @@ export default function FoodCard({
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  
   const { user } = useUser();
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
@@ -363,8 +364,10 @@ export default function FoodCard({
                           </div>
                         </div>
 
-                        <Textarea
-                          className="bg-slate-100 text-black md:w-1/2 mx-auto w-full h-36"
+                        <Textarea disabled={isLoading}
+                         className={`md:w-1/2 mx-auto w-full h-36 ${
+                          isLoading ? 'bg-slate-200' : 'bg-slate-100'
+                        } text-black`}
                           placeholder="Leave your comment here..."
                           name="text"
                         />

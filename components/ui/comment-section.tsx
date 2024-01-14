@@ -160,7 +160,7 @@ export default function CommentSection({
                 type="submit"
                 className="mr-7 dark:text-slate-200 text-slate-600 cursor-pointer"
               >
-                Send
+                <Send />
               </button>
             </div>
             <input type="hidden" name="mealId" value={mealId} />
