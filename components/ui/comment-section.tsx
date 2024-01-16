@@ -1,18 +1,21 @@
 "use client";
 
-import { createSubcommentAction, deleteCommentAction } from "@/app/actions";
+import {
+  createSubcommentAction,
+  deleteCommentAction,
+} from "@/app/actions";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { useAuth } from "@clerk/nextjs";
 import { Profile } from "@prisma/client";
-import { Heart, MessageSquare, Send, Trash } from "lucide-react";
+import { Heart, MessageSquare, Send, Star, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { useAuth } from "@clerk/nextjs";
+import { FormEvent, useState } from "react";
 import { Input } from "./input";
 import { useToast } from "./use-toast";
 
@@ -22,6 +25,7 @@ interface CommentProps {
   user: Profile;
   createdAt: Date;
   mealId: string;
+
   subcomments: {
     id: string;
     text: string;
@@ -46,7 +50,7 @@ export default function CommentSection({
   const [isSubCommentOpened, setIsSubCommentOpened] = useState(false);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-
+  const [rating, setRating] = useState(0);
   async function handleDeleteComment(commentId: string, commentMealId: string) {
     try {
       setIsDeleting(true);
@@ -69,7 +73,6 @@ export default function CommentSection({
 
   const handleCreateSubcomment = async (data: FormData) => {
     try {
-      console.log("Handling subcomment creation...");
       setIsLoading(true);
 
       const text = data.get("text");
@@ -87,13 +90,16 @@ export default function CommentSection({
           title: `Subcomment added`,
         });
       }
-      console.log(data);
     } catch (error) {
       console.error("Error creating subcomment:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  
+
+ 
 
   return (
     <Card
@@ -119,12 +125,37 @@ export default function CommentSection({
               className="object-cover rounded-full"
             />
           </Link>
-
           <p className="text-sm dark:text-slate-300 font-semibold">
             {user.name}
           </p>
         </div>
+
         <div className="flex items-center gap-5">
+          {/* <form action={handleCreateRating}>
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <Button size={"sm"} variant={"outline"}>
+                  Leave a rating
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogDescription>
+                    Rate the meal!
+                  </AlertDialogDescription>
+                  <AlertDialogDescription className="flex mt-4">
+                    <AlertDialogDescription className="flex mt-4">
+                      {renderStars()}
+                    </AlertDialogDescription>
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <Button type="submit">Continue</Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </form> */}
           <MessageSquare
             size={20}
             className={`mt-1 cursor-pointer ${
@@ -155,12 +186,14 @@ export default function CommentSection({
               name="text"
               className="w-full pr-10"
             />
+
             <div className="absolute right-0 top-0 h-full flex items-center">
               <button
+                disabled={isLoading}
                 type="submit"
                 className="mr-7 dark:text-slate-200 text-slate-600 cursor-pointer"
               >
-                <Send />
+                <Send className={`${isLoading && "bg-slate-200"}`} />
               </button>
             </div>
             <input type="hidden" name="mealId" value={mealId} />

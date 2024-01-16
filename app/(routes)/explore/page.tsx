@@ -27,7 +27,7 @@ export default async function ExplorePage() {
   }
 
   const allComments = await db.comment.findMany();
-
+  
   return (
     <div className="min-h-screen">
       <div className="flex w-full text-center">

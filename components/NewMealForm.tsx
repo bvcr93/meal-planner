@@ -106,28 +106,7 @@ export default function NewMealForm() {
         </div>
       </div>
       <div className="mt-5 space-y-5">
-        <h1 className="text-lg">Select meal time</h1>
-        {/* <Select>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Breakfast" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Breakfast</SelectItem>
-            <SelectItem value="dark">Lunch</SelectItem>
-            <SelectItem value="system">Dinner</SelectItem>
-          </SelectContent>
-        </Select>
-        <h1 className="text-lg">Select meal category</h1>
-        <Select>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Meat" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Meat</SelectItem>
-            <SelectItem value="dark">Vegetarian</SelectItem>
-            <SelectItem value="system">Vegan</SelectItem>
-          </SelectContent>
-        </Select> */}
+        
       </div>
       <h2 className="mt-14 text-lg text-start ">Select an image</h2>
       <Input

@@ -46,6 +46,7 @@ import { Button } from "./button";
 import Spinner from "./spinner";
 import { Textarea } from "./textarea";
 import { Comment } from "@prisma/client";
+import { createComment } from "@/lib/meals";
 
 interface FoodCardProps {
   id: string;
@@ -64,8 +65,8 @@ interface FoodCardProps {
   hasEditButton?: boolean;
   hasRemoveFromFavorites?: boolean;
   hasFavoriteStar?: boolean;
-  allComments?: Comment[]
-  comments?: number | undefined
+  allComments?: Comment[];
+  comments?: number | undefined;
 }
 
 export default function FoodCard({
@@ -82,7 +83,7 @@ export default function FoodCard({
   hasRemoveFromFavorites,
   hasFavoriteStar,
   allComments,
-  comments
+  comments,
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -90,8 +91,9 @@ export default function FoodCard({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(favoriteMeals.includes(id));
   const [isLoading, setIsLoading] = useState(false);
+  const [clickedStars, setClickedStars] = useState(0);
   const router = useRouter();
-  
+
   const { user } = useUser();
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
@@ -186,35 +188,47 @@ export default function FoodCard({
   };
   console.log(userId);
 
-  const handleCreateComment = async (data: FormData) => {
+  const handleCreateComment = async (data: FormData, ratingValue: number) => {
     try {
-      console.log("Handling comment creation...");
       setIsLoading(true);
 
       const text = data.get("text");
       const mealId = data.get("mealId");
-      console.log(text);
-      console.log(mealId);
 
-      if (!text || typeof text !== "string") return;
-      if (!mealId || typeof mealId !== "string") return;
-
-      if (user && user.id) {
-        await createCommentAction(mealId, text);
-
-        toast({
-          title: `Comment added`,
-        });
-        router.push(`/explore/${name}`);
+      if (
+        !text ||
+        typeof text !== "string" ||
+        !mealId ||
+        typeof mealId !== "string"
+      ) {
+        setIsLoading(false);
+        return;
       }
-      console.log(data);
+
+      // Call createCommentAction and get the result
+      const result = await createCommentAction(mealId, text);
+      if (result.error || !result.comment) {
+        console.error("Error creating comment:", result.error);
+        setIsLoading(false);
+        return;
+      }
+
+      const comment = result.comment;
+
+      const commentId = comment.comment?.id;
+      console.log("comment id: ", commentId);
+
+      router.push(`/explore/${name}`);
     } catch (error) {
-      console.error("Error creating comment:", error);
+      console.error("Error creating comment and rating:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleStarClick = (starIndex: number) => {
+    setClickedStars(starIndex);
+  };
   return (
     <>
       {isClient && (
@@ -345,29 +359,44 @@ export default function FoodCard({
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      handleCreateComment(new FormData(e.currentTarget));
+                      handleCreateComment(
+                        new FormData(e.currentTarget),
+                        clickedStars
+                      );
                     }}
                   >
+                    <input type="text" name="commentId" className="hidden" />
                     <input type="hidden" name="mealId" value={id} />
 
                     <DrawerFooter>
                       <div className="flex flex-col">
                         <div className="flex flex-col items-center gap-4 mb-10">
-                          <h1>Leave a rating!</h1>
+                          {/* <h1>Leave a rating!</h1> */}
                           <div className="flex">
-                            {" "}
-                            <Star className="cursor-pointer" />
-                            <Star className="cursor-pointer" />
-                            <Star className="cursor-pointer" />
-                            <Star className="cursor-pointer" />
-                            <Star className="cursor-pointer" />
+                            <input
+                              type="text"
+                              className="hidden"
+                              name="commentId"
+                            />
+                            {/* {[1, 2, 3, 4, 5].map((starIndex) => (
+                              <Star
+                                key={starIndex}
+                                className={`cursor-pointer ${
+                                  starIndex <= clickedStars
+                                    ? "text-yellow-500"
+                                    : ""
+                                }`}
+                                onClick={() => handleStarClick(starIndex)}
+                              />
+                            ))} */}
                           </div>
                         </div>
 
-                        <Textarea disabled={isLoading}
-                         className={`md:w-1/2 mx-auto w-full h-36 ${
-                          isLoading ? 'bg-slate-200' : 'bg-slate-100'
-                        } text-black`}
+                        <Textarea
+                          disabled={isLoading}
+                          className={`md:w-1/2 mx-auto w-full h-36 ${
+                            isLoading ? "bg-slate-200" : "bg-slate-100"
+                          } text-black`}
                           placeholder="Leave your comment here..."
                           name="text"
                         />
@@ -382,8 +411,7 @@ export default function FoodCard({
                   </form>
                 </DrawerContent>
               </Drawer>
-              <div className="">{comments}</div> 
-              {/* ensure comments are per meal card not all the comments */}
+              <div className="">{comments}</div>
               <Clock /> {cookingTime}m
             </div>
           )}

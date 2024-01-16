@@ -1,16 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { db } from "@/lib/db";
-import Image from "next/image";
-import Link from "next/link";
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
+import { db } from "@/lib/db";
 import { StarIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 export default async function ProfilePage({
   params,
 }: {

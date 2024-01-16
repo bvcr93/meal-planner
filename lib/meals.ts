@@ -6,7 +6,7 @@ export async function getMeals() {
     const meals = await db.meal.findMany({
       include: {
         creator: true,
-        comments: true
+        comments: true,
       },
     });
     console.log("meals found: ", meals);
@@ -205,12 +205,13 @@ export async function deleteComment(commentId: string) {
   }
 }
 
-
-export async function getComments(): Promise<{ comments: Comment[] } | { error: Error }> {
+export async function getComments(): Promise<
+  { comments: Comment[] } | { error: Error }
+> {
   try {
     const comments = await db.comment.findMany({
       orderBy: {
-        createdAt: 'desc', // Assuming you want to order comments by date in descending order
+        createdAt: "desc",
       },
     });
 
@@ -221,7 +222,11 @@ export async function getComments(): Promise<{ comments: Comment[] } | { error: 
   }
 }
 
-export async function createSubcomment(mealId: string, commentId: string, text: string) {
+export async function createSubcomment(
+  mealId: string,
+  commentId: string,
+  text: string
+) {
   const profile = await initialProfile();
 
   if (!profile || !profile.id) {
@@ -245,7 +250,3 @@ export async function createSubcomment(mealId: string, commentId: string, text: 
     return { error };
   }
 }
-
-
-
-

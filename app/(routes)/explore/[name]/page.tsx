@@ -38,6 +38,8 @@ export default async function MealDetails({
     },
   });
 
+  // If you expect multiple ratings per comment and want to log each one
+
   if (!meal) {
     return <div>Meal not found.</div>;
   }

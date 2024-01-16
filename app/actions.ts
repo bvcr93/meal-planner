@@ -8,6 +8,7 @@ import {
   deleteComment,
   createSubcomment,
 } from "@/lib/meals";
+import { Comment } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function createMealAction(
@@ -54,9 +55,14 @@ export async function getUserMealCountAction(userId: string): Promise<number> {
 }
 
 export async function createCommentAction(mealId: string, text: string) {
-  console.log("Creating comment with text:", text);
-  await createComment(mealId, text);
-  revalidatePath(`/recipes/${mealId}`);
+  try {
+    const comment = await createComment(mealId, text);
+    revalidatePath(`/explore/${mealId}`);
+    return { comment };
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    return { error };
+  }
 }
 
 export async function deleteCommentAction(commentId: string, mealId: string) {

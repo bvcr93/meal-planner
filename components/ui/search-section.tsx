@@ -65,8 +65,11 @@ export default function SearchSection({
       const cookingTimeMatch =
         selectedSearchOption === "cookingTime" &&
         meal.cookingTime === parseInt(debouncedValue);
-
-      return nameMatch || cookingTimeMatch;
+        const mealComments = allComments.filter((comment) => comment.mealId === meal.id);
+        const commentIds = mealComments.map((comment) => comment.id);
+        console.log(commentIds);
+        
+      return nameMatch || cookingTimeMatch || commentIds;
     });
 
     setFilteredMeals(filtered);

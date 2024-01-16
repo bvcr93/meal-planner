@@ -22,23 +22,6 @@ model Profile {
   subcomments  Subcomment[]    @relation("profile")
 }
 
-model Ingredient {
-  id    String           @id @default(uuid())
-  name  String           @unique
-  meals MealIngredient[]
-}
-
-model MealIngredient {
-  mealId       String
-  ingredientId String
-  meal         Meal       @relation(fields: [mealId], references: [id])
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-
-  @@id([mealId, ingredientId])
-  @@index([mealId])
-  @@index([ingredientId])
-}
-
 model Meal {
   id          String           @id @default(uuid())
   name        String
@@ -46,23 +29,23 @@ model Meal {
   isEdited    Boolean?         @default(false)
   createdAt   DateTime?        @default(now())
   updatedAt   DateTime?
-  ingredients MealIngredient[]
   creatorId   String
   creator     Profile?         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   favoritedBy FavoriteMeals[]
   cookingTime Int?
   coverImage  String?          @db.Text
-  comments    Comment[]        @relation("MealComments")
+  comments    Comment[]        @relation("MealComments")        
 
   @@index([id])
   @@index([creatorId])
 }
 
+
 model FavoriteMeals {
   profileId String
   mealId    String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  meal      Meal    @relation(fields: [mealId], references: [id])
+  meal      Meal    @relation(fields: [mealId], references: [id], onDelete: Cascade)
 
   @@id([profileId, mealId])
   @@index([profileId])
@@ -90,13 +73,15 @@ model Subcomment {
   text      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  mealId    String   
+  mealId    String
   profileId String
   commentId String
   profile   Profile  @relation("profile", fields: [profileId], references: [id])
-  comment   Comment  @relation("comment", fields: [commentId], references: [id], onDelete: Cascade) 
+  comment   Comment  @relation("comment", fields: [commentId], references: [id], onDelete: Cascade)
 
   @@index([profileId])
   @@index([commentId])
 }
+
+
 
