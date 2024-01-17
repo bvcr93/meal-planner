@@ -73,7 +73,8 @@ export async function deleteCommentAction(commentId: string, mealId: string) {
     if (result.success) {
       console.log("Comment deleted successfully");
 
-      revalidatePath(`/recipes/${mealId}`);
+      // Update this path to re-fetch and update the specific meal's details
+      revalidatePath(`/explore/${mealId}`);
     } else {
       console.error("Failed to delete comment:", result.error);
     }
@@ -107,20 +108,33 @@ export async function createSubcommentAction(
     console.error("Unexpected error:", error);
   }
 }
-export async function createRatingAction(mealId: string, ratingValue: number, profileId: string) {
+export async function createRatingAction(
+  mealId: string,
+  ratingValue: number,
+  profileId: string,
+  commentId?: string
+) {
   console.log("Creating rating for meal:", mealId, "with value:", ratingValue);
 
   try {
-    const { rating, error } = await createRating(mealId, ratingValue, profileId);
+    const { rating, error } = await createRating(
+      mealId,
+      ratingValue,
+      profileId,
+      commentId
+    );
 
     if (error) {
       console.error("Error creating rating:", error);
     } else {
       console.log("Rating created successfully:", rating);
 
-      // Here, add any additional logic that should occur after a rating is created.
-      // For example, revalidating paths to update UI components.
+      // Additional logic after creating a rating
       revalidatePath(`/recipes/${mealId}`);
+      // If a commentId was involved, you might want to revalidate its path too
+      if (commentId) {
+        revalidatePath(`/comments/${commentId}`);
+      }
       // Other relevant path updates can go here
     }
   } catch (error) {

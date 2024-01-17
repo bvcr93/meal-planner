@@ -209,30 +209,34 @@ export default function FoodCard({
         !mealId ||
         typeof mealId !== "string"
       ) {
+        console.error("Invalid input");
         setIsLoading(false);
         return;
       }
+
       const profileId = user?.id;
       if (!profileId) {
         console.error("User profile ID not found");
+        setIsLoading(false);
         return;
       }
-      // Create a comment
+
       const commentResult = await createCommentAction(mealId, text);
+
       if (commentResult.error || !commentResult.comment) {
         console.error("Error creating comment:", commentResult.error);
         setIsLoading(false);
         return;
       }
 
-      // Create a rating
-      await createRatingAction(mealId, ratingValue, profileId);
+      const commentId = commentResult.comment.comment?.id;
+
+      await createRatingAction(mealId, ratingValue, profileId, commentId);
 
       toast({
         description: "Comment and rating submitted successfully!",
       });
 
-      // Redirect or update the UI as needed
       router.push(`/explore/${name}`);
     } catch (error) {
       console.error("Error creating comment and rating:", error);

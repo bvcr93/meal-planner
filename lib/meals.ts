@@ -7,7 +7,7 @@ export async function getMeals() {
       include: {
         creator: true,
         comments: true,
-        ratings: true
+        ratings: true,
       },
     });
     console.log("meals found: ", meals);
@@ -191,17 +191,26 @@ export async function createComment(mealId: string, text: string) {
 
 export async function deleteComment(commentId: string) {
   try {
+    await db.rating.deleteMany({
+      where: {
+        commentId: commentId,
+      },
+    });
+
     const deletedComment = await db.comment.delete({
       where: {
         id: commentId,
       },
     });
 
-    console.log("Comment deleted with line: ", deletedComment);
+    console.log(
+      "Comment and associated ratings deleted with line: ",
+      deletedComment
+    );
 
     return { success: true };
   } catch (error) {
-    console.error("Error deleting comment:", error);
+    console.error("Error deleting comment and associated ratings:", error);
     return { success: false, error };
   }
 }
@@ -251,14 +260,22 @@ export async function createSubcomment(
     return { error };
   }
 }
-export async function createRating(mealId: string, ratingValue: number, profileId: string) {
+export async function createRating(
+  mealId: string,
+  ratingValue: number,
+  profileId: string,
+  commentId?: string
+) {
   try {
+    const ratingData: RatingData = {
+      ratingValue,
+      mealId,
+      profileId,
+      ...(commentId && { commentId }),
+    };
+
     const rating = await db.rating.create({
-      data: {
-        ratingValue,
-        mealId,
-        profileId,
-      },
+      data: ratingData,
     });
 
     console.log("Rating created:", rating);
@@ -269,4 +286,9 @@ export async function createRating(mealId: string, ratingValue: number, profileI
   }
 }
 
-
+type RatingData = {
+  ratingValue: number;
+  mealId: string;
+  profileId: string;
+  commentId?: string;
+};

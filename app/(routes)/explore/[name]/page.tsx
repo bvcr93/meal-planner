@@ -31,8 +31,10 @@ export default async function MealDetails({
       subcomments: {
         include: {
           profile: true,
+          
         },
       },
+      ratings: true
     },
     orderBy: {
       createdAt: "desc",

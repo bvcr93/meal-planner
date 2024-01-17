@@ -66,7 +66,9 @@ model Comment {
   profile     Profile      @relation("ProfileComments", fields: [profileId], references: [id])
   meal        Meal         @relation("MealComments", fields: [mealId], references: [id], onDelete: Cascade)
   subcomments Subcomment[] @relation("comment")
+  ratings Rating[]          
 
+   
   @@index([profileId])
   @@index([mealId])
 }
@@ -87,15 +89,19 @@ model Subcomment {
 }
 
 model Rating {
-  id         String   @id @default(uuid())
-  ratingValue Int     
-  profileId  String
-  mealId     String
-  createdAt  DateTime @default(now())
+  id          String    @id @default(uuid())
+  ratingValue Int
+  profileId   String
+  mealId      String
+  commentId   String?   
+  createdAt   DateTime  @default(now())
 
-  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  meal    Meal    @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  profile  Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  meal     Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  comment  Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@index([profileId])
   @@index([mealId])
+  @@index([commentId])
 }
+
