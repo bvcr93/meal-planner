@@ -3,8 +3,6 @@ import { getMeals } from "@/lib/meals";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 
-export const dynamic = "force dynamic";
-
 export default async function ExplorePage() {
   const { userId }: { userId: string | null } = auth();
   let favoriteMealIdsForUser: any;
