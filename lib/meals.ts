@@ -7,6 +7,7 @@ export async function getMeals() {
       include: {
         creator: true,
         comments: true,
+        ratings: true
       },
     });
     console.log("meals found: ", meals);
@@ -250,3 +251,22 @@ export async function createSubcomment(
     return { error };
   }
 }
+export async function createRating(mealId: string, ratingValue: number, profileId: string) {
+  try {
+    const rating = await db.rating.create({
+      data: {
+        ratingValue,
+        mealId,
+        profileId,
+      },
+    });
+
+    console.log("Rating created:", rating);
+    return { rating };
+  } catch (error) {
+    console.error("Error creating rating:", error);
+    return { error };
+  }
+}
+
+

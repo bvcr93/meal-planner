@@ -27,7 +27,20 @@ export default async function ExplorePage() {
   }
 
   const allComments = await db.comment.findMany();
+
+  const mealsWithRatings = meals.map((meal) => {
+    const averageRating = meal.ratings.length
+      ? meal.ratings.reduce((acc, curr) => acc + curr.ratingValue, 0) / meal.ratings.length
+      : 0; // Default to 0
   
+    return {
+      ...meal,
+      averageRating,
+    };
+  });
+  
+  
+
   return (
     <div className="min-h-screen">
       <div className="flex w-full text-center">
@@ -36,7 +49,7 @@ export default async function ExplorePage() {
         </h2>
       </div>
       <SearchSection
-        meals={meals}
+        meals={mealsWithRatings} 
         favoriteMeals={favoriteMealIdsForUser || []}
         allComments={allComments}
       />

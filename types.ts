@@ -10,7 +10,8 @@ export type TMeal = {
   creatorId: string;
   cookingTime: number | null;
   coverImage: string | null;
-  comments?: Comment[]
+  comments?: Comment[],
+  averageRating?: number;
   creator?: {
     id: string;
     userId: string;

@@ -19,6 +19,7 @@ export default async function MealDetails({
     },
     include: {
       creator: true,
+      ratings: true,
     },
   });
   const comments = await db.comment.findMany({
@@ -38,11 +39,13 @@ export default async function MealDetails({
     },
   });
 
-  // If you expect multiple ratings per comment and want to log each one
+  console.log("Ratings for the meal:", meal?.ratings);
 
   if (!meal) {
     return <div>Meal not found.</div>;
   }
+
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start mt-10 gap-10 mb-20">
@@ -68,6 +71,7 @@ export default async function MealDetails({
             {...comment}
             user={comment.profile}
             subcomments={comment.subcomments}
+           
           />
         </div>
       ))}

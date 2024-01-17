@@ -7,6 +7,7 @@ import {
   createComment,
   deleteComment,
   createSubcomment,
+  createRating,
 } from "@/lib/meals";
 import { Comment } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -104,5 +105,25 @@ export async function createSubcommentAction(
     }
   } catch (error) {
     console.error("Unexpected error:", error);
+  }
+}
+export async function createRatingAction(mealId: string, ratingValue: number, profileId: string) {
+  console.log("Creating rating for meal:", mealId, "with value:", ratingValue);
+
+  try {
+    const { rating, error } = await createRating(mealId, ratingValue, profileId);
+
+    if (error) {
+      console.error("Error creating rating:", error);
+    } else {
+      console.log("Rating created successfully:", rating);
+
+      // Here, add any additional logic that should occur after a rating is created.
+      // For example, revalidating paths to update UI components.
+      revalidatePath(`/recipes/${mealId}`);
+      // Other relevant path updates can go here
+    }
+  } catch (error) {
+    console.error("Unexpected error creating rating:", error);
   }
 }

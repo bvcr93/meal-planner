@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  createSubcommentAction,
-  deleteCommentAction,
-} from "@/app/actions";
+import { createSubcommentAction, deleteCommentAction } from "@/app/actions";
 import {
   Card,
   CardDescription,
@@ -25,7 +22,6 @@ interface CommentProps {
   user: Profile;
   createdAt: Date;
   mealId: string;
-
   subcomments: {
     id: string;
     text: string;
@@ -44,6 +40,7 @@ export default function CommentSection({
   id,
   mealId,
   subcomments,
+
 }: CommentProps) {
   const { userId } = useAuth();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -97,10 +94,6 @@ export default function CommentSection({
     }
   };
 
-  
-
- 
-
   return (
     <Card
       className={`w-full dark:bg-neutral-800 bg-slate-100 shadow-lg border-none ${
@@ -125,11 +118,14 @@ export default function CommentSection({
               className="object-cover rounded-full"
             />
           </Link>
+
           <p className="text-sm dark:text-slate-300 font-semibold">
             {user.name}
           </p>
         </div>
-
+        <div className="flex items-center gap-5">
+          {/* {renderStars(ratingValue)} */}
+        </div>
         <div className="flex items-center gap-5">
           {/* <form action={handleCreateRating}>
             <AlertDialog>
@@ -220,4 +216,20 @@ export default function CommentSection({
       </div>
     </Card>
   );
+}
+
+function renderStars(rating: number) {
+  const totalStars = 5;
+  let stars = [];
+
+  for (let i = 1; i <= totalStars; i++) {
+    stars.push(
+      <Star
+        key={i}
+        className={i <= rating ? "text-yellow-500" : "text-gray-300"}
+      />
+    );
+  }
+
+  return stars;
 }

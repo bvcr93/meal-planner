@@ -1,5 +1,9 @@
 "use client";
-import { createCommentAction, deleteMealAction } from "@/app/actions";
+import {
+  createCommentAction,
+  createRatingAction,
+  deleteMealAction,
+} from "@/app/actions";
 import {
   Card,
   CardContent,
@@ -21,6 +25,8 @@ import { useUser } from "@clerk/nextjs";
 import {
   Clock,
   Edit,
+  Heart,
+  HeartIcon,
   MessageSquare,
   Send,
   Star,
@@ -67,6 +73,7 @@ interface FoodCardProps {
   hasFavoriteStar?: boolean;
   allComments?: Comment[];
   comments?: number | undefined;
+  averageRating?: number;
 }
 
 export default function FoodCard({
@@ -83,6 +90,7 @@ export default function FoodCard({
   hasRemoveFromFavorites,
   hasFavoriteStar,
   allComments,
+  averageRating,
   comments,
 }: FoodCardProps) {
   const { toast } = useToast();
@@ -204,20 +212,27 @@ export default function FoodCard({
         setIsLoading(false);
         return;
       }
-
-      // Call createCommentAction and get the result
-      const result = await createCommentAction(mealId, text);
-      if (result.error || !result.comment) {
-        console.error("Error creating comment:", result.error);
+      const profileId = user?.id;
+      if (!profileId) {
+        console.error("User profile ID not found");
+        return;
+      }
+      // Create a comment
+      const commentResult = await createCommentAction(mealId, text);
+      if (commentResult.error || !commentResult.comment) {
+        console.error("Error creating comment:", commentResult.error);
         setIsLoading(false);
         return;
       }
 
-      const comment = result.comment;
+      // Create a rating
+      await createRatingAction(mealId, ratingValue, profileId);
 
-      const commentId = comment.comment?.id;
-      console.log("comment id: ", commentId);
+      toast({
+        description: "Comment and rating submitted successfully!",
+      });
 
+      // Redirect or update the UI as needed
       router.push(`/explore/${name}`);
     } catch (error) {
       console.error("Error creating comment and rating:", error);
@@ -304,12 +319,12 @@ export default function FoodCard({
               </div>
               <div>
                 {hasFavoriteStar && (
-                  <Star
+                  <HeartIcon
                     className={`font-light text-sm cursor-pointer text-white ${
-                      isFavorite ? "text-yellow-300" : ""
+                      isFavorite ? "text-red-600" : ""
                     }`}
                     onClick={(e) => toggleFavorite(e)}
-                  ></Star>
+                  ></HeartIcon>
                 )}
               </div>{" "}
               {user?.id === userId && (
@@ -371,14 +386,14 @@ export default function FoodCard({
                     <DrawerFooter>
                       <div className="flex flex-col">
                         <div className="flex flex-col items-center gap-4 mb-10">
-                          {/* <h1>Leave a rating!</h1> */}
+                          <h1>Leave a rating!</h1>
                           <div className="flex">
                             <input
                               type="text"
                               className="hidden"
                               name="commentId"
                             />
-                            {/* {[1, 2, 3, 4, 5].map((starIndex) => (
+                            {[1, 2, 3, 4, 5].map((starIndex) => (
                               <Star
                                 key={starIndex}
                                 className={`cursor-pointer ${
@@ -388,7 +403,7 @@ export default function FoodCard({
                                 }`}
                                 onClick={() => handleStarClick(starIndex)}
                               />
-                            ))} */}
+                            ))}
                           </div>
                         </div>
 
@@ -415,7 +430,15 @@ export default function FoodCard({
               <Clock /> {cookingTime}m
             </div>
           )}
-          <MealHashtag name={name} />
+          <div>
+            {averageRating != null && averageRating > 0 && (
+              <div className="flex items-center absolute bottom-4 left-4">
+                {renderStars(averageRating)}
+              </div>
+            )}
+          </div>
+
+          {/* <MealHashtag name={name} /> */}
         </Card>
       )}
     </>
@@ -433,3 +456,16 @@ function SubmitButton({ isLoading }: { isLoading: boolean }) {
     </Button>
   );
 }
+
+const renderStars = (averageRating: number) => {
+  return Array.from({ length: 5 }, (_, index) => {
+    const filled = index < Math.round(averageRating);
+    return (
+      <Star
+        size={20}
+        key={index}
+        className={filled ? "text-yellow-500" : "text-gray-300"}
+      />
+    );
+  });
+};

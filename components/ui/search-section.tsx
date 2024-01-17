@@ -2,15 +2,15 @@
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
 import { TMeal } from "@/types";
-import { Comment, Meal } from "@prisma/client";
+import { Comment } from "@prisma/client";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
-
+import { Meal } from "@prisma/client";
 type SearchInputProps = {
-  meals: TMeal[];
+  meals: (TMeal & { averageRating: number | null })[];
   favoriteMeals: string[];
   allComments: Comment[];
 };
@@ -109,6 +109,7 @@ export default function SearchSection({
             hasRemoveFromFavorites={false}
             allComments={allComments}
             comments={meal.comments?.length}
+            averageRating={meal.averageRating}
           />
         ))}
       </div>
