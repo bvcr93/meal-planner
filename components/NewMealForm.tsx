@@ -21,6 +21,7 @@ export default function NewMealForm() {
   const [url, setUrl] = useState<{ url: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
@@ -28,7 +29,14 @@ export default function NewMealForm() {
   const { user } = useUser();
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
-
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFile(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url); // This should update the preview URL
+    }
+  };
   const hardcodedIngredients = [
     { id: "1", name: "Salt" },
     { id: "2", name: "Pepper" },
@@ -105,17 +113,20 @@ export default function NewMealForm() {
           </select>
         </div>
       </div>
-      <div className="mt-5 space-y-5">
-        
-      </div>
+      <div className="mt-5 space-y-5"></div>
       <h2 className="mt-14 text-lg text-start ">Select an image</h2>
       <Input
         className="mt-5 w-full"
         type="file"
-        onChange={(e) => {
-          setFile(e.target.files?.[0]);
-        }}
+        onChange={handleFileChange} // Make
       />
+      {previewUrl && (
+        <img
+          src={previewUrl}
+          alt="Preview"
+          className="mt-4 w-48 h-48 object-cover" // Adjust styles as needed
+        />
+      )}
       <SubmitButton
         isLoading={isLoading}
         file={file}

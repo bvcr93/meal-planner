@@ -31,10 +31,9 @@ export default async function MealDetails({
       subcomments: {
         include: {
           profile: true,
-          
         },
       },
-      ratings: true
+      ratings: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -46,8 +45,6 @@ export default async function MealDetails({
   if (!meal) {
     return <div>Meal not found.</div>;
   }
-
-
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start mt-10 gap-10 mb-20">
@@ -70,10 +67,9 @@ export default async function MealDetails({
       {comments.map((comment) => (
         <div key={comment.id} className="w-full">
           <CommentSection
-            {...comment}
+            {...comment} 
             user={comment.profile}
             subcomments={comment.subcomments}
-           
           />
         </div>
       ))}

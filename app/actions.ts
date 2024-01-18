@@ -1,17 +1,16 @@
 "use server";
 import {
-  createMeal,
-  deleteMeal,
   getUserMealCount,
-  updateMeal,
   createComment,
   deleteComment,
   createSubcomment,
   createRating,
 } from "@/lib/meals";
+import { createMeal } from "@/lib/meal-services/meals/create";
 import { Comment } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-
+import { deleteMeal } from "@/lib/meal-services/meals/delete";
+import { updateMeal } from "@/lib/meal-services/meals/update";
 export async function createMealAction(
   name: string,
   description: string,

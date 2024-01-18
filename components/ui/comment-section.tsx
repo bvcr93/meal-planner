@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/card";
 import { useAuth } from "@clerk/nextjs";
 import { Profile } from "@prisma/client";
-import { Heart, MessageSquare, Send, Star, Trash } from "lucide-react";
+import { Heart, MessageSquare, Send, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useRef, useState } from "react";
 import { Input } from "./input";
 import { useToast } from "./use-toast";
 
@@ -47,6 +47,7 @@ export default function CommentSection({
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [rating, setRating] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
   async function handleDeleteComment(commentId: string, commentMealId: string) {
     try {
       setIsDeleting(true);
@@ -85,6 +86,7 @@ export default function CommentSection({
         toast({
           title: `Subcomment added`,
         });
+        formRef.current?.reset();
       }
     } catch (error) {
       console.error("Error creating subcomment:", error);
@@ -122,35 +124,8 @@ export default function CommentSection({
             {user.name}
           </p>
         </div>
+        <div className="flex items-center gap-5"></div>
         <div className="flex items-center gap-5">
-          {/* {renderStars(ratingValue)} */}
-        </div>
-        <div className="flex items-center gap-5">
-          {/* <form action={handleCreateRating}>
-            <AlertDialog>
-              <AlertDialogTrigger>
-                <Button size={"sm"} variant={"outline"}>
-                  Leave a rating
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogDescription>
-                    Rate the meal!
-                  </AlertDialogDescription>
-                  <AlertDialogDescription className="flex mt-4">
-                    <AlertDialogDescription className="flex mt-4">
-                      {renderStars()}
-                    </AlertDialogDescription>
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <Button type="submit">Continue</Button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </form> */}
           <MessageSquare
             size={20}
             className={`mt-1 cursor-pointer ${
@@ -170,7 +145,7 @@ export default function CommentSection({
       </CardFooter>
       {isSubCommentOpened && (
         <div className="relative">
-          <form
+          <form ref={formRef}
             onSubmit={(e) => {
               e.preventDefault();
               handleCreateSubcomment(new FormData(e.currentTarget));
@@ -220,20 +195,4 @@ export default function CommentSection({
       </div>
     </Card>
   );
-}
-
-function renderStars(rating: number) {
-  const totalStars = 5;
-  let stars = [];
-
-  for (let i = 1; i <= totalStars; i++) {
-    stars.push(
-      <Star
-        key={i}
-        className={i <= rating ? "text-yellow-500" : "text-gray-300"}
-      />
-    );
-  }
-
-  return stars;
 }

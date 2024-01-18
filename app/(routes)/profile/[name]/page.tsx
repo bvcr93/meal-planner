@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
@@ -96,7 +96,7 @@ export default async function ProfilePage({
       <div className="grid lg:grid-cols-2 place-items-center gap-5">
         {userProfile?.createdMeals.map((meal) => (
           <Link href={`/explore/${meal.name}`}>
-            <Card className="min-w-[450px] mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+            <Card className="min-w-[400px] md:min-w-[450px] mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
               <div className="md:flex">
                 <div className="md:flex-shrink-0">
                   <Image
@@ -111,12 +111,8 @@ export default async function ProfilePage({
                   <CardTitle className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
                     {meal.name}
                   </CardTitle>
-                  <CardDescription className="block mt-1 text-lg leading-tight font-medium text-black">
-                    {meal.description}
-                  </CardDescription>
-                  <div className="mt-2 text-gray-500">
-                    Cooking time: 30 min. Ingredients: Flour, sugar, eggs.
-                  </div>
+
+                  <div className="mt-2 text-gray-500">{meal.description}</div>
                   <div className="mt-4">
                     <div className="flex items-center">
                       {renderStars(calculateAverageRating(meal.id, ratings))}
@@ -125,8 +121,8 @@ export default async function ProfilePage({
                       </span>
                     </div>
                     <div className="mt-2 text-gray-500">
-                      {" "}
-                      {meal._count.comments} comments
+                      {meal._count.comments}{" "}
+                      {meal._count.comments === 1 ? "comment" : "comments"}
                     </div>
                   </div>
                 </div>

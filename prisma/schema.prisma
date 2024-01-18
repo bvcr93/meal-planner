@@ -21,6 +21,7 @@ model Profile {
   comments     Comment[]       @relation("ProfileComments")
   subcomments  Subcomment[]    @relation("profile")
   rating Rating[]
+  notifications Notification[]
 }
 
 model Meal {
@@ -37,6 +38,7 @@ model Meal {
   coverImage  String?          @db.Text
   comments    Comment[]        @relation("MealComments")     
   ratings Rating []   
+  notifications Notification[]
 
   @@index([id])
   @@index([creatorId])
@@ -67,7 +69,7 @@ model Comment {
   meal        Meal         @relation("MealComments", fields: [mealId], references: [id], onDelete: Cascade)
   subcomments Subcomment[] @relation("comment")
   ratings Rating[]          
-
+  notifications Notification[]
    
   @@index([profileId])
   @@index([mealId])
@@ -104,4 +106,23 @@ model Rating {
   @@index([mealId])
   @@index([commentId])
 }
+
+model Notification {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  profileId   String   
+  mealId      String   
+  commentId   String?  
+
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  meal        Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  comment     Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([mealId])
+  @@index([commentId])
+}
+
+
 
