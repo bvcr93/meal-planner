@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
@@ -21,12 +17,49 @@ export default async function ProfilePage({
       name: decodedName,
     },
     include: {
-      createdMeals: true,
+      createdMeals: {
+        include: {
+          _count: {
+            select: { comments: true },
+          },
+        },
+      },
+      rating: true,
+      comments: true,
     },
   });
 
+  console.log("user profile: ", userProfile);
+
+  const ratings = await db.rating.findMany();
+  const meals = await db.meal.findMany({
+    where: {
+      creatorId: userProfile?.id,
+    },
+  });
+
+  console.log("meals from profile page: ", meals);
+
+  console.log("ratings: ", ratings);
+
+  function calculateAverageRating(mealId: string, ratings: Array<any>): number {
+    const mealRatings = ratings.filter((rating) => rating.mealId === mealId);
+    const total = mealRatings.reduce(
+      (acc, rating) => acc + rating.ratingValue,
+      0
+    );
+    return mealRatings.length > 0 ? total / mealRatings.length : 0;
+  }
+
+  if (userProfile && userProfile.createdMeals) {
+    userProfile.createdMeals.forEach((meal) => {
+      console.log(
+        `Meal ID: ${meal.id}, Comment Count: ${meal._count.comments}`
+      );
+    });
+  }
+
   if (!userProfile) {
-    // User not found
     return (
       <div className="flex flex-col items-center text-2xl justify-center h-96">
         User not found.
@@ -63,7 +96,7 @@ export default async function ProfilePage({
       <div className="grid lg:grid-cols-2 place-items-center gap-5">
         {userProfile?.createdMeals.map((meal) => (
           <Link href={`/explore/${meal.name}`}>
-            <Card className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+            <Card className="min-w-[450px] mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
               <div className="md:flex">
                 <div className="md:flex-shrink-0">
                   <Image
@@ -76,24 +109,25 @@ export default async function ProfilePage({
                 </div>
                 <div className="p-8">
                   <CardTitle className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-                    Delicious Food
+                    {meal.name}
                   </CardTitle>
                   <CardDescription className="block mt-1 text-lg leading-tight font-medium text-black">
-                    Short food description.
+                    {meal.description}
                   </CardDescription>
                   <div className="mt-2 text-gray-500">
                     Cooking time: 30 min. Ingredients: Flour, sugar, eggs.
                   </div>
                   <div className="mt-4">
                     <div className="flex items-center">
-                      <StarIcon className="w-4 h-4 fill-primary" />
-                      <StarIcon className="w-4 h-4 fill-primary" />
-                      <StarIcon className="w-4 h-4 fill-primary" />
-                      <StarIcon className="w-4 h-4 fill-primary" />
-                      <StarIcon className="w-4 h-4 fill-muted stroke-muted-foreground" />
-                      <span className="ml-2 text-sm text-gray-600">4.0</span>
+                      {renderStars(calculateAverageRating(meal.id, ratings))}
+                      <span className="ml-2 text-sm text-gray-600">
+                        {calculateAverageRating(meal.id, ratings).toFixed(1)}
+                      </span>
                     </div>
-                    <div className="mt-2 text-gray-500">200 reviews</div>
+                    <div className="mt-2 text-gray-500">
+                      {" "}
+                      {meal._count.comments} comments
+                    </div>
                   </div>
                 </div>
               </div>
@@ -104,3 +138,18 @@ export default async function ProfilePage({
     </div>
   );
 }
+
+const renderStars = (rating: number) => {
+  let stars = [];
+  for (let i = 1; i <= 5; i++) {
+    stars.push(
+      <StarIcon
+        key={i}
+        className={`w-4 h-4 ${
+          i <= rating ? "fill-primary" : "fill-muted stroke-muted-foreground"
+        }`}
+      />
+    );
+  }
+  return stars;
+};

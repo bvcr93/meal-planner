@@ -323,12 +323,12 @@ export default function FoodCard({
               </div>
               <div>
                 {hasFavoriteStar && (
-                  <HeartIcon
+                  <Star
                     className={`font-light text-sm cursor-pointer text-white ${
-                      isFavorite ? "text-red-600" : ""
+                      isFavorite ? "text-yellow-400" : ""
                     }`}
                     onClick={(e) => toggleFavorite(e)}
-                  ></HeartIcon>
+                  ></Star>
                 )}
               </div>{" "}
               {user?.id === userId && (
@@ -461,7 +461,7 @@ function SubmitButton({ isLoading }: { isLoading: boolean }) {
   );
 }
 
-const renderStars = (averageRating: number) => {
+export const renderStars = (averageRating: number) => {
   return Array.from({ length: 5 }, (_, index) => {
     const filled = index < Math.round(averageRating);
     return (

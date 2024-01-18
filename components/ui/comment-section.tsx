@@ -40,7 +40,6 @@ export default function CommentSection({
   id,
   mealId,
   subcomments,
-
 }: CommentProps) {
   const { userId } = useAuth();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -178,6 +177,7 @@ export default function CommentSection({
             }}
           >
             <Input
+              disabled={isLoading}
               placeholder="Reply..."
               name="text"
               className="w-full pr-10"
@@ -187,9 +187,13 @@ export default function CommentSection({
               <button
                 disabled={isLoading}
                 type="submit"
-                className="mr-7 dark:text-slate-200 text-slate-600 cursor-pointer"
+                className={`${
+                  isLoading
+                    ? "text-slate-100 mr-7 dark:text-slate-200  cursor-pointer"
+                    : " mr-7 dark:text-slate-200 text-slate-600 cursor-pointer"
+                }`}
               >
-                <Send className={`${isLoading && "bg-slate-200"}`} />
+                <Send className={`${isLoading && "text-slate-200"}`} />
               </button>
             </div>
             <input type="hidden" name="mealId" value={mealId} />

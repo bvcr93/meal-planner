@@ -23,9 +23,11 @@ export default function HeroSection() {
                   Get started
                 </Button>
               </Link>
-              <Button size="lg" variant={"outline"} className="">
-                Create weekly plan
-              </Button>
+              <Link href={"/weekly-plan"}>
+                <Button size="lg" variant={"outline"} className="">
+                  Create weekly plan
+                </Button>
+              </Link>
             </div>
             <div className="flex items-center md:pt-14 space-x-4">
               <div className="md:flex">

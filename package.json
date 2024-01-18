@@ -49,11 +49,13 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
     "uploadthing": "^5.7.1",
+    "uuid": "^9.0.1",
     "vaul": "^0.8.0",
     "zod": "^3.22.4",
     "zustand": "^4.4.3"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.7",
     "prisma": "^5.3.1"
   }
 }

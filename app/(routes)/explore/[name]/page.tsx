@@ -54,8 +54,8 @@ export default async function MealDetails({
       <div className="relative w-full">
         <Image
           src={meal.coverImage || ""}
-          width={600}
-          height={100}
+          width={1000}
+          height={1000}
           alt=""
           className="w-full object-cover rounded-xl h-96"
         />

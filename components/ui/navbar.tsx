@@ -55,6 +55,7 @@ export default async function Navbar() {
         <div className="md:flex gap-10 hidden">
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/recipes`}>My Recipes</Link>
+          {/* <Link href={`/weekly-plan`}>Dashboard</Link> */}
           <Link href={`/pro`} className="text-orange-500 font-semibold">
             Upgrade to Pro
           </Link>
