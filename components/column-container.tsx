@@ -51,17 +51,19 @@ export default function ColumnContainer({
       ></div>
     );
   }
+  const isInitialMealsColumn = column.title === "Initial meals";
+
+  // Add 'overflow-scroll' class only if it's the "Initial meals" column
+  const containerClassNames = `w-97 hover:shadow-xl duration-300 h-96 shadow-lg rounded-lg bg-white dark:bg-slate-950 ${
+    isInitialMealsColumn ? "overflow-y-scroll text-blue-500" : ""
+  }`;
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className="w-97 hover:shadow-xl duration-300 h-96 shadow-lg rounded-lg bg-white dark:bg-slate-950"
-    >
+    <div ref={setNodeRef} style={style} className={containerClassNames}>
       <div
         {...listeners}
         {...attributes}
-        className="w-full dark:bg-black bg-slate-200 rounded-t-lg h-10 flex items-center justify-center"
+        className="w-full sticky top-0 dark:bg-black bg-slate-200 rounded-t-lg h-10 flex items-center justify-center"
       >
         {" "}
         {column.title}

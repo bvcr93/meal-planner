@@ -1,4 +1,4 @@
-import NewMealForm from "@/components/NewMealForm";
+import NewMealForm from "@/components/new-meal-form";
 import { Button } from "@/components/ui/button";
 import UserCount from "@/components/ui/user-count";
 import { db } from "@/lib/db";

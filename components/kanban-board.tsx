@@ -1,7 +1,4 @@
 "use client";
-import { Meal } from "@prisma/client";
-import React, { useMemo, useState } from "react";
-import ColumnContainer from "./column-container";
 import {
   DndContext,
   DragEndEvent,
@@ -12,9 +9,11 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import { SortableContext } from "@dnd-kit/sortable";
+import { Meal } from "@prisma/client";
+import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { useEffect } from "react";
+import ColumnContainer from "./column-container";
 import MealKanbanCard from "./meal-kanban-card";
 export interface Column {
   id: string;
@@ -128,23 +127,34 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
   function onDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
-    // Ensure there's a target column
-    if (!over || over.data.current?.type !== "Column") return;
+    if (!over) return;
 
-    // IDs of the dragged meal and the target column
-    const activeMealId = active.id; // Assuming this is a string
-    const targetColumnId = over.data.current.column.id; // ID of the column
+    const activeId = active.id;
+    const overId = over.id;
 
-    // Check if the dragged item is a meal
-    if (active.data.current?.type === "Meal") {
-      setMealsState((currentMeals) =>
-        currentMeals.map((meal) => {
-          if (meal.id === activeMealId) {
-            return { ...meal, kanbanColumnId: targetColumnId };
-          }
-          return meal;
-        })
-      );
+    if (activeId === overId) return;
+
+    if (
+      active.data.current?.type === "Column" &&
+      over.data.current?.type === "Column"
+    ) {
+      setColumns((currentColumns) => {
+        const newColumns = [...currentColumns];
+        const activeIndex = currentColumns.findIndex(
+          (col) => col.id === activeId
+        );
+        const overIndex = currentColumns.findIndex((col) => col.id === overId);
+
+        if (activeIndex !== -1 && overIndex !== -1) {
+          [newColumns[activeIndex], newColumns[overIndex]] = [
+            newColumns[overIndex],
+            newColumns[activeIndex],
+          ];
+          return newColumns;
+        }
+
+        return currentColumns;
+      });
     }
   }
 
@@ -166,7 +176,7 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
 
       setMealsState((meals) => {
         const activeMealIndex = meals.findIndex((meal) => meal.id === activeId);
-        if (activeMealIndex === -1) return meals; // Meal not found
+        if (activeMealIndex === -1) return meals;
 
         const updatedMeals = [...meals];
         updatedMeals[activeMealIndex] = {
