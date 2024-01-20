@@ -11,7 +11,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { Meal } from "@prisma/client";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import ColumnContainer from "./column-container";
 import MealKanbanCard from "./meal-kanban-card";
@@ -76,6 +76,90 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
       },
     })
   );
+  const onDragStart = useCallback((event: DragStartEvent) => {
+    if (event.active.data.current?.type === "Column") {
+      setActiveColumn(event.active.data.current.column);
+      return;
+    }
+    if (event.active.data.current?.type === "Meal") {
+      setActiveMeal(event.active.data.current.meal);
+      return;
+    }
+  }, []);
+  const onDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+
+      if (!over) return;
+
+      const activeId = active.id;
+      const overId = over.id;
+
+      if (activeId === overId) return;
+
+      if (
+        active.data.current?.type === "Column" &&
+        over.data.current?.type === "Column"
+      ) {
+        setColumns((currentColumns) => {
+          const newColumns = [...currentColumns];
+          const activeIndex = currentColumns.findIndex(
+            (col) => col.id === activeId
+          );
+          const overIndex = currentColumns.findIndex(
+            (col) => col.id === overId
+          );
+
+          if (activeIndex !== -1 && overIndex !== -1) {
+            [newColumns[activeIndex], newColumns[overIndex]] = [
+              newColumns[overIndex],
+              newColumns[activeIndex],
+            ];
+            return newColumns;
+          }
+
+          return currentColumns;
+        });
+      }
+    },
+    [setColumns]
+  ); // Dependency array
+  const onDragOver = useCallback(
+    (event: DragOverEvent) => {
+      const { active, over } = event;
+
+      if (!over) return;
+      const activeId = active.id;
+      const overId = over.id;
+
+      if (activeId === overId) return;
+      console.log("Active item data:", active.data.current);
+      console.log("Over item data:", over.data.current);
+      const isActiveMeal = active.data.current?.type === "Meal";
+      const isOverColumn = over.data.current?.type === "Column";
+
+      if (isActiveMeal && isOverColumn) {
+        const overColumnId = over.data.current?.column.id;
+
+        setMealsState((meals) => {
+          const activeMealIndex = meals.findIndex(
+            (meal) => meal.id === activeId
+          );
+          if (activeMealIndex === -1) return meals;
+
+          const updatedMeals = [...meals];
+          updatedMeals[activeMealIndex] = {
+            ...updatedMeals[activeMealIndex],
+            kanbanColumnId: overColumnId,
+          };
+
+          return updatedMeals;
+        });
+      }
+    },
+    [setMealsState]
+  ); // Dependency array
+
   return (
     <div className="w-full">
       <h1 className="text-center md:text-2xl text-lg">
@@ -87,8 +171,7 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-20 px-10">
-
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-20 px-10">
           <SortableContext items={columnsId}>
             {columns.map((col) => (
               <ColumnContainer
@@ -116,78 +199,4 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
       </DndContext>
     </div>
   );
-  function onDragStart(event: DragStartEvent) {
-    if (event.active.data.current?.type === "Column") {
-      setActiveColumn(event.active.data.current.column);
-      return;
-    }
-    if (event.active.data.current?.type === "Meal") {
-      setActiveMeal(event.active.data.current.meal);
-      return;
-    }
-  }
-  function onDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    const activeId = active.id;
-    const overId = over.id;
-
-    if (activeId === overId) return;
-
-    if (
-      active.data.current?.type === "Column" &&
-      over.data.current?.type === "Column"
-    ) {
-      setColumns((currentColumns) => {
-        const newColumns = [...currentColumns];
-        const activeIndex = currentColumns.findIndex(
-          (col) => col.id === activeId
-        );
-        const overIndex = currentColumns.findIndex((col) => col.id === overId);
-
-        if (activeIndex !== -1 && overIndex !== -1) {
-          [newColumns[activeIndex], newColumns[overIndex]] = [
-            newColumns[overIndex],
-            newColumns[activeIndex],
-          ];
-          return newColumns;
-        }
-
-        return currentColumns;
-      });
-    }
-  }
-
-  function onDragOver(event: DragOverEvent) {
-    const { active, over } = event;
-
-    if (!over) return;
-    const activeId = active.id;
-    const overId = over.id;
-
-    if (activeId === overId) return;
-    console.log("Active item data:", active.data.current);
-    console.log("Over item data:", over.data.current);
-    const isActiveMeal = active.data.current?.type === "Meal";
-    const isOverColumn = over.data.current?.type === "Column";
-
-    if (isActiveMeal && isOverColumn) {
-      const overColumnId = over.data.current?.column.id;
-
-      setMealsState((meals) => {
-        const activeMealIndex = meals.findIndex((meal) => meal.id === activeId);
-        if (activeMealIndex === -1) return meals;
-
-        const updatedMeals = [...meals];
-        updatedMeals[activeMealIndex] = {
-          ...updatedMeals[activeMealIndex],
-          kanbanColumnId: overColumnId,
-        };
-
-        return updatedMeals;
-      });
-    }
-  }
 }
