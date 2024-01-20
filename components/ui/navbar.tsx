@@ -1,3 +1,4 @@
+"use client";
 import {
   Sheet,
   SheetContent,
@@ -21,21 +22,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { db } from "@/lib/db";
+import { useAuth } from "@clerk/nextjs";
 
-export default async function Navbar() {
-  const { userId }: { userId: string | null } = auth();
-
-  if (userId === null) {
-    // Handle the null case here
-    // For example, throw an error or return early
-    throw new Error("User ID is null");
-  }
-
-  const profile = await db.profile.findFirst({
-    where: {
-      userId: userId,
-    },
-  });
+export default function Navbar() {
+  const { userId } = useAuth();
 
   return (
     <div className="w-full py-5 sticky top-0 z-50 dark:bg-neutral-900 bg-white">
@@ -106,8 +96,6 @@ export default async function Navbar() {
                   <DropdownMenuContent>
                     <DropdownMenuLabel className="w-full flex justify-between items-center">
                       <div>My Account</div>
-
-                      <div className="text-orange-500"> {profile?.name}</div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="cursor-pointer">
