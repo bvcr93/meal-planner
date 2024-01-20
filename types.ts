@@ -11,6 +11,7 @@ export type TMeal = {
   cookingTime: number | null;
   coverImage: string | null;
   comments?: Comment[],
+  kanbanColumnId?: string | null
   averageRating?: number;
   creator?: {
     id: string;
