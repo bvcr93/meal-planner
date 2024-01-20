@@ -7,7 +7,7 @@ interface Props {
   withFooter: boolean;
 }
 
-export default function FavoritesLayout({ children, withFooter = false }: Props) {
+export function FavoritesLayout({ children, withFooter = false }: Props) {
   return (
     <div>
       <div className="w-full flex justify-between items-center mt-20">
