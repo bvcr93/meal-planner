@@ -15,6 +15,7 @@ import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import ColumnContainer from "./column-container";
 import MealKanbanCard from "./meal-kanban-card";
+import ListContainer from "./list-container";
 export interface Column {
   id: string;
   title: string;
@@ -86,7 +87,8 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <div className="grid bg-slate-100 dark:bg-slate-900 rounded-xl lg:grid-cols-3 md:grid-cols-2 gap-10 my-20 py-20 px-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-20 px-10">
+
           <SortableContext items={columnsId}>
             {columns.map((col) => (
               <ColumnContainer

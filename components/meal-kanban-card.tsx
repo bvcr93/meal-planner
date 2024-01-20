@@ -55,11 +55,11 @@ export default function MealKanbanCard({ meal }: MealKanbanCardProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className="h-16 bg-slate-100  flex items-center justify-center dark:bg-slate-800 text-center rounded-lg hover:bg-slate-200 duration-300 cursor-grab"
+      className="h-12 bg-slate-100  flex items-center justify-center dark:bg-slate-800 dark:hover:bg-slate-700  text-center rounded-lg hover:bg-slate-200 duration-300 cursor-grab"
     >
       <div className="flex justify-between w-full items-center px-10">
         <div className="text-sm">{meal.name}</div>
-        <div>
+        <div className="flex items-center">
           <AlertDialog>
             <AlertDialogTrigger>
               <Image
@@ -67,7 +67,7 @@ export default function MealKanbanCard({ meal }: MealKanbanCardProps) {
                 alt=""
                 width={200}
                 height={10}
-                className="w-12 h-12 object-cover z-0 rounded-full"
+                className="w-8 h-8 object-cover z-0 rounded-full"
               />
             </AlertDialogTrigger>
             <AlertDialogContent>
