@@ -1,9 +1,14 @@
-import React from "react";
-import { Column } from "./kanban-board";
-import { useSortable } from "@dnd-kit/sortable";
+import React, { useMemo, useState } from "react";
+import { Column } from "@/types";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Meal } from "@prisma/client";
 import Image from "next/image";
+import MealKanbanCard from "./meal-kanban-card";
 interface ColumnContainerProps {
   column: Column;
   meals?: Meal[];
@@ -27,12 +32,15 @@ export default function ColumnContainer({
       column,
     },
   });
-
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
     // styles that are enabling dragging
   };
+
+  const mealsIds = useMemo(() => {
+    return meals?.map((meal) => meal.id) || [];
+  }, [meals]);
 
   if (isDragging) {
     return (
@@ -43,6 +51,7 @@ export default function ColumnContainer({
       ></div>
     );
   }
+
   return (
     <div
       ref={setNodeRef}
@@ -58,18 +67,15 @@ export default function ColumnContainer({
         {column.title}
       </div>
 
-      <div className=" w-full flex flex-col gap-3">
-        {meals?.map((meal) => (
-          <div className="w-full flex bg-slate-100">
-            <Image
-              alt=""
-              width={200}
-              height={200}
-              className="object-cover w-12 h-12 rounded-full"
-              src={meal.coverImage || ""}
-            />
-          </div>
-        ))}
+      <div className=" w-full flex flex-col gap-3 mt-3 px-5">
+        <SortableContext
+          items={mealsIds}
+          strategy={verticalListSortingStrategy}
+        >
+          {meals?.map((meal) => (
+            <MealKanbanCard meal={meal} key={meal.id} />
+          ))}
+        </SortableContext>
       </div>
     </div>
   );

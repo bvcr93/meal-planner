@@ -253,14 +253,14 @@ export default function FoodCard({
       {isClient && (
         <Card
           className={cn(
-            " relative dark:bg-transparent w-full min-h-[500px] hover:rounded-xl flex flex-col shadow-lg hover:shadow-xl duration-300"
+            " relative dark:bg-transparent w-full h-64 hover:rounded-xl flex flex-col shadow-lg hover:shadow-xl duration-300"
           )}
         >
           <CardHeader className="p-0">
             <CardDescription>
               {coverImage && (
                 <Link href={`/explore/${name}`}>
-                  <div className="h-[500px] relative hover:bg-black hover:rounded-xl flex justify-center items-center">
+                  <div className="h-64 relative hover:bg-black hover:rounded-xl flex justify-center items-center">
                     {!imageLoaded && (
                       <div className="absolute inset-0 flex justify-center items-center">
                         <Spinner />
@@ -280,12 +280,12 @@ export default function FoodCard({
                     />
 
                     <div className="absolute inset-0 text-white text-xl bg-black hover:rounded-xl flex justify-center items-center bg-opacity-0 hover:bg-opacity-50 opacity-0 hover:opacity-100 duration-300 cursor-pointer">
-                      <CardTitle className="l">
+                      <CardTitle className="">
                         <div className="leading-7 line-clamp-2 h-[100px] flex items-center justify-center text-center w-full tracking-wide px-5">
                           {name}
                         </div>
                         <div
-                          className="text-center text-sm mt-5 px-5"
+                          className="text-center text-sm px-5"
                           dangerouslySetInnerHTML={{
                             __html: editedDescription,
                           }}
