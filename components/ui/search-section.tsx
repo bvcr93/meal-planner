@@ -21,7 +21,9 @@ export default function SearchSection({
   allComments,
 }: SearchInputProps) {
   const searchParams = useSearchParams();
-  const [filteredMeals, setFilteredMeals] = useState<Meal[]>(meals);
+  const [filteredMeals, setFilteredMeals] =
+    useState<(TMeal & { averageRating: number | null })[]>(meals);
+
   const categoryId = searchParams.get("categoryId");
   const name = searchParams.get("name");
   const [selectedSearchOption, setSelectedSearchOption] = useState("name");
@@ -57,7 +59,7 @@ export default function SearchSection({
       router.push(url);
     }
 
-    const filtered = meals.filter((meal: Meal) => {
+    const filtered = meals.filter((meal: TMeal) => {
       const nameMatch =
         selectedSearchOption === "name" &&
         meal.name.toLowerCase().includes(debouncedValue.toLowerCase());
@@ -65,10 +67,12 @@ export default function SearchSection({
       const cookingTimeMatch =
         selectedSearchOption === "cookingTime" &&
         meal.cookingTime === parseInt(debouncedValue);
-        const mealComments = allComments.filter((comment) => comment.mealId === meal.id);
-        const commentIds = mealComments.map((comment) => comment.id);
-        console.log(commentIds);
-        
+      const mealComments = allComments.filter(
+        (comment) => comment.mealId === meal.id
+      );
+      const commentIds = mealComments.map((comment) => comment.id);
+      console.log(commentIds);
+
       return nameMatch || cookingTimeMatch || commentIds;
     });
 
