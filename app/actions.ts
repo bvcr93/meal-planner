@@ -140,3 +140,4 @@ export async function createRatingAction(
     console.error("Unexpected error creating rating:", error);
   }
 }
+
