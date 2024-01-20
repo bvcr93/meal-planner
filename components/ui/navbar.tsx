@@ -1,19 +1,5 @@
 "use client";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { ClerkLoading, UserButton, auth } from "@clerk/nextjs";
-import { Bell, Menu } from "lucide-react";
-import Link from "next/link";
-import { ModeToggle } from "../mode-toggle";
-import { Button } from "./button";
-import { NavbarSpinner } from "./navbar-spinner";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -21,8 +7,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { db } from "@/lib/db";
-import { useAuth } from "@clerk/nextjs";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ClerkLoading, UserButton, useAuth } from "@clerk/nextjs";
+import { Bell, Menu } from "lucide-react";
+import Link from "next/link";
+import { ModeToggle } from "../mode-toggle";
+import { Button } from "./button";
+import { NavbarSpinner } from "./navbar-spinner";
 
 export default function Navbar() {
   const { userId } = useAuth();
@@ -35,13 +33,6 @@ export default function Navbar() {
             href={`/`}
             className="font-semibold font-mono tracking-widest text-xl mr-10"
           >
-            {/* <Image
-              src={foody}
-              width={200}
-              height={200}
-              className="object-cover h-12"
-              alt=""
-            /> */}
             <h1 className="text-2xl">Foody</h1>
           </Link>
         </div>

@@ -4,11 +4,12 @@ import { useEdgeStore } from "@/lib/edgestore";
 import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { experimental_useFormStatus as UseFormStatus } from "react-dom";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
+
 import {
   Select,
   SelectContent,
@@ -176,7 +177,7 @@ export function SubmitButton({ file, onUpload, isLoading }: SubmitButtonProps) {
 }
 
 function InputComp() {
-  const data = UseFormStatus();
+  const data = useFormStatus();
   const isLoading = data.pending;
   return (
     <Input
@@ -190,7 +191,7 @@ function InputComp() {
 }
 
 function TextAreaComp() {
-  const data = UseFormStatus();
+  const data = useFormStatus();
   const isLoading = data.pending;
   return (
     <Textarea
