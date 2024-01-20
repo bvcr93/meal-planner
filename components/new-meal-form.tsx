@@ -4,7 +4,8 @@ import { useEdgeStore } from "@/lib/edgestore";
 import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+// @ts-expect-error
+import { useFormStatus } from "react-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
