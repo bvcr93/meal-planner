@@ -16,6 +16,8 @@ import { createPortal } from "react-dom";
 import ColumnContainer from "./column-container";
 import MealKanbanCard from "./meal-kanban-card";
 import ListContainer from "./list-container";
+import React from "react";
+import { debounce } from "lodash";
 export interface Column {
   id: string;
   title: string;
@@ -58,15 +60,26 @@ const defaultCols: Column[] = [
 interface KanbanBoardProps {
   meals: Meal[];
 }
+const MemoizedColumnContainer = React.memo(ColumnContainer);
+const MemoizedMealKanbanCard = React.memo(MealKanbanCard);
+
 export default function KanbanBoard({ meals }: KanbanBoardProps) {
   const [columns, setColumns] = useState<Column[]>(defaultCols);
-  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+  console.log("Rendering KanbanBoard component");
+
+  const columnsId = useMemo(() => {
+    console.log("columnsId useMemo");
+    return columns.map((col) => col.id);
+  }, [columns]);
   const [activeMeal, setActiveMeal] = useState<Meal | null>(null);
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
-  const initialMeals = meals.map((meal) => ({
-    ...meal,
-    kanbanColumnId: "setup",
-  }));
+  const initialMeals = useMemo(() => {
+    console.log("initialMeals useMemo");
+    return meals.map((meal) => ({
+      ...meal,
+      kanbanColumnId: "setup",
+    }));
+  }, [meals]);
   const [mealsState, setMealsState] = useState<Meal[]>(initialMeals);
 
   const sensors = useSensors(
@@ -77,6 +90,7 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
     })
   );
   const onDragStart = useCallback((event: DragStartEvent) => {
+    console.log("onDragStart");
     if (event.active.data.current?.type === "Column") {
       setActiveColumn(event.active.data.current.column);
       return;
@@ -88,6 +102,7 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
   }, []);
   const onDragEnd = useCallback(
     (event: DragEndEvent) => {
+      console.log("onDragEnd");
       const { active, over } = event;
 
       if (!over) return;
@@ -123,42 +138,43 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
       }
     },
     [setColumns]
-  ); // Dependency array
+  );
+
+  const debouncedMealUpdate = useCallback(
+    debounce((activeId: string, overColumnId: string) => {
+      setMealsState((prevMeals) => {
+        const activeMeal = prevMeals.find((meal) => meal.id === activeId);
+        if (activeMeal && activeMeal.kanbanColumnId !== overColumnId) {
+          return prevMeals.map((meal) =>
+            meal.id === activeId
+              ? { ...meal, kanbanColumnId: overColumnId }
+              : meal
+          );
+        }
+        return prevMeals;
+      });
+    }, 250),
+    [setMealsState]
+  );
   const onDragOver = useCallback(
     (event: DragOverEvent) => {
       const { active, over } = event;
 
       if (!over) return;
-      const activeId = active.id;
-      const overId = over.id;
+      const activeId = active.id.toString();
+      const overId = over.id.toString();
 
       if (activeId === overId) return;
-      console.log("Active item data:", active.data.current);
-      console.log("Over item data:", over.data.current);
       const isActiveMeal = active.data.current?.type === "Meal";
       const isOverColumn = over.data.current?.type === "Column";
 
       if (isActiveMeal && isOverColumn) {
         const overColumnId = over.data.current?.column.id;
-
-        setMealsState((meals) => {
-          const activeMealIndex = meals.findIndex(
-            (meal) => meal.id === activeId
-          );
-          if (activeMealIndex === -1) return meals;
-
-          const updatedMeals = [...meals];
-          updatedMeals[activeMealIndex] = {
-            ...updatedMeals[activeMealIndex],
-            kanbanColumnId: overColumnId,
-          };
-
-          return updatedMeals;
-        });
+        debouncedMealUpdate(activeId, overColumnId);
       }
     },
-    [setMealsState]
-  ); // Dependency array
+    [debouncedMealUpdate]
+  );
 
   return (
     <div className="w-full">
@@ -174,7 +190,7 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-20 px-10">
           <SortableContext items={columnsId}>
             {columns.map((col) => (
-              <ColumnContainer
+              <MemoizedColumnContainer
                 meals={mealsState.filter(
                   (meal) => meal.kanbanColumnId === col.id
                 )}
@@ -187,12 +203,12 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
         {createPortal(
           <DragOverlay>
             {activeColumn && (
-              <ColumnContainer
+              <MemoizedColumnContainer
                 column={activeColumn}
                 meals={meals.filter((meal) => meal.id === activeColumn.id)}
-              ></ColumnContainer>
+              ></MemoizedColumnContainer>
             )}
-            {activeMeal && <MealKanbanCard meal={activeMeal} />}
+            {activeMeal && <MemoizedMealKanbanCard meal={activeMeal} />}
           </DragOverlay>,
           document.body
         )}
