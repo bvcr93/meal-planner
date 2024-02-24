@@ -22,7 +22,6 @@ export default function ColumnContainer({
 }: ColumnContainerProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Filtered meals based on the search term
   const filteredMeals = useMemo(() => {
     if (!searchTerm.trim()) return meals;
     return (
@@ -48,7 +47,6 @@ export default function ColumnContainer({
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
-    // styles that are enabling dragging
   };
 
   const mealsIds = useMemo(() => {
@@ -70,7 +68,6 @@ export default function ColumnContainer({
     isInitialMealsColumn ? "col-span-full overflow-y-auto h-auto" : "h-56"
   }`;
 
-  // Apply 'grid-cols-3' only to the meals container inside "Initial meals" column
   const mealsContainerClassNames = isInitialMealsColumn
     ? "md:grid grid-cols-3 grid-cols-1 space-y-5 md:space-y-0 gap-4 pt-5 py-5"
     : "flex flex-col gap-3 pt-5";
@@ -84,8 +81,6 @@ export default function ColumnContainer({
       >
         {column.title}
       </div>
-
-      {/* Search input for the "Initial meals" column */}
       {isInitialMealsColumn && (
         <div className="p-5">
           <Input

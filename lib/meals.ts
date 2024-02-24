@@ -26,6 +26,22 @@ export async function getMealsByUser(creatorId: string) {
   }
 }
 
+export async function getMealCreatorId(mealId: string) {
+  try {
+    const meal = await db.meal.findUnique({
+      where: { id: mealId },
+      select: { creatorId: true },
+    });
+
+    console.log("from get meal creator id: ", meal);
+
+    return meal ? meal.creatorId : null;
+  } catch (error) {
+    console.error("Error fetching meal creator ID:", error);
+    return null;
+  }
+}
+
 export async function deleteMeal(id: string) {
   const profile = await initialProfile();
   if (!profile || !profile.id) {
@@ -234,6 +250,7 @@ export async function createNotification(
           commentId,
         },
       });
+      console.log(notification);
     } else {
       notification = await db.notification.create({
         data: {
@@ -250,4 +267,3 @@ export async function createNotification(
     return { error };
   }
 }
-

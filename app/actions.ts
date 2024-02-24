@@ -5,6 +5,7 @@ import {
   deleteComment,
   createSubcomment,
   createRating,
+  createNotification,
 } from "@/lib/meals";
 import { createMeal } from "@/lib/meal-services/meals/create";
 import { Comment } from "@prisma/client";
@@ -28,9 +29,7 @@ export async function createMealAction(
     cookingTime
   );
   await createMeal(name, description, coverImage, cookingTime);
-  setTimeout(() => {
-    revalidatePath("/(routes)/recipes");
-  }, 3000);
+  revalidatePath("/(routes)/recipes");
   revalidatePath("/recipes/new");
 }
 
@@ -72,7 +71,6 @@ export async function deleteCommentAction(commentId: string, mealId: string) {
     if (result.success) {
       console.log("Comment deleted successfully");
 
-      // Update this path to re-fetch and update the specific meal's details
       revalidatePath(`/explore/${mealId}`);
     } else {
       console.error("Failed to delete comment:", result.error);
@@ -127,17 +125,41 @@ export async function createRatingAction(
       console.error("Error creating rating:", error);
     } else {
       console.log("Rating created successfully:", rating);
-
-      // Additional logic after creating a rating
       revalidatePath(`/recipes/${mealId}`);
-      // If a commentId was involved, you might want to revalidate its path too
+
       if (commentId) {
         revalidatePath(`/comments/${commentId}`);
       }
-      // Other relevant path updates can go here
     }
   } catch (error) {
     console.error("Unexpected error creating rating:", error);
   }
 }
 
+export async function createNotificationAction(
+  profileId: string,
+  mealId: string,
+  commentId?: string
+) {
+  console.log("Creating notification for meal:", mealId);
+
+  try {
+    const { notification, error } = await createNotification(
+      profileId,
+      mealId,
+      commentId
+    );
+
+    console.log("notification created: ", notification);
+
+    if (error) {
+      console.error("Error creating notification:", error);
+    } else {
+      console.log("Notification created successfully:", notification);
+
+      revalidatePath(`/`);
+    }
+  } catch (error) {
+    console.error("Unexpected error creating notification:", error);
+  }
+}

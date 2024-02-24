@@ -1,5 +1,5 @@
 import SearchSection from "@/components/ui/search-section";
-import { getMeals } from "@/lib/meals";
+import { getMealCreatorId, getMeals } from "@/lib/meals";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 
@@ -15,6 +15,8 @@ export default async function ExplorePage() {
     });
 
     favoriteMealIdsForUser = favoriteMealsForUser.map((meal) => meal.mealId);
+    console.log('favorites meals ids for user : ',favoriteMealIdsForUser);
+    
   }
 
   const { meals } = await getMeals();
@@ -27,8 +29,6 @@ export default async function ExplorePage() {
   }
 
   const allComments = await db.comment.findMany();
-  const ratings = await db.rating.findMany();
-  console.log("ratings: ", ratings);
 
   const mealsWithRatings = meals.map((meal) => {
     const averageRating = meal.ratings.length
@@ -41,6 +41,28 @@ export default async function ExplorePage() {
       averageRating,
     };
   });
+  const mealsWithCreator = await Promise.all(
+    meals.map(async (meal) => {
+      const mealCreatorId = await getMealCreatorId(meal.id);
+      console.log("meal creator id from explore page", mealCreatorId);
+
+      const averageRating = meal.ratings.length
+        ? meal.ratings.reduce((acc, curr) => acc + curr.ratingValue, 0) /
+          meal.ratings.length
+        : 0;
+
+      return {
+        ...meal,
+        averageRating,
+        mealCreatorId,
+      };
+    })
+  );
+
+  const creators = mealsWithCreator.find(
+    (creator) => creator.creator?.id === userId
+  );
+  console.log("creators: ", creators);
 
   return (
     <div className="min-h-screen">
@@ -53,6 +75,7 @@ export default async function ExplorePage() {
         meals={mealsWithRatings}
         favoriteMeals={favoriteMealIdsForUser || []}
         allComments={allComments}
+        mealsWithCreator={mealsWithCreator}
       />
     </div>
   );

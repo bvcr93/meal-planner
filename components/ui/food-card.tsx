@@ -1,6 +1,7 @@
 "use client";
 import {
   createCommentAction,
+  createNotificationAction,
   createRatingAction,
   deleteMealAction,
 } from "@/app/actions";
@@ -16,27 +17,24 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerFooter,
-  DrawerHeader,
-  DrawerTrigger,
+  DrawerTrigger
 } from "@/components/ui/drawer";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
+import { Comment } from "@prisma/client";
 import {
   Clock,
   Edit,
-  Heart,
-  HeartIcon,
   MessageSquare,
   Send,
   Star,
-  Trash2Icon,
+  Trash2Icon
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import MealHashtag from "../meal-hashtag";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,8 +49,6 @@ import {
 import { Button } from "./button";
 import Spinner from "./spinner";
 import { Textarea } from "./textarea";
-import { Comment } from "@prisma/client";
-import { createComment } from "@/lib/meals";
 
 interface FoodCardProps {
   id: string;
@@ -74,6 +70,7 @@ interface FoodCardProps {
   allComments?: Comment[];
   comments?: number | undefined;
   averageRating?: number;
+  mealCreatorId?: string | null | undefined;
 }
 
 export default function FoodCard({
@@ -92,6 +89,7 @@ export default function FoodCard({
   allComments,
   averageRating,
   comments,
+  mealCreatorId,
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -103,6 +101,7 @@ export default function FoodCard({
   const router = useRouter();
 
   const { user } = useUser();
+
   const toggleFavorite = (e: any) => {
     e.stopPropagation();
     if (isFavorite) {
@@ -114,6 +113,7 @@ export default function FoodCard({
   useEffect(() => {
     setIsClient(true);
   }, []);
+  console.log("meal user id: ", userId);
 
   const handleAddToFavourites = async () => {
     const mealId = id;
@@ -233,8 +233,11 @@ export default function FoodCard({
 
       await createRatingAction(mealId, ratingValue, profileId, commentId);
 
+      if (mealCreatorId && mealCreatorId !== profileId) {
+        await createNotificationAction(mealCreatorId, mealId, commentId);
+      }
       toast({
-        description: "Comment and rating submitted successfully!",
+        description: `Comment and rating submitted successfully! notification sent to `,
       });
 
       router.push(`/explore/${name}`);
@@ -248,6 +251,7 @@ export default function FoodCard({
   const handleStarClick = (starIndex: number) => {
     setClickedStars(starIndex);
   };
+
   return (
     <>
       {isClient && (

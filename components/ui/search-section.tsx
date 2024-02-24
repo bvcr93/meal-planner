@@ -9,10 +9,12 @@ import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
 import { Meal } from "@prisma/client";
+import { getMealCreatorId } from "@/lib/meals";
 type SearchInputProps = {
   meals: (TMeal & { averageRating: number | null })[];
   favoriteMeals: string[];
   allComments: Comment[];
+  mealsWithCreator: (TMeal & { mealCreatorId: string | null })[];
 };
 
 export default function SearchSection({
@@ -114,6 +116,7 @@ export default function SearchSection({
             allComments={allComments}
             comments={meal.comments?.length}
             averageRating={meal.averageRating}
+            mealCreatorId={meal.mealCreatorId} 
           />
         ))}
       </div>

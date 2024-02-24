@@ -1,4 +1,7 @@
-import React, { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRightCircle } from "lucide-react";
+import Link from "next/link";
+import { ReactNode } from "react";
 interface MainLayoutProps {
   children: ReactNode;
 }

@@ -40,7 +40,7 @@ export default async function MealDetails({
     },
   });
 
-  console.log("Ratings for the meal:", meal?.ratings);
+  console.log("meal creator", meal?.creator?.name);
 
   if (!meal) {
     return <div>Meal not found.</div>;
@@ -67,13 +67,12 @@ export default async function MealDetails({
       {comments.map((comment) => (
         <div key={comment.id} className="w-full">
           <CommentSection
-            {...comment} 
+            {...comment}
             user={comment.profile}
             subcomments={comment.subcomments}
           />
         </div>
       ))}
-      <div></div>
     </div>
   );
 }

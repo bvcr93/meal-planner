@@ -53,7 +53,7 @@ export default async function RecipesPage() {
     );
   }
   return (
-    <div className="mb-20">
+    <div className="mb-20 min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
         {meals?.map((meal) => (
           <FoodCard

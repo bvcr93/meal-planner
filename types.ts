@@ -10,9 +10,10 @@ export type TMeal = {
   creatorId: string;
   cookingTime: number | null;
   coverImage: string | null;
-  comments?: Comment[],
-  kanbanColumnId?: string | null
+  comments?: Comment[];
+  kanbanColumnId?: string | null;
   averageRating?: number;
+
   creator?: {
     id: string;
     userId: string;
@@ -22,7 +23,9 @@ export type TMeal = {
     createdAt: Date;
     updatedAt: Date;
   } | null;
+  mealCreatorId?: string | null; // Add mealCreatorId property
 };
+
 export type Id = string | number;
 
 export type Column = {

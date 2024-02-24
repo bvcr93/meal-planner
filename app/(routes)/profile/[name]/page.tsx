@@ -1,9 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
+
 import { db } from "@/lib/db";
-import { StarIcon } from "lucide-react";
+import { Fish, Leaf, PizzaIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import Spinner from "@/components/ui/spinner";
 export default async function ProfilePage({
   params,
 }: {
@@ -86,47 +96,66 @@ export default async function ProfilePage({
   }
   return (
     <div className="min-h-screen md:flex flex-col gap-5 mt-10">
-      <div className="w-full border py-4">
-        <h1>
-          {userProfile.name} {userProfile.email}
-        </h1>
+      <div className="flex flex-col items-center gap-6 p-6 bg-slate-100 shadow-lg rounded-xl">
+        <Avatar className="h-24 w-24">
+          <AvatarImage alt="User's name" src={userProfile.imageUrl} />
+          <AvatarFallback>
+            <Spinner />
+          </AvatarFallback>
+        </Avatar>
+        <div className="text-center">
+          <h2 className="text-2xl font-bold">{userProfile.name}</h2>
+          <p className="text-gray-500 dark:text-gray-400">
+            {userProfile.email}
+          </p>
+        </div>
+        <div className="w-full border-t border-gray-200 dark:border-gray-800 mt-4 pt-4">
+          <h3 className="text-lg font-semibold mb-2">Favorite Cuisines</h3>
+          <div className="flex items-center gap-2">
+            <PizzaIcon className="h-6 w-6" />
+            <p>Italian</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Fish className="h-6 w-6" />
+            <p>Japanese</p>
+          </div>
+        </div>
+        <div className="w-full border-t border-gray-200 dark:border-gray-800 mt-4 pt-4">
+          <h3 className="text-lg font-semibold mb-2">Dietary Preferences</h3>
+          <div className="flex items-center gap-2">
+            <Leaf className="h-6 w-6" />
+            <p>Vegan</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Fish className="h-6 w-6" />
+            <p>Pescatarian</p>
+          </div>
+        </div>
       </div>
-      <h1>My meals:</h1>
+
       <hr />
-      <div className="grid lg:grid-cols-2 place-items-center gap-5">
+      <div className="md:grid lg:grid-cols-3 grid-cols-1 gap-10">
         {userProfile?.createdMeals.map((meal) => (
           <Link href={`/explore/${meal.name}`}>
-            <Card className="min-w-[400px] md:min-w-[450px] mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-              <div className="md:flex">
-                <div className="md:flex-shrink-0">
-                  <Image
-                    alt="food image"
-                    className="h-48 w-full object-cover md:h-full md:w-48"
-                    width={200}
-                    height={200}
-                    src={meal.coverImage || ""}
-                  />
-                </div>
-                <div className="p-8">
-                  <CardTitle className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-                    {meal.name}
-                  </CardTitle>
-
-                  <div className="mt-2 text-gray-500">{meal.description}</div>
-                  <div className="mt-4">
-                    <div className="flex items-center">
-                      {renderStars(calculateAverageRating(meal.id, ratings))}
-                      <span className="ml-2 text-sm text-gray-600">
-                        {calculateAverageRating(meal.id, ratings).toFixed(1)}
-                      </span>
-                    </div>
-                    <div className="mt-2 text-gray-500">
-                      {meal._count.comments}{" "}
-                      {meal._count.comments === 1 ? "comment" : "comments"}
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <Card className="mt-10 rounded-xl">
+              <CardHeader className="relative h-20">
+                <Image
+                  fill
+                  alt=""
+                  className="object-cover rounded-t-xl"
+                  src={meal.coverImage || ""}
+                />
+                <CardTitle className="absolute top-2 left-2 z-50 text-white text-lg font-semibold">
+                  {meal.name}
+                </CardTitle>
+                {/* <CardDescription>{meal.description}</CardDescription> */}
+              </CardHeader>
+              <CardContent>
+                <p>{}</p>
+              </CardContent>
+              <CardFooter>
+                <p>Card Footer</p>
+              </CardFooter>
             </Card>
           </Link>
         ))}

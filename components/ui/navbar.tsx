@@ -28,7 +28,7 @@ export default function Navbar() {
   return (
     <div className="w-full py-5 sticky top-0 z-50 dark:bg-neutral-900 bg-white">
       <div className="maincol flex justify-between items-center ">
-        <div className="hidden md:flex items-center just">
+        <div className="hidden lg:flex items-center just">
           <Link
             href={`/`}
             className="font-semibold font-mono tracking-widest text-xl mr-10"
@@ -36,7 +36,7 @@ export default function Navbar() {
             <h1 className="text-2xl">Foody</h1>
           </Link>
         </div>
-        <div className="md:hidden flex">
+        <div className="lg:hidden flex">
           <Sheet>
             <SheetTrigger>
               <Menu />
@@ -46,6 +46,7 @@ export default function Navbar() {
                 <SheetTitle className="text-start text-2xl">Foody</SheetTitle>
                 <SheetDescription className="flex flex-col w-full items-start text-lg pt-10 space-y-2">
                   <Link href={`/explore`}>Explore</Link>
+                  <Link href={`/recipes/favorites`}>Favorites</Link>
                   <Link href={`/recipes`}>My Recipes</Link>
                   <Link href={`/weekly-plan`}>Dashboard</Link>
                   <Link href={`/pro`} className="text-orange-500 font-semibold">
@@ -56,9 +57,10 @@ export default function Navbar() {
             </SheetContent>
           </Sheet>
         </div>
-        <div className="md:flex gap-10 hidden">
+        <div className="lg:flex gap-10 hidden">
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/recipes`}>My Recipes</Link>
+          <Link href={`/recipes/favorites`}>Favorites</Link>
           <Link href={`/weekly-plan`}>Dashboard</Link>
           {/* <Link href={`/weekly-plan`}>Dashboard</Link> */}
           <Link href={`/pro`} className="text-orange-500 font-semibold">
