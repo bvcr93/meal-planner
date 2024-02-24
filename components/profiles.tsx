@@ -46,7 +46,7 @@ export default function Profiles({
             </div>
             <div className="px-6 py-4">
               <Link href={`/profile/${pr.name}`}>
-                <Button className="w-full bg-neutral-800 text-white rounded-lg hover:bg-blue-500">
+                <Button className="w-full bg-neutral-800 text-white rounded-lg hover:bg-amber-500">
                   Profile
                 </Button>
               </Link>

@@ -57,7 +57,7 @@ export default function Navbar() {
             </SheetContent>
           </Sheet>
         </div>
-        <div className="lg:flex gap-10 hidden">
+        <div className="lg:flex gap-10 hidden text-md">
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/recipes`}>My Recipes</Link>
           <Link href={`/recipes/favorites`}>Favorites</Link>
@@ -107,7 +107,7 @@ export default function Navbar() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <div className="absolute top-2 right-0 w-2 h-2 bg-red-600 rounded-full"></div>
+                <div className="absolute top-2 right-0 w-2 h-2 bg-orange-500 rounded-full"></div>
               </div>
             </div>
           ) : (
