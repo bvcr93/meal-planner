@@ -55,6 +55,7 @@ model FavoriteMeals {
 
   @@index([profileId])
   @@index([mealId])
+  @@unique([profileId, mealId])
 }
 
 model Comment {

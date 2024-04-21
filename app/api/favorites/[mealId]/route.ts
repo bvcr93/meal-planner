@@ -33,7 +33,7 @@ export async function DELETE(
         },
       },
     });
-   
+
     return new Response(JSON.stringify({ success: true }));
   } catch (error) {
     const errorMessage = (error as Error).message;
