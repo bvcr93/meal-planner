@@ -1,9 +1,7 @@
 "use client";
-import { getUserMealCountAction } from "@/app/actions";
-import React, { useEffect, useState } from "react";
-import { Button } from "./button";
-import { useUser } from "@clerk/nextjs";
 import { Meal } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { Button } from "./button";
 import { useToast } from "./use-toast";
 
 interface UserCountProps {

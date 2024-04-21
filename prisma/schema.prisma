@@ -48,7 +48,7 @@ model Meal {
 
 model FavoriteMeals {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  profileId String  @db.ObjectId
+  profileId String  
   mealId    String  @db.ObjectId
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   meal      Meal    @relation(fields: [mealId], references: [id], onDelete: Cascade)
