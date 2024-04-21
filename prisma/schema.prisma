@@ -3,17 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model Profile {
-  id            String          @id @default(uuid())
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
   userId        String          @unique
   name          String
-  imageUrl      String          @db.Text
-  email         String          @db.Text
+  imageUrl      String
+  email         String
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   createdMeals  Meal[]
@@ -26,46 +25,45 @@ model Profile {
 }
 
 model Meal {
-  id             String          @id @default(uuid())
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
   name           String
   description    String
   isEdited       Boolean?        @default(false)
   createdAt      DateTime?       @default(now())
   updatedAt      DateTime?
-  creatorId      String
+  creatorId      String          @db.ObjectId
   creator        Profile?        @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   favoritedBy    FavoriteMeals[]
   cookingTime    Int?
-  coverImage     String?         @db.Text
+  coverImage     String?
   comments       Comment[]       @relation("MealComments")
   ratings        Rating[]
   notifications  Notification[]
   kanbanColumn   KanbanColumn?   @relation(fields: [kanbanColumnId], references: [id])
-  kanbanColumnId String?
+  kanbanColumnId String?         @db.ObjectId
 
-  @@index([id])
   @@index([creatorId])
   @@index([kanbanColumnId])
 }
 
 model FavoriteMeals {
-  profileId String
-  mealId    String
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String  @db.ObjectId
+  mealId    String  @db.ObjectId
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   meal      Meal    @relation(fields: [mealId], references: [id], onDelete: Cascade)
 
-  @@id([profileId, mealId])
   @@index([profileId])
   @@index([mealId])
 }
 
 model Comment {
-  id            String         @id @default(uuid())
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
   text          String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  profileId     String
-  mealId        String
+  profileId     String         @db.ObjectId
+  mealId        String         @db.ObjectId
   commentId     String         @default("")
   profile       Profile        @relation("ProfileComments", fields: [profileId], references: [id])
   meal          Meal           @relation("MealComments", fields: [mealId], references: [id], onDelete: Cascade)
@@ -78,13 +76,13 @@ model Comment {
 }
 
 model Subcomment {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   text      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   mealId    String
-  profileId String
-  commentId String
+  profileId String   @db.ObjectId
+  commentId String   @db.ObjectId
   profile   Profile  @relation("profile", fields: [profileId], references: [id])
   comment   Comment  @relation("comment", fields: [commentId], references: [id], onDelete: Cascade)
 
@@ -93,11 +91,11 @@ model Subcomment {
 }
 
 model Rating {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   ratingValue Int
-  profileId   String
-  mealId      String
-  commentId   String?
+  profileId   String   @db.ObjectId
+  mealId      String   @db.ObjectId
+  commentId   String?  @db.ObjectId
   createdAt   DateTime @default(now())
 
   profile Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -110,12 +108,12 @@ model Rating {
 }
 
 model Notification {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  profileId String
-  mealId    String
-  commentId String?
+  profileId String   @db.ObjectId
+  mealId    String   @db.ObjectId
+  commentId String?  @db.ObjectId
 
   profile Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
   meal    Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
@@ -127,21 +125,19 @@ model Notification {
 }
 
 model KanbanBoard {
-  id      String         @id @default(uuid())
-  userId  String         @unique
+  id      String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String         @unique @db.ObjectId
   user    Profile        @relation(fields: [userId], references: [id])
   columns KanbanColumn[]
-
-  @@index([userId])
 }
 
 model KanbanColumn {
-  id            String      @id @default(uuid())
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   position      Int
   meals         Meal[]
   kanbanBoard   KanbanBoard @relation(fields: [kanbanBoardId], references: [id])
-  kanbanBoardId String
+  kanbanBoardId String      @db.ObjectId
 
   @@index([kanbanBoardId])
 }

@@ -1,5 +1,4 @@
 "use client";
-import React, { useMemo, useState } from "react";
 import { Column } from "@/types";
 import {
   SortableContext,
@@ -8,7 +7,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Meal } from "@prisma/client";
-import Image from "next/image";
+import { useMemo, useState } from "react";
 import MealKanbanCard from "./meal-kanban-card";
 import { Input } from "./ui/input";
 interface ColumnContainerProps {
