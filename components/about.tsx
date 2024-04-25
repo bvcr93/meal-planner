@@ -1,13 +1,10 @@
-import React from "react";
-import { Beef, GanttChart, Share } from "lucide-react";
 import {
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
   Card,
+  CardContent,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card";
+import { Beef, GanttChart } from "lucide-react";
 export default function AboutSection() {
   return (
     <div className="gap-5 my-20">

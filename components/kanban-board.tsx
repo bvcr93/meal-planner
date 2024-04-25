@@ -11,13 +11,12 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { Meal } from "@prisma/client";
-import { useCallback, useMemo, useState } from "react";
+import { debounce } from "lodash";
+import React, { useCallback, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import ColumnContainer from "./column-container";
 import MealKanbanCard from "./meal-kanban-card";
-import ListContainer from "./list-container";
-import React from "react";
-import { debounce } from "lodash";
+import { Button } from "./ui/button";
 export interface Column {
   id: string;
   title: string;
@@ -65,16 +64,15 @@ const MemoizedMealKanbanCard = React.memo(MealKanbanCard);
 
 export default function KanbanBoard({ meals }: KanbanBoardProps) {
   const [columns, setColumns] = useState<Column[]>(defaultCols);
-  console.log("Rendering KanbanBoard component");
+  const [isMealDragged, setIsMealDragged] = useState(false);
 
   const columnsId = useMemo(() => {
-    console.log("columnsId useMemo");
     return columns.map((col) => col.id);
   }, [columns]);
   const [activeMeal, setActiveMeal] = useState<Meal | null>(null);
+
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const initialMeals = useMemo(() => {
-    console.log("initialMeals useMemo");
     return meals.map((meal) => ({
       ...meal,
       kanbanColumnId: "setup",
@@ -85,12 +83,12 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 3, // 3 actiavation of drag and drop starts when moved 3px
+        distance: 3,
       },
     })
   );
+
   const onDragStart = useCallback((event: DragStartEvent) => {
-    console.log("onDragStart");
     if (event.active.data.current?.type === "Column") {
       setActiveColumn(event.active.data.current.column);
       return;
@@ -100,44 +98,35 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
       return;
     }
   }, []);
+
   const onDragEnd = useCallback(
     (event: DragEndEvent) => {
-      console.log("onDragEnd");
       const { active, over } = event;
-
-      if (!over) return;
-
+      if (!over) return; 
       const activeId = active.id;
       const overId = over.id;
+      if (activeId === overId) return; 
 
-      if (activeId === overId) return;
 
       if (
-        active.data.current?.type === "Column" &&
+        active.data.current?.type === "Meal" &&
         over.data.current?.type === "Column"
       ) {
-        setColumns((currentColumns) => {
-          const newColumns = [...currentColumns];
-          const activeIndex = currentColumns.findIndex(
-            (col) => col.id === activeId
-          );
-          const overIndex = currentColumns.findIndex(
-            (col) => col.id === overId
-          );
-
-          if (activeIndex !== -1 && overIndex !== -1) {
-            [newColumns[activeIndex], newColumns[overIndex]] = [
-              newColumns[overIndex],
-              newColumns[activeIndex],
-            ];
-            return newColumns;
-          }
-
-          return currentColumns;
+        const overColumnId = over.data.current.column.id;
+        console.log(`Meal ${activeId} dropped into column ${overColumnId}`);
+        setIsMealDragged(true);
+        console.log(`Meal saved to day: ${overColumnId}`);
+        setMealsState((prevMeals) => {
+          return prevMeals.map((meal) => {
+            if (meal.id === activeId) {
+              return { ...meal, kanbanColumnId: overColumnId };
+            }
+            return meal;
+          });
         });
       }
     },
-    [setColumns]
+    [setMealsState]
   );
 
   const debouncedMealUpdate = useCallback(
@@ -177,17 +166,19 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
+      <Button disabled={isMealDragged ? false : true}>Save changes</Button>
       <h1 className="text-center md:text-2xl text-lg">
         Your Weekly Meal Planner
       </h1>
+
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-20 px-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-20 px-10 ">
           <SortableContext items={columnsId}>
             {columns.map((col) => (
               <MemoizedColumnContainer
@@ -208,6 +199,7 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
                 meals={meals.filter((meal) => meal.id === activeColumn.id)}
               ></MemoizedColumnContainer>
             )}
+
             {activeMeal && <MemoizedMealKanbanCard meal={activeMeal} />}
           </DragOverlay>,
           document.body

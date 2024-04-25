@@ -267,3 +267,13 @@ export async function createNotification(
     return { error };
   }
 }
+
+async function createMealSchedule(mealId: string, kanbanColumnId: string) {
+    try {
+      
+    } catch (error) {
+      
+    }
+}
+
+

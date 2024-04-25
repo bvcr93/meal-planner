@@ -8,22 +8,18 @@ export default async function ExplorePage() {
   let favoriteMealIdsForUser: any;
 
   if (userId) {
-    // Simple format validation (example for MongoDB ObjectID)
     if (!/^[0-9a-fA-F]{24}$/.test(userId)) {
       console.error("Invalid userID format", userId);
-      // Handle invalid ID format, possibly return or show an error message
     } else {
       const favoriteMealsForUser = await db.favoriteMeals.findMany({
         where: {
           profileId: userId,
         },
       });
-  
+
       favoriteMealIdsForUser = favoriteMealsForUser.map((meal) => meal.mealId);
-      console.log('favorites meals ids for user : ', favoriteMealIdsForUser);
     }
   }
-  
 
   const { meals } = await getMeals();
   if (!meals) {

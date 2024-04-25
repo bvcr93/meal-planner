@@ -39,18 +39,12 @@ export default async function ProfilePage({
     },
   });
 
-  console.log("user profile: ", userProfile);
-
   const ratings = await db.rating.findMany();
   const meals = await db.meal.findMany({
     where: {
       creatorId: userProfile?.id,
     },
   });
-
-  console.log("meals from profile page: ", meals);
-
-  console.log("ratings: ", ratings);
 
   function calculateAverageRating(mealId: string, ratings: Array<any>): number {
     const mealRatings = ratings.filter((rating) => rating.mealId === mealId);
