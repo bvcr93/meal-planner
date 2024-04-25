@@ -268,12 +268,21 @@ export async function createNotification(
   }
 }
 
-async function createMealSchedule(mealId: string, kanbanColumnId: string) {
-    try {
-      
-    } catch (error) {
-      
-    }
+export async function createMealSchedule(mealId: string, kanbanColumnId: string) {
+  try {
+      const meal = await db.meal.update({
+          where: { id: mealId },
+          data: {
+              kanbanColumnId: kanbanColumnId
+          }
+      });
+      console.log(`Meal ${mealId} scheduled for ${kanbanColumnId}`);
+      return { success: true };
+  } catch (error) {
+      console.error("Error creating meal schedule:", error);
+      return { success: false, error };
+  }
 }
+
 
 

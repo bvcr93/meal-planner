@@ -90,7 +90,7 @@ export default async function ProfilePage({
   }
   return (
     <div className="min-h-screen md:flex flex-col gap-5 mt-10">
-      <div className="flex flex-col items-center gap-6 p-6 bg-slate-100 shadow-lg rounded-xl">
+      <div className="flex flex-col items-center gap-6 p-6 bg-slate-100 dark:bg-slate-900 dark:text-white shadow-lg rounded-xl">
         <Avatar className="h-24 w-24">
           <AvatarImage alt="User's name" src={userProfile.imageUrl} />
           <AvatarFallback>

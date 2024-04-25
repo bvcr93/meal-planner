@@ -40,7 +40,7 @@ model Meal {
   ratings        Rating[]
   notifications  Notification[]
   kanbanColumn   KanbanColumn?   @relation(fields: [kanbanColumnId], references: [id])
-  kanbanColumnId String?         @db.ObjectId
+  kanbanColumnId String?         
 
   @@index([creatorId])
   @@index([kanbanColumnId])

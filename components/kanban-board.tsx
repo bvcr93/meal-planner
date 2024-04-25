@@ -17,6 +17,7 @@ import { createPortal } from "react-dom";
 import ColumnContainer from "./column-container";
 import MealKanbanCard from "./meal-kanban-card";
 import { Button } from "./ui/button";
+import { createMealScheduleAction } from "@/app/actions";
 export interface Column {
   id: string;
   title: string;
@@ -102,11 +103,10 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
   const onDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event;
-      if (!over) return; 
+      if (!over) return;
       const activeId = active.id;
       const overId = over.id;
-      if (activeId === overId) return; 
-
+      if (activeId === overId) return;
 
       if (
         active.data.current?.type === "Meal" &&
@@ -115,7 +115,7 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
         const overColumnId = over.data.current.column.id;
         console.log(`Meal ${activeId} dropped into column ${overColumnId}`);
         setIsMealDragged(true);
-        console.log(`Meal saved to day: ${overColumnId}`);
+        console.log(`Meal dragged to day: ${overColumnId}`);
         setMealsState((prevMeals) => {
           return prevMeals.map((meal) => {
             if (meal.id === activeId) {
@@ -124,9 +124,30 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
             return meal;
           });
         });
+        setActiveMeal((prevActiveMeal) => {
+          if (!prevActiveMeal) {
+           
+            return {
+              id: "", 
+              name: "",
+              description: "",
+              isEdited: null,
+              createdAt: null,
+              updatedAt: null,
+              creatorId: "",
+              cookingTime: null,
+              coverImage: null,
+              kanbanColumnId: overColumnId, 
+            };
+          }
+          return {
+            ...prevActiveMeal,
+            kanbanColumnId: overColumnId, 
+          };
+        });
       }
     },
-    [setMealsState]
+    [setMealsState, setActiveMeal]
   );
 
   const debouncedMealUpdate = useCallback(
@@ -165,9 +186,34 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
     [debouncedMealUpdate]
   );
 
+  const handleMealSaveDay = useCallback(async () => {
+    console.log("handleMealSaveDay is triggered");
+    if (activeMeal) {
+      const mealId = activeMeal.id;
+      const kanbanColumnId = activeMeal.kanbanColumnId;
+      console.log(`Saving meal ${mealId} to day: ${kanbanColumnId}`);
+
+      const result = await createMealScheduleAction(
+        mealId,
+        kanbanColumnId || ""
+      );
+      if (result.success) {
+        console.log("Meal schedule updated successfully.");
+      } else {
+        console.error("Failed to update meal schedule:", result.error);
+      }
+    }
+  }, [activeMeal]);
+
   return (
     <div className="w-full ">
-      <Button disabled={isMealDragged ? false : true}>Save changes</Button>
+      <Button
+        onClick={handleMealSaveDay}
+        className="my-5 ml-10 w-48"
+        disabled={!isMealDragged}
+      >
+        Save changes
+      </Button>
       <h1 className="text-center md:text-2xl text-lg">
         Your Weekly Meal Planner
       </h1>

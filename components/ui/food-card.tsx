@@ -17,7 +17,7 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerFooter,
-  DrawerTrigger
+  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,7 @@ import {
   MessageSquare,
   Send,
   Star,
-  Trash2Icon
+  Trash2Icon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -71,6 +71,7 @@ interface FoodCardProps {
   comments?: number | undefined;
   averageRating?: number;
   mealCreatorId?: string | null | undefined;
+  scheduledFor?: string | null;
 }
 
 export default function FoodCard({
@@ -90,6 +91,7 @@ export default function FoodCard({
   averageRating,
   comments,
   mealCreatorId,
+  scheduledFor,
 }: FoodCardProps) {
   const { toast } = useToast();
   const [editedDescription, setEditedDescription] = useState(description);
@@ -294,6 +296,10 @@ export default function FoodCard({
                             __html: editedDescription,
                           }}
                         ></div>
+                        <div className="text-sm font-thin absolute bottom-2 left-2 flex items-center">
+                          <span>scheduled for</span>
+                          <p className="text-red-500 ml-1">{scheduledFor}</p>
+                        </div>
                       </CardTitle>
                     </div>
                   </div>

@@ -6,6 +6,7 @@ import {
   createSubcomment,
   createRating,
   createNotification,
+  createMealSchedule,
 } from "@/lib/meals";
 import { createMeal } from "@/lib/meal-services/meals/create";
 import { Comment } from "@prisma/client";
@@ -164,5 +165,23 @@ export async function createNotificationAction(
   }
 }
 
-
-
+export async function createMealScheduleAction(
+  mealId: string,
+  kanbanColumnId: string
+) {
+  console.log(`Scheduling meal ${mealId} to column ${kanbanColumnId}`);
+  try {
+    const { success, error } = await createMealSchedule(mealId, kanbanColumnId);
+    if (success) {
+      console.log(`Meal ${mealId} successfully scheduled to ${kanbanColumnId}`);
+      revalidatePath(`/kanban/${kanbanColumnId}`);
+      return { success: true };
+    } else {
+      console.error("Error scheduling meal:", error);
+      return { success: false, error };
+    }
+  } catch (error) {
+    console.error("Unexpected error when scheduling meal:", error);
+    return { success: false, error };
+  }
+}

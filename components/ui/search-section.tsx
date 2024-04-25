@@ -117,6 +117,7 @@ export default function SearchSection({
             comments={meal.comments?.length}
             averageRating={meal.averageRating}
             mealCreatorId={meal.mealCreatorId} 
+            scheduledFor={meal.kanbanColumnId}
           />
         ))}
       </div>

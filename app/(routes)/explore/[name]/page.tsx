@@ -61,6 +61,7 @@ export default async function MealDetails({
           <div className="text-white text-center absolute w-full space-y-5 md:px-20 px-10 text-sm">
             <div className="text-4xl font-semibold">{meal.name}</div>
             <p className="font-sm text-slate-300">{meal.description}</p>
+            <p>scheduled for {meal.kanbanColumnId}</p>
           </div>
         </div>
       </div>
