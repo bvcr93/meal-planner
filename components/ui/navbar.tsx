@@ -21,8 +21,13 @@ import Link from "next/link";
 import { ModeToggle } from "../mode-toggle";
 import { Button } from "./button";
 import { NavbarSpinner } from "./navbar-spinner";
+import { Profile } from "@prisma/client";
 
-export default function Navbar() {
+interface NavProps {
+  profile: any;
+}
+
+export default function Navbar({ profile }: NavProps) {
   const { userId } = useAuth();
 
   return (
@@ -49,6 +54,7 @@ export default function Navbar() {
                   <Link href={`/recipes/favorites`}>Favorites</Link>
                   <Link href={`/recipes`}>My Recipes</Link>
                   <Link href={`/weekly-plan`}>Dashboard</Link>
+                  <Link href={`/profile/${profile.name}`}>Profile</Link>
                   <Link href={`/pro`} className="text-orange-500 font-semibold">
                     Upgrade to Pro
                   </Link>
@@ -62,6 +68,7 @@ export default function Navbar() {
           <Link href={`/recipes`}>My Recipes</Link>
           <Link href={`/recipes/favorites`}>Favorites</Link>
           <Link href={`/weekly-plan`}>Dashboard</Link>
+          <Link href={`/profile/${profile.name}`}>Profile</Link>
           {/* <Link href={`/weekly-plan`}>Dashboard</Link> */}
           <Link href={`/pro`} className="text-orange-500 font-semibold">
             Upgrade to Pro
@@ -121,6 +128,14 @@ export default function Navbar() {
             </div>
           )}
         </div>
+      </div>
+      <div className="maincol py-1 bg-yellow-500 text-center text-black text-sm">
+        <Link
+          href={"/"}
+          className="hover:text-white cursor-pointer duration-300"
+        >
+          Tell us your dietary preferences
+        </Link>
       </div>
     </div>
   );

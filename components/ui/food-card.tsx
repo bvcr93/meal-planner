@@ -239,7 +239,7 @@ export default function FoodCard({
         await createNotificationAction(mealCreatorId, mealId, commentId);
       }
       toast({
-        description: `Comment and rating submitted successfully! notification sent to `,
+        description: `Comment and rating submitted successfully`,
       });
 
       router.push(`/explore/${name}`);

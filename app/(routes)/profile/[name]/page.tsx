@@ -1,19 +1,17 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 
+import DietaryPreferences from "@/components/dietary-preferences";
+import Spinner from "@/components/ui/spinner";
 import { db } from "@/lib/db";
-import { Fish, Leaf, PizzaIcon, StarIcon } from "lucide-react";
+import { Rating } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import Spinner from "@/components/ui/spinner";
 export default async function ProfilePage({
   params,
 }: {
@@ -40,13 +38,11 @@ export default async function ProfilePage({
   });
 
   const ratings = await db.rating.findMany();
-  const meals = await db.meal.findMany({
-    where: {
-      creatorId: userProfile?.id,
-    },
-  });
 
-  function calculateAverageRating(mealId: string, ratings: Array<any>): number {
+  function calculateAverageRating(
+    mealId: string,
+    ratings: Array<Rating>
+  ): number {
     const mealRatings = ratings.filter((rating) => rating.mealId === mealId);
     const total = mealRatings.reduce(
       (acc, rating) => acc + rating.ratingValue,
@@ -103,28 +99,8 @@ export default async function ProfilePage({
             {userProfile.email}
           </p>
         </div>
-        <div className="w-full border-t border-gray-200 dark:border-gray-800 mt-4 pt-4">
-          <h3 className="text-lg font-semibold mb-2">Favorite Cuisines</h3>
-          <div className="flex items-center gap-2">
-            <PizzaIcon className="h-6 w-6" />
-            <p>Italian</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Fish className="h-6 w-6" />
-            <p>Japanese</p>
-          </div>
-        </div>
-        <div className="w-full border-t border-gray-200 dark:border-gray-800 mt-4 pt-4">
-          <h3 className="text-lg font-semibold mb-2">Dietary Preferences</h3>
-          <div className="flex items-center gap-2">
-            <Leaf className="h-6 w-6" />
-            <p>Vegan</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Fish className="h-6 w-6" />
-            <p>Pescatarian</p>
-          </div>
-        </div>
+        <DietaryPreferences />
+        {/* create initial preferneces simple form and pass the data here */}
       </div>
 
       <hr />
@@ -144,12 +120,6 @@ export default async function ProfilePage({
                 </CardTitle>
                 {/* <CardDescription>{meal.description}</CardDescription> */}
               </CardHeader>
-              <CardContent>
-                <p>{}</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
             </Card>
           </Link>
         ))}
@@ -158,17 +128,3 @@ export default async function ProfilePage({
   );
 }
 
-const renderStars = (rating: number) => {
-  let stars = [];
-  for (let i = 1; i <= 5; i++) {
-    stars.push(
-      <StarIcon
-        key={i}
-        className={`w-4 h-4 ${
-          i <= rating ? "fill-primary" : "fill-muted stroke-muted-foreground"
-        }`}
-      />
-    );
-  }
-  return stars;
-};

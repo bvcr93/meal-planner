@@ -23,7 +23,7 @@ export type TMeal = {
     createdAt: Date;
     updatedAt: Date;
   } | null;
-  mealCreatorId?: string | null; // Add mealCreatorId property
+  mealCreatorId?: string | null;
 };
 
 export type Id = string | number;

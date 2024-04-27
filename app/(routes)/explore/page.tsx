@@ -65,6 +65,7 @@ export default async function ExplorePage() {
     (creator) => creator.creator?.id === userId
   );
   console.log("creators: ", creators);
+  console.log("meals with ratings: ", mealsWithRatings.map(meal => meal.ratings));
 
   return (
     <div className="min-h-screen">

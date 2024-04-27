@@ -174,7 +174,7 @@ export async function createMealScheduleAction(
     const { success, error } = await createMealSchedule(mealId, kanbanColumnId);
     if (success) {
       console.log(`Meal ${mealId} successfully scheduled to ${kanbanColumnId}`);
-      revalidatePath(`/kanban/${kanbanColumnId}`);
+      revalidatePath(`/weekly-plan`);
       return { success: true };
     } else {
       console.error("Error scheduling meal:", error);

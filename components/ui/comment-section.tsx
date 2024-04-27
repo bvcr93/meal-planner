@@ -145,7 +145,8 @@ export default function CommentSection({
       </CardFooter>
       {isSubCommentOpened && (
         <div className="relative">
-          <form ref={formRef}
+          <form
+            ref={formRef}
             onSubmit={(e) => {
               e.preventDefault();
               handleCreateSubcomment(new FormData(e.currentTarget));
