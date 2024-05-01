@@ -23,11 +23,11 @@ import { Button } from "./button";
 import { NavbarSpinner } from "./navbar-spinner";
 import { Profile } from "@prisma/client";
 
-interface NavProps {
-  profile: Profile | undefined;
-}
+// interface NavProps {
+//   profile: Profile | undefined;
+// }
 
-export default function Navbar({ profile }: NavProps) {
+export default function Navbar() {
   const { userId } = useAuth();
 
   return (
@@ -54,7 +54,7 @@ export default function Navbar({ profile }: NavProps) {
                   <Link href={`/recipes/favorites`}>Favorites</Link>
                   <Link href={`/recipes`}>My Recipes</Link>
                   <Link href={`/weekly-plan`}>Dashboard</Link>
-                  <Link href={`/profile/${profile?.name}`}>Profile</Link>
+                  {/* <Link href={`/profile/${profile?.name}`}>Profile</Link> */}
                   <Link href={`/pro`} className="text-orange-500 font-semibold">
                     Upgrade to Pro
                   </Link>
@@ -68,7 +68,7 @@ export default function Navbar({ profile }: NavProps) {
           <Link href={`/recipes`}>My Recipes</Link>
           <Link href={`/recipes/favorites`}>Favorites</Link>
           <Link href={`/weekly-plan`}>Dashboard</Link>
-          <Link href={`/profile/${profile?.name}`}>Profile</Link>
+          {/* <Link href={`/profile/${profile?.name}`}>Profile</Link> */}
           {/* <Link href={`/weekly-plan`}>Dashboard</Link> */}
           <Link href={`/pro`} className="text-orange-500 font-semibold">
             Upgrade to Pro

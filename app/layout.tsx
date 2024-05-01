@@ -23,10 +23,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await currentUser();
-  const profile = await db.profile.findUnique({
-    where: { userId: user?.id },
-  });
+  // const user = await currentUser();
+  // const profile = await db.profile.findUnique({
+  //   where: { userId: user?.id },
+  // });
 
   if (profile === null) {
     return <div>no profile found </div>;
@@ -45,7 +45,7 @@ export default async function RootLayout({
               disableTransitionOnChange
               storageKey="mealplanner"
             >
-              <Navbar profile={profile} />
+              <Navbar  />
               {children}
               <Toaster />
               <Footer />
