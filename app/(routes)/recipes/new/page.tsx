@@ -8,7 +8,7 @@ import { getMeals } from "@/lib/meals";
 import { auth } from "@clerk/nextjs";
 import { ArrowLeft } from "lucide-react";
 export default async function RepcipeCreationPage() {
-  const { meals } = await getMeals();
+  const  meals  = await getMeals();
   const { userId }: { userId: string | null } = auth();
 
   const currentUser = meals?.find((meal) => meal?.creator?.userId === userId);
