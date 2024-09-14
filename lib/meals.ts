@@ -11,11 +11,13 @@ export async function getMeals() {
       },
     });
     console.log("meals found: ", meals);
-    return { meals };
+    return meals; 
   } catch (error) {
-    return { error };
+    console.error("Error fetching meals:", error);
+    throw error; 
   }
 }
+
 
 export async function getMealsByUser(creatorId: string) {
   try {

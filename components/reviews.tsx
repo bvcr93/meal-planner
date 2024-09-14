@@ -1,15 +1,12 @@
-import React from "react";
-import { Card } from "./ui/card";
-import { Star } from "lucide-react";
-import fish from "../public/fish.jpg";
 import {
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
+import { Star } from "lucide-react";
 import Image from "next/image";
+import { Card } from "./ui/card";
 const reviews = [
   {
     id: 1,

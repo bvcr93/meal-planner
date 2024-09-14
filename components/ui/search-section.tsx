@@ -8,8 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import FoodCard from "./food-card";
-import { Meal } from "@prisma/client";
-import { getMealCreatorId } from "@/lib/meals";
+
 type SearchInputProps = {
   meals: (TMeal & { averageRating: number | null })[];
   favoriteMeals: string[];

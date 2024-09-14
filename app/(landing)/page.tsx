@@ -27,19 +27,6 @@ export default async function Home() {
   return (
     <main>
       <HeroSection />
-      {/* <Hero2 /> */}
-
-      {/* TODO: change the landing layout */}
-
-      {/* {meals.length > 0 && (
-        <div className="maincol pb-10">
-          <h1 className="text-semibold text-lg text-center mt-5 ">
-            Check latest meals
-          </h1>
-
-          <Slider meals={meals} />
-        </div>
-      )} */}
       <hr />
       <div className="md:flex flex-col w-full dark:bg-neutral-950">
         <h1 className="text-center w-full my-10 text-xl dark:text-yellow-400">

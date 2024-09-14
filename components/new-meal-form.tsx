@@ -154,13 +154,13 @@ export default function NewMealForm() {
       <Input
         className="mt-5 w-full"
         type="file"
-        onChange={handleFileChange} // Make
+        onChange={handleFileChange} 
       />
       {previewUrl && (
         <img
           src={previewUrl}
           alt="Preview"
-          className="mt-4 w-48 h-48 object-cover" // Adjust styles as needed
+          className="mt-4 w-48 h-48 object-cover" 
         />
       )}
       <SubmitButton

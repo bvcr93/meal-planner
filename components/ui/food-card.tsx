@@ -87,7 +87,6 @@ export default function FoodCard({
   hasEditButton = false,
   hasRemoveFromFavorites,
   hasFavoriteStar,
-  allComments,
   averageRating,
   comments,
   mealCreatorId,

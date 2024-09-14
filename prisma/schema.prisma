@@ -22,6 +22,7 @@ model Profile {
   rating        Rating[]
   notifications Notification[]
   kanbanBoard   KanbanBoard?
+  dietaryPreferences DietaryPreferences? @relation("DietaryPreferences")   
 }
 
 model Meal {
@@ -141,4 +142,12 @@ model KanbanColumn {
   kanbanBoardId String      @db.ObjectId
 
   @@index([kanbanBoardId])
+}
+
+model DietaryPreferences {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  favoriteCuisines    String
+  dietaryPreferences  String
+  profileId           String   @unique @db.ObjectId
+  profile             Profile  @relation("DietaryPreferences", fields: [profileId], references: [id])
 }

@@ -11,13 +11,16 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { Meal } from "@prisma/client";
-import { debounce } from "lodash";
+import { debounce, update } from "lodash";
 import React, { useCallback, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import ColumnContainer from "./column-container";
 import MealKanbanCard from "./meal-kanban-card";
 import { Button } from "./ui/button";
 import { createMealScheduleAction } from "@/app/actions";
+import { useEffect, useRef } from "react";
+import { useToast } from "./ui/use-toast";
+import { getMeals } from "@/lib/meals";
 export interface Column {
   id: string;
   title: string;
@@ -66,6 +69,23 @@ const MemoizedMealKanbanCard = React.memo(MealKanbanCard);
 export default function KanbanBoard({ meals }: KanbanBoardProps) {
   const [columns, setColumns] = useState<Column[]>(defaultCols);
   const [isMealDragged, setIsMealDragged] = useState(false);
+  const { toast } = useToast();
+  const dragOverlayRef = useRef(null);
+  useEffect(() => {
+    const loadMeals = async () => {
+      try {
+        const updatedMeals = await getMeals();
+        console.log(updatedMeals);
+
+        setMealsState(updatedMeals);
+      } catch (error) {
+        console.error("Failed to fetch meals:", error);
+      }
+    };
+
+    loadMeals();
+  }, []);
+  
 
   const columnsId = useMemo(() => {
     return columns.map((col) => col.id);
@@ -76,9 +96,10 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
   const initialMeals = useMemo(() => {
     return meals.map((meal) => ({
       ...meal,
-      kanbanColumnId: "setup",
+      kanbanColumnId: meal.kanbanColumnId || "setup",
     }));
-  }, [meals]);
+  }, [meals]); 
+
   const [mealsState, setMealsState] = useState<Meal[]>(initialMeals);
 
   const sensors = useSensors(
@@ -108,46 +129,27 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
       const overId = over.id;
       if (activeId === overId) return;
 
-      if (
-        active.data.current?.type === "Meal" &&
-        over.data.current?.type === "Column"
-      ) {
-        const overColumnId = over.data.current.column.id;
-        console.log(`Meal ${activeId} dropped into column ${overColumnId}`);
+      const overColumnId = over?.data?.current?.column.id;
+      const activeMeal = mealsState.find((meal) => meal.id === activeId);
+
+      console.log(`Attempting to drop meal ${activeId} into ${overColumnId}`);
+      if (activeMeal && activeMeal.kanbanColumnId !== overColumnId) {
+        console.log(`Meal ${activeMeal.name} will be moved to ${overColumnId}`);
         setIsMealDragged(true);
-        console.log(`Meal dragged to day: ${overColumnId}`);
-        setMealsState((prevMeals) => {
-          return prevMeals.map((meal) => {
-            if (meal.id === activeId) {
-              return { ...meal, kanbanColumnId: overColumnId };
-            }
-            return meal;
-          });
-        });
-        setActiveMeal((prevActiveMeal) => {
-          if (!prevActiveMeal) {
-           
-            return {
-              id: "", 
-              name: "",
-              description: "",
-              isEdited: null,
-              createdAt: null,
-              updatedAt: null,
-              creatorId: "",
-              cookingTime: null,
-              coverImage: null,
-              kanbanColumnId: overColumnId, 
-            };
-          }
-          return {
-            ...prevActiveMeal,
-            kanbanColumnId: overColumnId, 
-          };
-        });
+        setMealsState((prevMeals) =>
+          prevMeals.map((meal) => {
+            return meal.id === activeId
+              ? { ...meal, kanbanColumnId: overColumnId }
+              : meal;
+          })
+        );
+      } else {
+        console.log(
+          `No change for meal ${activeMeal ? activeMeal.name : "undefined"}`
+        );
       }
     },
-    [setMealsState, setActiveMeal]
+    [setMealsState, mealsState]
   );
 
   const debouncedMealUpdate = useCallback(
@@ -191,22 +193,24 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
     if (activeMeal) {
       const mealId = activeMeal.id;
       const kanbanColumnId = activeMeal.kanbanColumnId;
-      console.log(`Saving meal ${mealId} to day: ${kanbanColumnId}`);
-
       const result = await createMealScheduleAction(
         mealId,
         kanbanColumnId || ""
       );
       if (result.success) {
-        console.log("Meal schedule updated successfully.");
+        toast({
+          description: `Changes saved successfully`,
+        });
+        setIsMealDragged(false); // Reset to false after successful save
       } else {
         console.error("Failed to update meal schedule:", result.error);
       }
     }
-  }, [activeMeal]);
+  }, [activeMeal, createMealScheduleAction, toast]);
+
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <Button
         onClick={handleMealSaveDay}
         className="my-5 ml-10 w-48"
@@ -214,10 +218,11 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
       >
         Save changes
       </Button>
+  
       <h1 className="text-center md:text-2xl text-lg">
         Your Weekly Meal Planner
       </h1>
-
+  
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -237,20 +242,22 @@ export default function KanbanBoard({ meals }: KanbanBoardProps) {
             ))}
           </SortableContext>
         </div>
-        {createPortal(
-          <DragOverlay>
-            {activeColumn && (
-              <MemoizedColumnContainer
-                column={activeColumn}
-                meals={meals.filter((meal) => meal.id === activeColumn.id)}
-              ></MemoizedColumnContainer>
-            )}
-
-            {activeMeal && <MemoizedMealKanbanCard meal={activeMeal} />}
-          </DragOverlay>,
-          document.body
+        {dragOverlayRef.current && (
+          createPortal(
+            <DragOverlay>
+              {activeColumn && (
+                <MemoizedColumnContainer
+                  column={activeColumn}
+                  meals={meals.filter((meal) => meal.id === activeColumn.id)}
+                ></MemoizedColumnContainer>
+              )}
+              {activeMeal && <MemoizedMealKanbanCard meal={activeMeal} />}
+            </DragOverlay>,
+            dragOverlayRef.current
+          )
         )}
       </DndContext>
     </div>
   );
+  
 }

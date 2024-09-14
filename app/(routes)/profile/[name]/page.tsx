@@ -1,10 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 import DietaryPreferences from "@/components/dietary-preferences";
 import Spinner from "@/components/ui/spinner";
@@ -36,20 +32,6 @@ export default async function ProfilePage({
       comments: true,
     },
   });
-
-  const ratings = await db.rating.findMany();
-
-  function calculateAverageRating(
-    mealId: string,
-    ratings: Array<Rating>
-  ): number {
-    const mealRatings = ratings.filter((rating) => rating.mealId === mealId);
-    const total = mealRatings.reduce(
-      (acc, rating) => acc + rating.ratingValue,
-      0
-    );
-    return mealRatings.length > 0 ? total / mealRatings.length : 0;
-  }
 
   if (userProfile && userProfile.createdMeals) {
     userProfile.createdMeals.forEach((meal) => {
@@ -86,6 +68,19 @@ export default async function ProfilePage({
   }
   return (
     <div className="min-h-screen md:flex flex-col gap-5 mt-10">
+      <form action="" className="w-full flex flex-col gap-5">
+        <input
+          type="text"
+          className="bg-slate-200 rounded py-2 px-4"
+          placeholder="Favorite Cuisines"
+        />
+        <input
+          type="text"
+          className="bg-slate-200 rounded py-2 px-4"
+          placeholder="Dietary Preferences"
+        />
+        <Button type="submit">Submit</Button>
+      </form>
       <div className="flex flex-col items-center gap-6 p-6 bg-slate-100 dark:bg-slate-900 dark:text-white shadow-lg rounded-xl">
         <Avatar className="h-24 w-24">
           <AvatarImage alt="User's name" src={userProfile.imageUrl} />
@@ -127,4 +122,3 @@ export default async function ProfilePage({
     </div>
   );
 }
-

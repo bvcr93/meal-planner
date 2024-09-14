@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -50,19 +51,35 @@ export default function Navbar() {
               <SheetHeader>
                 <SheetTitle className="text-start text-2xl">Foody</SheetTitle>
                 <SheetDescription className="flex flex-col w-full items-start text-lg pt-10 space-y-2">
-                  <Link href={`/explore`}>Explore</Link>
-                  <Link href={`/recipes/favorites`}>Favorites</Link>
-                  <Link href={`/recipes`}>My Recipes</Link>
-                  <Link href={`/weekly-plan`}>Dashboard</Link>
+                  <SheetClose asChild>
+                    <Link href={`/explore`}>Explore</Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link href={`/recipes/favorites`}>Favorites</Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link href={`/recipes`}>My Recipes</Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link href={`/weekly-plan`}>Dashboard</Link>
+                  </SheetClose>
+                  {/* <SheetClose asChild> */}
                   {/* <Link href={`/profile/${profile?.name}`}>Profile</Link> */}
-                  <Link href={`/pro`} className="text-orange-500 font-semibold">
-                    Upgrade to Pro
-                  </Link>
+                  {/* </SheetClose> */}
+                  <SheetClose asChild>
+                    <Link
+                      href={`/pro`}
+                      className="text-orange-500 font-semibold"
+                    >
+                      Upgrade to Pro
+                    </Link>
+                  </SheetClose>
                 </SheetDescription>
               </SheetHeader>
             </SheetContent>
           </Sheet>
         </div>
+
         <div className="lg:flex gap-10 hidden text-md">
           <Link href={`/explore`}>Explore</Link>
           <Link href={`/recipes`}>My Recipes</Link>
